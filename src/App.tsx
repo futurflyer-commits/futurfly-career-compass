@@ -37,7 +37,7 @@ const App = () => (
           <Route path="/skill-lab" element={<SkillLab />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/co-pilot" element={<CoPilot />} />
+          <Route path="/career-nav-ai" element={<CoPilot />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

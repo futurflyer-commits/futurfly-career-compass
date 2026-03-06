@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { DashboardNav } from "@/components/DashboardNav";
 import { Rocket, Search, Settings, MessageSquare, Send, Mic, Paperclip, Bot, User, FileText, TrendingUp } from "lucide-react";
 
 interface Message {

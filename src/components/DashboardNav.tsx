@@ -12,7 +12,7 @@ const navLinks = [
 
 const mobileLinks = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Co-Pilot", href: "/co-pilot" },
+  { label: "CareerNavAI", href: "/career-nav-ai" },
   { label: "Skills", href: "/skill-lab" },
   { label: "Simulate", href: "/simulation" },
   { label: "Market", href: "/market" },

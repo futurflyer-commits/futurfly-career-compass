@@ -321,15 +321,17 @@ const SkillLab = () => {
                   </Tooltip>
                 );
               })}
+              </div>{/* end zoom wrapper */}
 
               {/* Zoom controls */}
-              <div className="absolute bottom-20 left-6 flex flex-col gap-2">
-                {[Plus, Minus].map((Icon, i) => (
-                  <button key={i} className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
-                    <Icon className="h-4 w-4" />
-                  </button>
-                ))}
-                <button className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors mt-2">
+              <div className="absolute bottom-20 left-6 flex flex-col gap-2 z-10">
+                <button onClick={handleZoomIn} className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+                  <Plus className="h-4 w-4" />
+                </button>
+                <button onClick={handleZoomOut} className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+                  <Minus className="h-4 w-4" />
+                </button>
+                <button onClick={handleReset} className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors mt-2">
                   <Maximize2 className="h-4 w-4" />
                 </button>
               </div>

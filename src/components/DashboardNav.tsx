@@ -7,7 +7,7 @@ const navLinks = [
   { label: "Skill Lab", href: "/skill-lab" },
   { label: "Simulation", href: "/simulation" },
   { label: "Roadmap", href: "/roadmap" },
-  { label: "Market", href: "/market" },
+  { label: "MarketRadar", href: "/market" },
 ];
 
 const mobileLinks = [
@@ -15,7 +15,7 @@ const mobileLinks = [
   { label: "CareerNavAI", href: "/career-nav-ai" },
   { label: "Skills", href: "/skill-lab" },
   { label: "Simulate", href: "/simulation" },
-  { label: "Market", href: "/market" },
+  { label: "MarketRadar", href: "/market" },
 ];
 
 export const DashboardNav = () => {

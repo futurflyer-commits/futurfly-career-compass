@@ -39,6 +39,7 @@ const App = () => (
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/career-nav-ai" element={<CoPilot />} />
+          <Route path="/role-hub" element={<RoleHub />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -152,6 +152,14 @@ const SkillLab = () => {
 
   const filteredNodes = activeFilter === "all" ? skillNodes : skillNodes.filter((n) => n.category === activeFilter);
   const filteredIds = new Set(filteredNodes.map((n) => n.id));
+
+  // Aggregate stats
+  const avgProficiency = Math.round(skillNodes.reduce((s, n) => s + n.proficiency, 0) / skillNodes.length);
+  const expertCount = skillNodes.filter((n) => n.proficiency >= 75).length;
+  const gapCount = skillNodes.filter((n) => n.proficiency < 15).length;
+  const strongestSkill = [...skillNodes].sort((a, b) => b.proficiency - a.proficiency)[0];
+  const weakestSkill = [...skillNodes].sort((a, b) => a.proficiency - b.proficiency)[0];
+
   const getNodePos = (id: string) => {
     const node = skillNodes.find((n) => n.id === id);
     return node ? { x: node.x, y: node.y } : { x: 0, y: 0 };

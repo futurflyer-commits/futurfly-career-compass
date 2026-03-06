@@ -64,12 +64,12 @@ const Index = () => {
               >
                 Get Started <ArrowUpRight className="h-4 w-4" />
               </Link>
-              <Link
-                to="/pricing"
+              <a
+                href="#how-it-works"
                 className="inline-flex items-center gap-2 rounded-full border border-primary/40 px-6 py-3 text-sm font-semibold text-foreground hover:border-primary/80 transition-colors"
               >
                 How It Works
-              </Link>
+              </a>
             </div>
           </motion.div>
 
@@ -112,7 +112,7 @@ const Index = () => {
             custom={0}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-3">Precision-Engineered Career Growth</h2>
+            <h2 id="how-it-works" className="text-3xl md:text-4xl font-display font-bold mb-3 scroll-mt-24">Precision-Engineered Career Growth</h2>
             <div className="w-12 h-0.5 bg-primary mx-auto" />
           </motion.div>
 
@@ -176,12 +176,11 @@ const Index = () => {
               >
                 Start Free Assessment
               </Link>
-              <Link
-                to="/persona"
-                className="inline-flex items-center gap-2 rounded-full bg-muted px-7 py-3 text-sm font-semibold text-foreground hover:bg-muted/80 transition-colors"
+              <span
+                className="inline-flex items-center gap-2 rounded-full bg-muted px-7 py-3 text-sm font-semibold text-muted-foreground cursor-default opacity-70"
               >
                 Watch Demo
-              </Link>
+              </span>
             </div>
           </motion.div>
         </div>

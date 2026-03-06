@@ -4,8 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, X, Code, Database, BarChart3, Brain, Layers,
   Settings, Plus, Minus, Maximize2, Grid3X3, TrendingUp,
-  MessageSquare, Users, Presentation, Target, GitBranch,
-  Shield, Cloud, PieChart, BookOpen, Lightbulb, Handshake,
+  MessageSquare, Users, Target, Handshake,
 } from "lucide-react";
 import { DashboardNav } from "@/components/DashboardNav";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";

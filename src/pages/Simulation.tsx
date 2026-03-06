@@ -35,7 +35,7 @@ const Simulation = () => {
               Path <span className="text-gradient">Simulation</span>
             </h1>
             <div className="flex rounded-full border border-border overflow-hidden">
-              {(["conservative", "aggressive", "ai-native"] as const).map((m) => (
+              {(["conservative", "aggressive", "native"] as const).map((m) => (
                 <button
                   key={m}
                   onClick={() => setMode(m)}

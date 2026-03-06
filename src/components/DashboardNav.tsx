@@ -7,7 +7,7 @@ const navLinks = [
   { label: "Skill Lab", href: "/skill-lab" },
   { label: "Simulation", href: "/simulation" },
   { label: "Roadmap", href: "/roadmap" },
-  { label: "Market", href: "/market" },
+  { label: "MarketRadar", href: "/market" },
 ];
 
 const mobileLinks = [

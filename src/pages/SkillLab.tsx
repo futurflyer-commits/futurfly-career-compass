@@ -290,12 +290,8 @@ const SkillLab = () => {
                               : node.type === "core" ? "border-aqua/60 bg-aqua/10 hover:border-aqua hover:bg-aqua/15"
                                 : "border-border/60 bg-background/80 hover:border-aqua/50 hover:bg-aqua/5"
                         }`}>
-                          <node.icon className={`${node.size === "lg" ? "h-6 w-6" : node.size === "md" ? "h-5 w-5" : "h-4 w-4"} ${
-                            node.type === "core" || isSelected ? "text-aqua" : "text-muted-foreground group-hover:text-aqua"
-                          } transition-colors`} />
-                          <span className={`${node.size === "lg" ? "text-xs mt-1.5" : "text-[10px] mt-1"} font-semibold ${
-                            node.type === "core" || isSelected ? "text-aqua" : "text-foreground"
-                          }`}>{node.label}</span>
+                          <node.icon className={`${node.size === "lg" ? "h-6 w-6" : node.size === "md" ? "h-5 w-5" : "h-4 w-4"} transition-colors`} style={{ color: profLevel.color }} />
+                          <span className={`${node.size === "lg" ? "text-xs mt-1.5" : "text-[10px] mt-1"} font-semibold`} style={{ color: profLevel.color }}>{node.label}</span>
                           {node.tag && (
                             <span className={`text-[8px] font-bold uppercase tracking-wider mt-0.5 px-1.5 py-0.5 rounded-full ${
                               node.tag === "TOP TREND" ? "bg-aqua/20 text-aqua"

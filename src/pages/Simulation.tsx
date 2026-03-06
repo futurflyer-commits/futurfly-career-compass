@@ -32,7 +32,7 @@ const Simulation = () => {
           </div>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <h1 className="text-3xl md:text-4xl font-display font-bold">
-              Path <span className="text-gradient">Simulation</span>
+              Career Path <span className="text-gradient">Simulation</span>
             </h1>
             <div className="flex rounded-full border border-border overflow-hidden">
               {(["conservative", "aggressive", "native"] as const).map((m) => (

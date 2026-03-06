@@ -236,6 +236,8 @@ const SkillLab = () => {
             <div className="flex-1 relative overflow-hidden">
               <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle, hsl(var(--border) / 0.3) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
 
+              <div className="absolute inset-0" style={{ transform: `scale(${zoom})`, transformOrigin: "center center", transition: "transform 0.3s ease" }}>
+
               <svg className="absolute inset-0 w-full h-full pointer-events-none">
                 {connections.map(([from, to]) => {
                   if (!filteredIds.has(from) && !filteredIds.has(to)) return null;

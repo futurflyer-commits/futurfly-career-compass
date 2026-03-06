@@ -4,7 +4,7 @@ import { Rocket, Search, Bell, Bot } from "lucide-react";
 const navLinks = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "CareerNavAI", href: "/career-nav-ai" },
-  { label: "Skill Lab", href: "/skill-lab" },
+  { label: "SkillLab", href: "/skill-lab" },
   { label: "Role Hub", href: "/role-hub" },
   { label: "Simulation", href: "/simulation" },
   { label: "Roadmap", href: "/roadmap" },

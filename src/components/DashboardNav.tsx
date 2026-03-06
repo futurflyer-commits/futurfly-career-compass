@@ -5,6 +5,7 @@ const navLinks = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "CareerNavAI", href: "/career-nav-ai" },
   { label: "Skill Lab", href: "/skill-lab" },
+  { label: "Role Hub", href: "/role-hub" },
   { label: "Simulation", href: "/simulation" },
   { label: "Roadmap", href: "/roadmap" },
   { label: "MarketRadar", href: "/market" },
@@ -14,6 +15,7 @@ const mobileLinks = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "CareerNavAI", href: "/career-nav-ai" },
   { label: "Skills", href: "/skill-lab" },
+  { label: "Roles", href: "/role-hub" },
   { label: "Simulate", href: "/simulation" },
   { label: "MarketRadar", href: "/market" },
 ];

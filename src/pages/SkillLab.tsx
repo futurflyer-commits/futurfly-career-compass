@@ -110,6 +110,11 @@ const sizeMap = { lg: 110, md: 80, sm: 60 };
 const SkillLab = () => {
   const [selected, setSelected] = useState<SkillNode | null>(null);
   const [activeFilter, setActiveFilter] = useState<SkillCategory>("all");
+  const [zoom, setZoom] = useState(1);
+
+  const handleZoomIn = () => setZoom((z) => Math.min(z + 0.2, 2));
+  const handleZoomOut = () => setZoom((z) => Math.max(z - 0.2, 0.4));
+  const handleReset = () => setZoom(1);
 
   const filters: { value: SkillCategory; label: string }[] = [
     { value: "all", label: "All" },
@@ -163,7 +168,7 @@ const SkillLab = () => {
         {/* Main content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="px-6 md:px-10 pt-6 pb-4">
-            <h1 className="text-2xl md:text-3xl font-display font-bold">Skill Lab</h1>
+            <h1 className="text-2xl md:text-3xl font-display font-bold">SkillLab</h1>
             <p className="text-sm text-muted-foreground mt-1">Visualize your expertise and plot your next move.</p>
 
             {/* Overall proficiency summary */}
@@ -231,6 +236,8 @@ const SkillLab = () => {
             <div className="flex-1 relative overflow-hidden">
               <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(circle, hsl(var(--border) / 0.3) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
 
+              <div className="absolute inset-0" style={{ transform: `scale(${zoom})`, transformOrigin: "center center", transition: "transform 0.3s ease" }}>
+
               <svg className="absolute inset-0 w-full h-full pointer-events-none">
                 {connections.map(([from, to]) => {
                   if (!filteredIds.has(from) && !filteredIds.has(to)) return null;
@@ -277,18 +284,14 @@ const SkillLab = () => {
                             <span className="absolute -inset-2 rounded-full border border-aqua/20 animate-[pulse-ring_2s_cubic-bezier(0.4,0,0.6,1)_infinite_0.5s]" />
                           </>
                         )}
-                        <div className={`relative w-full h-full rounded-full flex flex-col items-center justify-center border-2 transition-all duration-300 ${
-                          isSelected ? "border-aqua bg-aqua/15 shadow-[0_0_25px_hsl(var(--aqua)/0.3)]"
-                            : isGap ? "border-aqua/40 bg-aqua/5 hover:border-aqua hover:bg-aqua/10"
-                              : node.type === "core" ? "border-aqua/60 bg-aqua/10 hover:border-aqua hover:bg-aqua/15"
-                                : "border-border/60 bg-background/80 hover:border-aqua/50 hover:bg-aqua/5"
-                        }`}>
-                          <node.icon className={`${node.size === "lg" ? "h-6 w-6" : node.size === "md" ? "h-5 w-5" : "h-4 w-4"} ${
-                            node.type === "core" || isSelected ? "text-aqua" : "text-muted-foreground group-hover:text-aqua"
-                          } transition-colors`} />
-                          <span className={`${node.size === "lg" ? "text-xs mt-1.5" : "text-[10px] mt-1"} font-semibold ${
-                            node.type === "core" || isSelected ? "text-aqua" : "text-foreground"
-                          }`}>{node.label}</span>
+                        <div className={`relative w-full h-full rounded-full flex flex-col items-center justify-center border-2 transition-all duration-300`}
+                          style={{
+                            borderColor: isSelected ? profLevel.color : `${profLevel.color}80`,
+                            backgroundColor: isSelected ? `${profLevel.color}22` : `${profLevel.color}0D`,
+                            boxShadow: isSelected ? `0 0 25px ${profLevel.color}4D` : "none",
+                          }}>
+                          <node.icon className={`${node.size === "lg" ? "h-6 w-6" : node.size === "md" ? "h-5 w-5" : "h-4 w-4"} transition-colors`} style={{ color: profLevel.color }} />
+                          <span className={`${node.size === "lg" ? "text-xs mt-1.5" : "text-[10px] mt-1"} font-semibold`} style={{ color: profLevel.color }}>{node.label}</span>
                           {node.tag && (
                             <span className={`text-[8px] font-bold uppercase tracking-wider mt-0.5 px-1.5 py-0.5 rounded-full ${
                               node.tag === "TOP TREND" ? "bg-aqua/20 text-aqua"
@@ -314,15 +317,17 @@ const SkillLab = () => {
                   </Tooltip>
                 );
               })}
+              </div>{/* end zoom wrapper */}
 
               {/* Zoom controls */}
-              <div className="absolute bottom-20 left-6 flex flex-col gap-2">
-                {[Plus, Minus].map((Icon, i) => (
-                  <button key={i} className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
-                    <Icon className="h-4 w-4" />
-                  </button>
-                ))}
-                <button className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors mt-2">
+              <div className="absolute bottom-20 left-6 flex flex-col gap-2 z-10">
+                <button onClick={handleZoomIn} className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+                  <Plus className="h-4 w-4" />
+                </button>
+                <button onClick={handleZoomOut} className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+                  <Minus className="h-4 w-4" />
+                </button>
+                <button onClick={handleReset} className="w-10 h-10 rounded-xl border border-border/50 bg-background/80 backdrop-blur flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors mt-2">
                   <Maximize2 className="h-4 w-4" />
                 </button>
               </div>

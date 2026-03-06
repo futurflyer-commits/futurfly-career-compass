@@ -89,7 +89,26 @@ const sizeMap = { lg: 110, md: 80, sm: 60 };
 
 const SkillLab = () => {
   const [selected, setSelected] = useState<SkillNode | null>(null);
+  const [activeFilter, setActiveFilter] = useState<SkillCategory>("all");
 
+  const filters: { value: SkillCategory; label: string }[] = [
+    { value: "all", label: "All" },
+    { value: "technical", label: "Technical" },
+    { value: "domain", label: "Domain" },
+    { value: "soft", label: "Soft Skills" },
+  ];
+
+  const proficiencyLevels = [
+    { label: "Expert", color: "hsl(var(--accent))", min: 75 },
+    { label: "Intermediate", color: "hsl(var(--primary))", min: 40 },
+    { label: "Novice", color: "hsl(var(--secondary))", min: 15 },
+    { label: "Missing / Gap", color: "hsl(var(--destructive))", min: 0 },
+  ];
+
+  const getProficiencyLevel = (p: number) => proficiencyLevels.find((l) => p >= l.min)!;
+
+  const filteredNodes = activeFilter === "all" ? skillNodes : skillNodes.filter((n) => n.category === activeFilter);
+  const filteredIds = new Set(filteredNodes.map((n) => n.id));
   const getNodePos = (id: string) => {
     const node = skillNodes.find((n) => n.id === id);
     return node ? { x: node.x, y: node.y } : { x: 0, y: 0 };

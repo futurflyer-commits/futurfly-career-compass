@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { TrendingUp, Shield, Zap, ChevronRight, ArrowRight, Download, BarChart3 } from "lucide-react";
 import { DashboardNav } from "@/components/DashboardNav";
 import { Footer } from "@/components/Footer";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const statCards = [
   { icon: TrendingUp, badge: "+8.4% WOW", badgeColor: "bg-neon/20 text-neon", label: "HIRING VELOCITY", value: "92,410", sub: "New AI roles identified in Tier-1 hubs." },
@@ -186,17 +187,25 @@ const Market = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
             {heatmapSkills.map((skill) => {
               const getHeatColor = (score: number) => {
-                if (score >= 9) return { bg: 'hsla(0, 85%, 45%, 0.2)', border: 'hsla(0, 85%, 45%, 0.4)', text: 'hsl(0, 85%, 55%)' };
-                if (score >= 8) return { bg: 'hsla(15, 90%, 50%, 0.2)', border: 'hsla(15, 90%, 50%, 0.4)', text: 'hsl(15, 90%, 55%)' };
-                if (score >= 6) return { bg: 'hsla(45, 90%, 50%, 0.15)', border: 'hsla(45, 90%, 50%, 0.35)', text: 'hsl(45, 85%, 55%)' };
-                return { bg: 'hsla(120, 60%, 40%, 0.15)', border: 'hsla(120, 60%, 40%, 0.3)', text: 'hsl(120, 55%, 50%)' };
+                if (score >= 9) return { bg: 'hsla(0, 85%, 45%, 0.2)', border: 'hsla(0, 85%, 45%, 0.4)', text: 'hsl(0, 85%, 55%)', level: 'Critical Demand' };
+                if (score >= 8) return { bg: 'hsla(15, 90%, 50%, 0.2)', border: 'hsla(15, 90%, 50%, 0.4)', text: 'hsl(15, 90%, 55%)', level: 'High Demand' };
+                if (score >= 6) return { bg: 'hsla(45, 90%, 50%, 0.15)', border: 'hsla(45, 90%, 50%, 0.35)', text: 'hsl(45, 85%, 55%)', level: 'Medium Demand' };
+                return { bg: 'hsla(120, 60%, 40%, 0.15)', border: 'hsla(120, 60%, 40%, 0.3)', text: 'hsl(120, 55%, 50%)', level: 'Low Demand' };
               };
               const heat = getHeatColor(skill.score);
               return (
-                <div key={skill.name} className="rounded-xl p-4" style={{ backgroundColor: heat.bg, borderWidth: 1, borderColor: heat.border }}>
-                  <p className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: heat.text }}>{skill.name}</p>
-                  <p className="text-2xl font-display font-bold" style={{ color: skill.score >= 8 ? 'hsl(var(--foreground))' : 'hsl(var(--muted-foreground))' }}>{skill.score}</p>
-                </div>
+                <Tooltip key={skill.name}>
+                  <TooltipTrigger asChild>
+                    <div className="rounded-xl p-4 cursor-pointer transition-transform hover:scale-105" style={{ backgroundColor: heat.bg, borderWidth: 1, borderColor: heat.border }}>
+                      <p className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: heat.text }}>{skill.name}</p>
+                      <p className="text-2xl font-display font-bold" style={{ color: skill.score >= 8 ? 'hsl(var(--foreground))' : 'hsl(var(--muted-foreground))' }}>{skill.score}</p>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="text-xs">
+                    <p className="font-semibold">{skill.name}</p>
+                    <p>Score: {skill.score}/10 · {heat.level}</p>
+                  </TooltipContent>
+                </Tooltip>
               );
             })}
           </div>

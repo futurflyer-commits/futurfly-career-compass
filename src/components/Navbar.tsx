@@ -4,10 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "Explore Paths", href: "/roadmap" },
-  { label: "Skill Lab", href: "/skill-lab" },
   { label: "Assessments", href: "/assessment" },
-  { label: "Insights", href: "/market" },
   { label: "Pricing", href: "/pricing" },
 ];
 

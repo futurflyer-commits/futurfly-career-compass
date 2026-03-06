@@ -16,15 +16,11 @@ const features = [
     icon: Search,
     title: "Role Matching",
     desc: "Strategic alignment between your unique profile and the highest growth opportunities in the AI ecosystem.",
-    cta: "See Roles",
-    link: "/dashboard",
   },
   {
     icon: Filter,
     title: "Career Roadmaps",
     desc: "Step-by-step skilling paths designed by AI to bridge the gap between where you are and your dream role.",
-    cta: "Explore Path",
-    link: "/roadmap",
   },
 ];
 
@@ -130,16 +126,28 @@ const Index = () => {
                 variants={fadeUp}
                 custom={i + 1}
               >
-                <Link to={f.link} className="block glass-card-hover p-6 h-full group">
-                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center mb-5">
-                    <f.icon className="h-5 w-5 text-primary" />
+                {f.link ? (
+                  <Link to={f.link} className="block glass-card-hover p-6 h-full group">
+                    <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center mb-5">
+                      <f.icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <h3 className="font-display text-lg font-semibold mb-2">{f.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">{f.desc}</p>
+                    {f.cta && (
+                      <span className="text-sm font-semibold text-primary group-hover:underline inline-flex items-center gap-1">
+                        {f.cta} <ArrowUpRight className="h-3.5 w-3.5" />
+                      </span>
+                    )}
+                  </Link>
+                ) : (
+                  <div className="block glass-card-hover p-6 h-full">
+                    <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center mb-5">
+                      <f.icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <h3 className="font-display text-lg font-semibold mb-2">{f.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">{f.desc}</p>
                   </div>
-                  <h3 className="font-display text-lg font-semibold mb-2">{f.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">{f.desc}</p>
-                  <span className="text-sm font-semibold text-primary group-hover:underline inline-flex items-center gap-1">
-                    {f.cta} <ArrowUpRight className="h-3.5 w-3.5" />
-                  </span>
-                </Link>
+                )}
               </motion.div>
             ))}
           </div>

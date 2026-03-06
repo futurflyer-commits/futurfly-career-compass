@@ -15,6 +15,7 @@ const mobileLinks = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "CareerNavAI", href: "/career-nav-ai" },
   { label: "Skills", href: "/skill-lab" },
+  { label: "Roles", href: "/role-hub" },
   { label: "Simulate", href: "/simulation" },
   { label: "MarketRadar", href: "/market" },
 ];

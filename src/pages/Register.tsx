@@ -44,40 +44,14 @@ const Register = () => {
 
   const handleFinalize = () => {
     setParsing(true);
-    setTimeout(() => navigate("/dashboard"), 3000);
   };
 
   const filteredInterests = interests.filter((i) =>
     i.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   if (parsing) {
-    return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center">
-          <div className="relative w-28 h-28 mx-auto mb-6">
-            <div className="absolute inset-0 rounded-full bg-primary/15 blur-2xl animate-pulse-glow" />
-            {[0, 72, 144, 216, 288].map((deg) => (
-              <div
-                key={deg}
-                className="absolute w-2 h-2 rounded-full bg-primary"
-                style={{
-                  top: `${50 + 40 * Math.sin((deg * Math.PI) / 180)}%`,
-                  left: `${50 + 40 * Math.cos((deg * Math.PI) / 180)}%`,
-                }}
-              />
-            ))}
-            <div className="absolute inset-6 rounded-full border border-primary/20 animate-spin" style={{ animationDuration: "4s" }} />
-          </div>
-          <h2 className="text-xl font-display font-bold text-gradient mb-2">Synthesizing Your Experience...</h2>
-          <div className="w-32 h-0.5 bg-muted rounded-full mx-auto overflow-hidden">
-            <motion.div className="h-full bg-primary" animate={{ width: ["0%", "100%"] }} transition={{ duration: 2.5 }} />
-          </div>
-          <p className="text-xs text-muted-foreground mt-6 uppercase tracking-wider">
-            AI-Native Intelligence • Secured with Enterprise Encryption
-          </p>
-        </motion.div>
-      </div>
-    );
+    return <AIProcessingScreen onComplete={() => navigate("/dashboard")} />;
   }
 
   return (

@@ -178,7 +178,7 @@ const Assessment = () => {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className={`grid gap-4 ${q.options.length <= 3 ? 'grid-cols-1 sm:grid-cols-3 max-w-3xl mx-auto' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'}`}>
               {q.options.map((opt, i) => (
                 <motion.button
                   key={i}

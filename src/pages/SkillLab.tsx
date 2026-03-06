@@ -29,7 +29,7 @@ interface SkillNode {
 
 const skillNodes: SkillNode[] = [
   {
-    id: "core", label: "Core Skillset", icon: Layers, x: 38, y: 52, size: "lg", type: "core", proficiency: 78,
+    id: "core", label: "Core Skillset", icon: Layers, x: 38, y: 52, size: "lg", type: "core", proficiency: 78, category: "domain",
     tag: "DATA SCIENCE", marketDemand: "+62%", careerMatch: "88%", targetLevel: "Expert",
     modules: [
       { title: "Advanced Statistical Methods", count: 5, duration: "4h 20m" },
@@ -37,7 +37,7 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "python", label: "Python", icon: Code, x: 22, y: 32, size: "md", type: "adjacent", proficiency: 72,
+    id: "python", label: "Python", icon: Code, x: 22, y: 32, size: "md", type: "adjacent", proficiency: 72, category: "technical",
     marketDemand: "+45%", careerMatch: "85%", targetLevel: "Advanced",
     modules: [
       { title: "Python for ML Pipelines", count: 6, duration: "5h 15m" },
@@ -45,7 +45,7 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "llms", label: "LLMs", icon: Brain, x: 58, y: 28, size: "md", type: "adjacent", proficiency: 25,
+    id: "llms", label: "LLMs", icon: Brain, x: 58, y: 28, size: "md", type: "adjacent", proficiency: 25, category: "technical",
     tag: "TOP TREND", marketDemand: "+84%", careerMatch: "92%", targetLevel: "Expert",
     modules: [
       { title: "Transformer Architecture Basics", count: 4, duration: "2h 30m" },
@@ -54,17 +54,17 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "sql", label: "SQL", icon: Database, x: 25, y: 72, size: "md", type: "core", proficiency: 80,
+    id: "sql", label: "SQL", icon: Database, x: 25, y: 72, size: "md", type: "core", proficiency: 80, category: "technical",
     marketDemand: "+28%", careerMatch: "76%", targetLevel: "Advanced",
     modules: [{ title: "Window Functions & CTEs", count: 3, duration: "2h" }],
   },
   {
-    id: "dataviz", label: "Data Viz", icon: BarChart3, x: 55, y: 72, size: "md", type: "core", proficiency: 65,
+    id: "dataviz", label: "Data Viz", icon: BarChart3, x: 55, y: 72, size: "md", type: "core", proficiency: 65, category: "domain",
     marketDemand: "+32%", careerMatch: "70%", targetLevel: "Advanced",
     modules: [{ title: "Interactive Dashboard Design", count: 4, duration: "3h 30m" }],
   },
   {
-    id: "mlops", label: "MLOps", icon: Settings, x: 75, y: 50, size: "sm", type: "gap", proficiency: 10,
+    id: "mlops", label: "MLOps", icon: Settings, x: 75, y: 50, size: "sm", type: "gap", proficiency: 10, category: "technical",
     tag: "GROWTH GAP", marketDemand: "+91%", careerMatch: "88%", targetLevel: "Intermediate",
     modules: [
       { title: "CI/CD for ML Models", count: 5, duration: "4h" },
@@ -72,7 +72,7 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "kubernetes", label: "K8s", icon: Grid3X3, x: 10, y: 55, size: "sm", type: "gap", proficiency: 5,
+    id: "kubernetes", label: "K8s", icon: Grid3X3, x: 10, y: 55, size: "sm", type: "gap", proficiency: 5, category: "soft",
     tag: "NOVICE", marketDemand: "+67%", careerMatch: "72%", targetLevel: "Intermediate",
     modules: [
       { title: "Container Orchestration Basics", count: 4, duration: "3h 15m" },

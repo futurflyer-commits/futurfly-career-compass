@@ -21,6 +21,7 @@ const interests = [
 const Register = () => {
   const [step, setStep] = useState(1);
   const [parsing, setParsing] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState<string[]>([]);
@@ -128,6 +129,51 @@ const Register = () => {
 
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
               <div className="glass-card p-8">
+                {showLogin ? (
+                  <>
+                    <h2 className="text-xl font-display font-bold mb-1">Welcome Back</h2>
+                    <p className="text-sm text-muted-foreground mb-6">Log in to your FuturFly account.</p>
+                    <form onSubmit={(e) => { e.preventDefault(); navigate("/dashboard"); }} className="flex flex-col gap-4">
+                      <div>
+                        <label className="text-sm font-medium mb-1.5 block">Email Address</label>
+                        <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
+                          <Mail className="h-4 w-4 text-muted-foreground" />
+                          <input className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" placeholder="name@company.com" />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-1.5 block">Password</label>
+                        <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
+                          <Lock className="h-4 w-4 text-muted-foreground" />
+                          <input type="password" className="bg-transparent text-sm flex-1 outline-none" placeholder="••••••••" />
+                        </div>
+                      </div>
+                      <div className="flex justify-end">
+                        <button type="button" className="text-xs text-primary hover:underline">Forgot Password?</button>
+                      </div>
+                      <button type="submit" className="w-full rounded-lg bg-gradient-to-r from-primary to-secondary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-all">
+                        Log In
+                      </button>
+                    </form>
+                    <div className="flex items-center gap-3 my-5">
+                      <div className="flex-1 h-px bg-border" />
+                      <span className="text-xs text-muted-foreground uppercase">Or continue with</span>
+                      <div className="flex-1 h-px bg-border" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button className="flex items-center justify-center gap-2 rounded-lg border border-border py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
+                        Google
+                      </button>
+                      <button className="flex items-center justify-center gap-2 rounded-lg border border-border py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
+                        LinkedIn
+                      </button>
+                    </div>
+                    <p className="text-center text-sm text-muted-foreground mt-4">
+                      Don't have an account? <button onClick={() => setShowLogin(false)} className="text-primary hover:underline">Sign up</button>
+                    </p>
+                  </>
+                ) : (
+                  <>
                 <h2 className="text-xl font-display font-bold mb-1">Create Account</h2>
                 <p className="text-sm text-muted-foreground mb-6">Start your AI-native career journey today.</p>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -170,8 +216,10 @@ const Register = () => {
                   </button>
                 </div>
                 <p className="text-center text-sm text-muted-foreground mt-4">
-                  Already have an account? <Link to="/" className="text-primary hover:underline">Log in</Link>
+                  Already have an account? <button onClick={() => setShowLogin(true)} className="text-primary hover:underline">Log in</button>
                 </p>
+                  </>
+                )}
               </div>
             </motion.div>
           </div>

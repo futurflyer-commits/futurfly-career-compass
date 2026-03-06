@@ -14,6 +14,7 @@ import Market from "./pages/Market";
 import SkillLab from "./pages/SkillLab";
 import Pricing from "./pages/Pricing";
 import Settings from "./pages/Settings";
+import CoPilot from "./pages/CoPilot";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/skill-lab" element={<SkillLab />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/co-pilot" element={<CoPilot />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

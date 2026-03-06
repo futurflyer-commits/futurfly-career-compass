@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, TrendingUp, Eye, CheckCircle, Sparkles, BarChart3, Target } from "lucide-react";
+import { ChevronLeft, ChevronRight, TrendingUp, Eye, CheckCircle, Sparkles, BarChart3, Target, AlertTriangle, MapPin, IndianRupee } from "lucide-react";
 import { DashboardNav } from "@/components/DashboardNav";
 
 const roleMatches = [

@@ -102,7 +102,7 @@ const Simulation = () => {
           </div>
 
           <div className="glass-card p-6">
-            <h3 className="font-display font-bold mb-1"><span className="text-primary font-mono text-xs mr-2">terminal</span>Skill Matrix</h3>
+            <h3 className="font-display font-bold mb-1">Skill Matrix</h3>
             <div className="mt-4 flex flex-col gap-4">
               {skills.map((s) => (
                 <div key={s.name} className="flex items-center justify-between">

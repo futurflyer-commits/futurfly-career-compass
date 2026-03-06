@@ -5,7 +5,7 @@ import {
   ArrowRight, X, Code, Database, BarChart3, Brain, Layers,
   Settings, Plus, Minus, Maximize2, Grid3X3, TrendingUp,
 } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
+import { DashboardNav } from "@/components/DashboardNav";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface SkillNode {
@@ -94,7 +94,7 @@ const SkillLab = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <DashboardNav />
       <div className="flex pt-16 h-screen">
         {/* Left icon sidebar */}
         <div className="hidden md:flex flex-col items-center w-16 border-r border-border/30 py-6 gap-4">

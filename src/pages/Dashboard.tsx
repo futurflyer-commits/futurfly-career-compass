@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Rocket, Search, Bell, ChevronLeft, ChevronRight, TrendingUp, Eye, CheckCircle, Sparkles, BarChart3, Target } from "lucide-react";
+import { ChevronLeft, ChevronRight, TrendingUp, Eye, CheckCircle, Sparkles, BarChart3, Target } from "lucide-react";
+import { DashboardNav } from "@/components/DashboardNav";
 
 const roleMatches = [
   { title: "AI Solutions Architect", match: 98, demand: "High Demand", tier: "Tier 1 MNCs", salary: "₹25L - ₹45L", trend: "Strong Market Uptrend", icon: "🎯" },
@@ -14,29 +15,7 @@ const criticalGaps = ["LLM Fine-tuning", "Vector Databases", "RAG Orchestration"
 const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <Rocket className="h-5 w-5 text-primary" />
-            <span className="font-display text-base font-bold">FuturFly</span>
-          </Link>
-          <div className="hidden md:flex items-center gap-2 bg-input rounded-full px-4 py-2 border border-border/50 w-64">
-            <Search className="h-4 w-4 text-muted-foreground" />
-            <input className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" placeholder="Search insights or roles..." />
-          </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link to="/dashboard" className="font-semibold text-foreground underline underline-offset-4 decoration-primary">Dashboard</Link>
-            <Link to="/roadmap" className="text-muted-foreground hover:text-foreground">Career Path</Link>
-            <Link to="/simulation" className="text-muted-foreground hover:text-foreground">Skill Lab</Link>
-            <Link to="/market" className="text-muted-foreground hover:text-foreground">Mentorship</Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <Bell className="h-5 w-5 text-muted-foreground" />
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary" />
-          </div>
-        </div>
-      </header>
+      <DashboardNav />
 
       <div className="container py-8 md:py-12">
         {/* Title */}
@@ -158,26 +137,10 @@ const Dashboard = () => {
         </motion.div>
       </div>
 
-      {/* Mobile Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-t border-border/30 z-50">
-        <div className="flex justify-around py-3">
-          {[
-            { label: "Dashboard", href: "/dashboard" },
-            { label: "Roles", href: "/simulation" },
-            { label: "Roadmap", href: "/roadmap" },
-            { label: "Market", href: "/market" },
-            { label: "Profile", href: "/persona" },
-          ].map((item) => (
-            <Link key={item.label} to={item.href} className="text-xs text-muted-foreground hover:text-primary transition-colors text-center">
-              {item.label}
-            </Link>
-          ))}
-        </div>
-      </div>
 
       <footer className="py-8 text-center border-t border-border/30">
         <p className="text-xs text-muted-foreground">
-          <Rocket className="h-3 w-3 inline mr-1" /> FuturFly AI — © 2026 • Empowering the next gen of tech leaders in India
+          FuturFly AI — © 2026 • Empowering the next gen of tech leaders in India
         </p>
       </footer>
     </div>

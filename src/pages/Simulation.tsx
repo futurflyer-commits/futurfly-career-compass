@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Rocket, Search, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
+import { DashboardNav } from "@/components/DashboardNav";
 
 const phases = [
   { phase: "Phase 00", title: "Graduate Trainee", salary: "₹8,50,000", tag: "" },
@@ -21,29 +22,7 @@ const Simulation = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <Rocket className="h-5 w-5 text-primary" />
-            <span className="font-display text-sm font-bold uppercase tracking-wider">FuturFly</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link to="/dashboard" className="text-muted-foreground">Dashboard</Link>
-            <Link to="/simulation" className="text-primary font-semibold underline underline-offset-4 decoration-primary">Simulation</Link>
-            <Link to="/market" className="text-muted-foreground">Radar</Link>
-            <Link to="/roadmap" className="text-muted-foreground">Network</Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 bg-input rounded-full px-3 py-1.5 border border-border/50">
-              <Search className="h-3.5 w-3.5 text-muted-foreground" />
-              <input className="bg-transparent text-xs w-40 outline-none placeholder:text-muted-foreground" placeholder="search parameters..." />
-            </div>
-            <Link to="/pricing" className="rounded-full border border-primary px-4 py-1.5 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors">
-              Access Pro
-            </Link>
-          </div>
-        </div>
-      </header>
+      <DashboardNav />
 
       <div className="container py-8 md:py-12">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>

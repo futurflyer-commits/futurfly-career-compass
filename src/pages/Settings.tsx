@@ -20,6 +20,7 @@ const tabs = [
 ];
 
 const Settings = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("account");
   const [careerVisible, setCareerVisible] = useState(true);
 

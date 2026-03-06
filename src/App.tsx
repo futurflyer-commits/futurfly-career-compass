@@ -13,6 +13,7 @@ import Roadmap from "./pages/Roadmap";
 import Market from "./pages/Market";
 import SkillLab from "./pages/SkillLab";
 import Pricing from "./pages/Pricing";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

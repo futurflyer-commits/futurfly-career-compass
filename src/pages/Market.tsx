@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { TrendingUp, Shield, Zap, ChevronRight, ArrowRight, Download, BarChart3 } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
+import { DashboardNav } from "@/components/DashboardNav";
 import { Footer } from "@/components/Footer";
 
 const statCards = [
@@ -46,7 +46,7 @@ const heatmapSkills = [
 const Market = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Navbar />
+      <DashboardNav />
       <div className="container pt-24 pb-16">
         {/* Hero Header */}
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mb-10">

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Rocket, Search, Gem, BookOpen, Code, Cloud, Snowflake, Shield, Monitor } from "lucide-react";
+import { Gem, BookOpen, Code, Cloud, Snowflake, Shield, Monitor } from "lucide-react";
+import { DashboardNav } from "@/components/DashboardNav";
 
 const phases = [
   {
@@ -39,28 +40,7 @@ const phases = [
 const Roadmap = () => {
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <Rocket className="h-5 w-5 text-primary" />
-            <span className="font-display text-base font-bold">FuturFly</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
-            <Link to="/roadmap" className="font-semibold text-primary underline underline-offset-4 decoration-primary">Roadmap</Link>
-            <span className="text-muted-foreground">Courses</span>
-            <span className="text-muted-foreground">Projects</span>
-          </nav>
-          <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-2 bg-input rounded-full px-3 py-1.5 border border-border/50">
-              <Search className="h-3.5 w-3.5 text-muted-foreground" />
-              <input className="bg-transparent text-xs w-32 outline-none placeholder:text-muted-foreground" placeholder="Search..." />
-            </div>
-            <Link to="/persona" className="rounded-full border border-border px-4 py-1.5 text-xs font-semibold hover:border-primary/50 transition-colors">
-              Profile
-            </Link>
-          </div>
-        </div>
-      </header>
+      <DashboardNav />
 
       <div className="container py-8 md:py-12">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
@@ -131,7 +111,6 @@ const Roadmap = () => {
       <footer className="py-8 border-t border-border/30 mt-8">
         <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
           <Link to="/" className="flex items-center gap-2">
-            <Rocket className="h-4 w-4 text-primary" />
             <span className="font-display text-sm font-bold">FuturFly</span>
           </Link>
           <p className="text-xs text-muted-foreground">© 2026 FuturFly AI Career Platform. Engineered for the next generation.</p>

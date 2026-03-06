@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Rocket, ArrowRight, Share2, Download, Sparkles } from "lucide-react";
+import { ArrowRight, Share2, Download, Sparkles } from "lucide-react";
+import { DashboardNav } from "@/components/DashboardNav";
 
 const traits = [
   { label: "Strategic Vision", value: 94, color: "from-primary to-secondary" },
@@ -12,23 +13,7 @@ const traits = [
 const Persona = () => {
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl">
-        <div className="container flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <Rocket className="h-5 w-5 text-primary" />
-            <span className="font-display text-base font-bold">FuturFly</span>
-          </Link>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/roadmap">Career Path</Link>
-            <span>Community</span>
-            <Link to="/register" className="border border-border rounded-full px-4 py-1.5 font-medium text-foreground hover:border-primary/50 transition-colors">
-              Profile
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <DashboardNav />
 
       <div className="flex flex-col items-center justify-center px-4 py-16 md:py-24">
         <motion.div

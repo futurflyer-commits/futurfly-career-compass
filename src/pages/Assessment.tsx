@@ -59,6 +59,16 @@ const questions = [
       { title: "Entrepreneurial", desc: "Building from scratch with full ownership and uncertainty." },
     ],
   },
+  {
+    id: 6,
+    label: "DISCOVERY PHASE",
+    question: "What's your ideal time horizon for change?",
+    options: [
+      { title: "3–6 Months", desc: "Quick wins and immediate career shifts with fast results." },
+      { title: "1–2 Years", desc: "Strategic moves with time to upskill and transition smoothly." },
+      { title: "3–5 Years", desc: "Long-term transformation with deep expertise and leadership growth." },
+    ],
+  },
 ];
 
 const Assessment = () => {

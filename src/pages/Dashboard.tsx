@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, TrendingUp, Eye, CheckCircle, Sparkles, BarChart3, Target, AlertTriangle, MapPin, IndianRupee } from "lucide-react";
+import { ChevronLeft, ChevronRight, TrendingUp, CheckCircle, Sparkles, BarChart3, Target, AlertTriangle } from "lucide-react";
 import { DashboardNav } from "@/components/DashboardNav";
 
 const roleMatches = [
   { title: "AI Solutions Architect", match: 98, demand: "High Demand", tier: "Tier 1 MNCs", salary: "₹25L - ₹45L", trend: "Strong Market Uptrend", icon: "🎯" },
   { title: "GenAI Product Lead", match: 85, demand: "Growth Stage", tier: "Startups", salary: "₹20L - ₹38L", trend: "Rapidly Emerging", icon: "📊" },
-  { title: "ML Platform Engineer", match: 78, demand: "High Demand", tier: "Tech Giants", salary: "₹22L - ₹40L", trend: "Stable Growth", icon: "⚙️" },
 ];
-
-const verifiedSkills = ["System Design", "Python for DS", "Agile Product Management", "Cloud Infra (AWS)", "Stakeholder Mgmt"];
-const criticalGaps = ["LLM Fine-tuning", "Vector Databases", "RAG Orchestration", "AI Governance & Ethics", "Neural Architectures"];
 
 const Dashboard = () => {
   return (
@@ -20,7 +16,7 @@ const Dashboard = () => {
       <div className="container py-8 md:py-12">
         {/* Title */}
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-display font-bold mb-1">AI Career Dashboard</h1>
+          <h1 className="text-2xl md:text-3xl font-display font-bold mb-1">Career Dashboard</h1>
           <p className="text-sm text-muted-foreground">Your personalized roadmap to the future of Indian Tech, powered by advanced generative AI.</p>
         </motion.div>
 
@@ -40,7 +36,7 @@ const Dashboard = () => {
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                 You bridge the gap between technical AI capabilities and strategic product requirements. Your background in software engineering combined with business intuition makes you a 1% profile in India's tech ecosystem.
               </p>
-              <Link to="/persona" className="inline-flex items-center gap-2 w-full justify-center rounded-full bg-muted py-2.5 text-sm font-semibold hover:bg-muted/80 transition-colors">
+              <Link to="/assessment" className="inline-flex items-center gap-2 w-full justify-center rounded-full bg-muted py-2.5 text-sm font-semibold hover:bg-muted/80 transition-colors">
                 Full Persona Analysis →
               </Link>
             </div>
@@ -72,7 +68,6 @@ const Dashboard = () => {
                 <div className="relative flex items-start justify-between mb-4">
                   <div className="absolute top-5 left-[10%] right-[10%] h-0.5 bg-border" />
                   <div className="absolute top-5 left-[10%] h-0.5 bg-secondary" style={{ width: '30%' }} />
-
                   {[
                     { label: "Baseline Audit", status: "COMPLETED", done: true },
                     { label: "Skill Acquisition", status: "COMPLETED", done: true },
@@ -82,19 +77,11 @@ const Dashboard = () => {
                   ].map((step, i) => (
                     <div key={i} className="relative z-10 flex flex-col items-center text-center w-1/5">
                       <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center mb-2 ${
-                        step.done
-                          ? "bg-secondary/20 border-secondary text-secondary"
-                          : step.active
-                          ? "bg-primary/20 border-primary text-primary animate-pulse"
+                        step.done ? "bg-secondary/20 border-secondary text-secondary"
+                          : step.active ? "bg-primary/20 border-primary text-primary animate-pulse"
                           : "bg-muted border-border text-muted-foreground"
                       }`}>
-                        {step.done ? (
-                          <CheckCircle className="h-5 w-5" />
-                        ) : step.active ? (
-                          <Target className="h-4 w-4" />
-                        ) : (
-                          <span className="w-2 h-2 rounded-full bg-muted-foreground" />
-                        )}
+                        {step.done ? <CheckCircle className="h-5 w-5" /> : step.active ? <Target className="h-4 w-4" /> : <span className="w-2 h-2 rounded-full bg-muted-foreground" />}
                       </div>
                       <span className="text-[10px] md:text-xs font-medium leading-tight">{step.label}</span>
                       <span className={`text-[9px] md:text-[10px] uppercase tracking-wider mt-0.5 ${
@@ -114,12 +101,7 @@ const Dashboard = () => {
                   <span className="text-sm font-semibold text-secondary">58% Total Progress</span>
                 </div>
                 <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-gradient-to-r from-secondary to-accent rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: "58%" }}
-                    transition={{ duration: 1, delay: 0.4 }}
-                  />
+                  <motion.div className="h-full bg-gradient-to-r from-secondary to-accent rounded-full" initial={{ width: 0 }} animate={{ width: "58%" }} transition={{ duration: 1, delay: 0.4 }} />
                 </div>
                 <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
                   <Sparkles className="h-3 w-3 text-primary" /> You are <strong className="text-foreground">ahead of schedule</strong> by 14 days in the 'Portfolio' phase. Keep the momentum.
@@ -129,43 +111,38 @@ const Dashboard = () => {
           </motion.div>
         </div>
 
-        {/* Top Role Matches */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="flex items-center gap-2 font-display font-bold"><Target className="h-5 w-5 text-primary" /> Top Role Matches</h2>
-            <div className="flex gap-2">
-              <button className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:border-primary/50 transition-colors">
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:border-primary/50 transition-colors">
-                <ChevronRight className="h-4 w-4" />
-              </button>
+        {/* Combined Row: Top Role Matches + Critical Gaps + Hyper-Local Analysis */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="grid md:grid-cols-3 gap-4">
+          {/* Top Role Matches */}
+          <div className="glass-card p-5">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="flex items-center gap-2 font-display font-bold text-sm"><Target className="h-4 w-4 text-primary" /> Top Role Matches</h2>
+              <div className="flex gap-1.5">
+                <button className="w-6 h-6 rounded-full border border-border flex items-center justify-center hover:border-primary/50 transition-colors"><ChevronLeft className="h-3 w-3" /></button>
+                <button className="w-6 h-6 rounded-full border border-border flex items-center justify-center hover:border-primary/50 transition-colors"><ChevronRight className="h-3 w-3" /></button>
+              </div>
             </div>
+            <div className="space-y-3 mb-4">
+              {roleMatches.map((role) => (
+                <div key={role.title} className="bg-muted rounded-lg p-3">
+                  <div className="flex items-start justify-between mb-1">
+                    <h4 className="text-sm font-semibold">{role.title}</h4>
+                    <span className="text-[10px] font-semibold text-neon bg-neon/10 border border-neon/30 rounded-full px-2 py-0.5">{role.match}%</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mb-1.5">{role.demand} • {role.tier}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] text-muted-foreground">{role.salary}</span>
+                    <span className="flex items-center gap-1 text-[10px] text-primary"><TrendingUp className="h-2.5 w-2.5" /> {role.trend}</span>
+                  </div>
+                  <div className="w-full h-1 bg-background rounded-full mt-2 overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-primary to-secondary rounded-full" style={{ width: `${role.match}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Link to="/role-hub" className="text-xs font-semibold text-primary hover:underline">RoleHub →</Link>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {roleMatches.map((role) => (
-              <Link to="/simulation" key={role.title} className="glass-card-hover p-5">
-                <div className="flex items-start justify-between mb-3">
-                  <BarChart3 className="h-8 w-8 text-primary" />
-                  <span className="text-xs font-semibold text-neon bg-neon/10 border border-neon/30 rounded-full px-2 py-0.5">{role.match}% Match</span>
-                </div>
-                <h4 className="font-display font-semibold mb-1">{role.title}</h4>
-                <p className="text-xs text-muted-foreground mb-3">{role.demand} • {role.tier}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">Avg. Salary (Annual)</span>
-                  <span className="text-sm font-semibold">{role.salary}</span>
-                </div>
-                <div className="w-full h-1 bg-muted rounded-full mt-3 overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-primary to-secondary rounded-full" style={{ width: `${role.match}%` }} />
-                </div>
-                <p className="flex items-center gap-1 text-xs text-primary mt-2"><TrendingUp className="h-3 w-3" /> {role.trend}</p>
-              </Link>
-            ))}
-          </div>
-        </motion.div>
 
-        {/* Market Intelligence Cards */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="grid md:grid-cols-3 gap-4">
           {/* Critical Skill Gaps */}
           <div className="glass-card p-5">
             <div className="flex items-center justify-between mb-4">
@@ -188,10 +165,10 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <Link to="/skill-lab" className="text-xs font-semibold text-primary hover:underline">VIEW 3 MORE GAPS</Link>
+            <Link to="/skill-lab" className="text-xs font-semibold text-primary hover:underline">View SkillLab</Link>
           </div>
 
-          {/* Growth Chart */}
+          {/* Hyper-Local Analysis */}
           <div className="glass-card p-5">
             <div className="flex items-center justify-between mb-4">
               <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Growth: Bengaluru</p>
@@ -203,13 +180,7 @@ const Dashboard = () => {
             </div>
             <div className="flex items-end gap-1.5 h-20 mb-3">
               {[35, 45, 50, 60, 70, 80, 95].map((h, i) => (
-                <motion.div
-                  key={i}
-                  className="flex-1 rounded-sm bg-gradient-to-t from-secondary/60 to-secondary"
-                  initial={{ height: 0 }}
-                  animate={{ height: `${h}%` }}
-                  transition={{ duration: 0.6, delay: 0.4 + i * 0.08 }}
-                />
+                <motion.div key={i} className="flex-1 rounded-sm bg-gradient-to-t from-secondary/60 to-secondary" initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ duration: 0.6, delay: 0.4 + i * 0.08 }} />
               ))}
             </div>
             <p className="text-[10px] text-muted-foreground italic mb-3">"Concentrated demand surge in Indiranagar and Whitefield clusters."</p>
@@ -217,32 +188,8 @@ const Dashboard = () => {
               <BarChart3 className="h-3 w-3" /> Hyper-Local Analysis
             </Link>
           </div>
-
-          {/* Market Salary */}
-          <div className="glass-card p-5">
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Market Salary (INR)</p>
-              <IndianRupee className="h-4 w-4 text-primary" />
-            </div>
-            <p className="text-2xl md:text-3xl font-display font-bold mb-1">
-              <span className="text-secondary">₹45L</span> - <span className="text-secondary">₹62L</span>
-            </p>
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-4">Median for Strategic Climbers</p>
-            <div className="h-16 flex items-end relative">
-              <svg viewBox="0 0 120 50" className="w-full h-full" preserveAspectRatio="none">
-                <path d="M0 45 Q20 42 40 38 T80 30 Q90 20 100 8 L105 5" fill="none" stroke="hsl(var(--secondary))" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="105" cy="5" r="3" fill="hsl(var(--secondary))" />
-              </svg>
-            </div>
-            <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
-              <span>2022</span>
-              <span>2023</span>
-              <span className="font-bold text-secondary">2024 Proj.</span>
-            </div>
-          </div>
         </motion.div>
       </div>
-
 
       <footer className="py-8 text-center border-t border-border/30">
         <p className="text-xs text-muted-foreground">

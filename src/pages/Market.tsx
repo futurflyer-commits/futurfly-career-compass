@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { TrendingUp, Shield, Zap, ChevronRight, ArrowRight, Download, BarChart3 } from "lucide-react";
 import { DashboardNav } from "@/components/DashboardNav";
 import { Footer } from "@/components/Footer";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const statCards = [
   { icon: TrendingUp, badge: "+8.4% WOW", badgeColor: "bg-neon/20 text-neon", label: "HIRING VELOCITY", value: "92,410", sub: "New AI roles identified in Tier-1 hubs." },

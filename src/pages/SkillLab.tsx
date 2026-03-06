@@ -110,6 +110,11 @@ const sizeMap = { lg: 110, md: 80, sm: 60 };
 const SkillLab = () => {
   const [selected, setSelected] = useState<SkillNode | null>(null);
   const [activeFilter, setActiveFilter] = useState<SkillCategory>("all");
+  const [zoom, setZoom] = useState(1);
+
+  const handleZoomIn = () => setZoom((z) => Math.min(z + 0.2, 2));
+  const handleZoomOut = () => setZoom((z) => Math.max(z - 0.2, 0.4));
+  const handleReset = () => setZoom(1);
 
   const filters: { value: SkillCategory; label: string }[] = [
     { value: "all", label: "All" },

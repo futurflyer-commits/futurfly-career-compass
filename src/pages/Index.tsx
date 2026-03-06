@@ -176,12 +176,11 @@ const Index = () => {
               >
                 Start Free Assessment
               </Link>
-              <Link
-                to="/persona"
-                className="inline-flex items-center gap-2 rounded-full bg-muted px-7 py-3 text-sm font-semibold text-foreground hover:bg-muted/80 transition-colors"
+              <span
+                className="inline-flex items-center gap-2 rounded-full bg-muted px-7 py-3 text-sm font-semibold text-muted-foreground cursor-default opacity-70"
               >
                 Watch Demo
-              </Link>
+              </span>
             </div>
           </motion.div>
         </div>

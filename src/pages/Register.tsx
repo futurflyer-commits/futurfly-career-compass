@@ -257,13 +257,16 @@ const Register = () => {
   const [authError, setAuthError] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
+  
+  // Track if we explicitly logged in or just signed up
+  const isLoggingIn = useRef(false);
 
-  // If already logged in, redirect to dashboard
+  // If already logged in AND we're on the first step (or specifically trying to log in), redirect to dashboard
   useEffect(() => {
-    if (user) {
+    if (user && step === 1 && (showLogin || isLoggingIn.current)) {
       navigate("/dashboard");
     }
-  }, [user, navigate]);
+  }, [user, navigate, step, showLogin]);
 
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -280,6 +283,7 @@ const Register = () => {
       });
       
       if (error) throw error;
+      // Intentionally DO NOT navigate to dashboard here. Let them proceed to step 2.
       setStep(2);
     } catch (err: any) {
       setAuthError(err.message || "An error occurred during registration");
@@ -292,6 +296,7 @@ const Register = () => {
     e.preventDefault();
     setAuthError("");
     setLoading(true);
+    isLoggingIn.current = true;
     
     try {
       const { error } = await supabase.auth.signInWithPassword({

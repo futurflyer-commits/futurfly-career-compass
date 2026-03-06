@@ -18,6 +18,228 @@ const interests = [
   { label: "UX Research", icon: Eye },
 ];
 
+const processingSteps = [
+  "Initializing node expansion...",
+  "Mapping skill hierarchy [SUCCESS]",
+  "Fetching global demand data...",
+  "Synthesizing unique ID: FTR-2026-X",
+  "Calibrating persona vectors...",
+  "Compiling market fit analysis...",
+];
+
+const statusCards = [
+  { label: "MARKET TRENDS", text: "Matching 4,200+ vectors", icon: TrendingUp },
+  { label: "PATH TRAJECTORIES", text: "Calculating 12 growth arcs", icon: GitBranch },
+];
+
+const titlePhases = [
+  "Synthesizing Your",
+  "Synthesizing Your",
+  "Synthesizing Your",
+];
+
+const subtitlePhases = [
+  "Career Architecture...",
+  "Career Architecture...",
+  "Career Architecture...",
+];
+
+const analysisTexts = [
+  "Analyzing skill clusters...",
+  "Mapping career trajectories...",
+  "Finalizing persona synthesis...",
+];
+
+const AIProcessingScreen = ({ onComplete }: { onComplete: () => void }) => {
+  const [progress, setProgress] = useState(0);
+  const [visibleLogs, setVisibleLogs] = useState<number>(0);
+  const [analysisIndex, setAnalysisIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(onComplete, 5000);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((p) => Math.min(p + 1.2 + Math.random() * 2, 100));
+    }, 80);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisibleLogs((v) => Math.min(v + 1, processingSteps.length));
+    }, 700);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnalysisIndex((i) => (i + 1) % analysisTexts.length);
+    }, 1600);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-background flex flex-col relative overflow-hidden">
+      {/* Ambient glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px]" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-gradient-to-t from-primary/3 to-transparent" />
+      </div>
+
+      {/* Header */}
+      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl relative z-10">
+        <div className="container flex h-16 items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Rocket className="h-5 w-5 text-primary" />
+            <span className="font-display text-base font-bold">FuturFly</span>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            Session Active
+            <Cog className="h-4 w-4 ml-1" />
+          </div>
+        </div>
+      </header>
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-4">
+        {/* Brain icon with orbital rings */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="relative w-36 h-36 mb-8"
+        >
+          <div className="absolute inset-0 rounded-full bg-primary/10 blur-3xl animate-pulse" />
+          <div className="absolute inset-2 rounded-full border border-primary/20" />
+          <div className="absolute inset-0 rounded-full border border-dashed border-primary/15 animate-spin" style={{ animationDuration: "8s" }} />
+          <div className="absolute inset-4 rounded-full bg-gradient-to-br from-primary/20 to-accent/10 backdrop-blur-sm flex items-center justify-center">
+            <Brain className="h-14 w-14 text-primary" />
+          </div>
+          {/* Orbiting dots */}
+          {[0, 60, 120, 180, 240, 300].map((deg) => (
+            <motion.div
+              key={deg}
+              className="absolute w-1.5 h-1.5 rounded-full bg-primary/60"
+              style={{
+                top: `${50 + 48 * Math.sin((deg * Math.PI) / 180)}%`,
+                left: `${50 + 48 * Math.cos((deg * Math.PI) / 180)}%`,
+              }}
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity, delay: deg * 0.005 }}
+            />
+          ))}
+        </motion.div>
+
+        {/* Title */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="text-center mb-6"
+        >
+          <h1 className="text-3xl md:text-5xl font-display font-bold mb-1">Synthesizing Your</h1>
+          <h1 className="text-3xl md:text-5xl font-display font-bold text-gradient">Career Architecture...</h1>
+        </motion.div>
+
+        {/* Analysis subtitle */}
+        <motion.p
+          key={analysisIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="text-sm italic text-muted-foreground mb-8"
+        >
+          {analysisTexts[analysisIndex]}
+        </motion.p>
+
+        {/* Central content: status cards + progress */}
+        <div className="w-full max-w-3xl flex items-start justify-between gap-4 mb-6">
+          {/* Left status cards */}
+          <div className="hidden md:flex flex-col gap-3 w-52">
+            {statusCards.map((card, i) => {
+              const Icon = card.icon;
+              return (
+                <motion.div
+                  key={card.label}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6 + i * 0.3 }}
+                  className="glass-card p-3 flex items-center gap-3"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                    <Icon className="h-4 w-4 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase tracking-widest text-muted-foreground font-semibold">{card.label}</p>
+                    <p className="text-xs font-semibold">{card.text}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Center progress bar */}
+          <div className="flex-1 flex flex-col items-center justify-center">
+            <div className="w-full max-w-xs">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">Processing Stream</span>
+                <span className="text-sm font-mono font-bold text-primary">{progress.toFixed(1)}%</span>
+              </div>
+              <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
+                  style={{ width: `${progress}%` }}
+                  transition={{ duration: 0.1 }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Live Engine Feed */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8 }}
+            className="hidden md:block glass-card p-4 w-60"
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-[10px] uppercase tracking-widest font-semibold">Live Engine Feed</span>
+            </div>
+            <div className="font-mono text-[11px] space-y-1.5 text-muted-foreground">
+              {processingSteps.slice(0, visibleLogs).map((log, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, x: 5 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className={log.includes("[SUCCESS]") ? "text-primary" : ""}
+                >
+                  &gt; {log}
+                </motion.p>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Engine version */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="text-xs text-muted-foreground flex items-center gap-1.5 mt-4"
+        >
+          <Sparkles className="h-3 w-3" /> Quantum Intelligence Engine v4.0.2
+        </motion.p>
+      </div>
+    </div>
+  );
+};
+
+
 const Register = () => {
   const [step, setStep] = useState(1);
   const [parsing, setParsing] = useState(false);

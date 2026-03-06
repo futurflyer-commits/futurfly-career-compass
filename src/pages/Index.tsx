@@ -112,7 +112,7 @@ const Index = () => {
             custom={0}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-3">Precision-Engineered Career Growth</h2>
+            <h2 id="how-it-works" className="text-3xl md:text-4xl font-display font-bold mb-3 scroll-mt-24">Precision-Engineered Career Growth</h2>
             <div className="w-12 h-0.5 bg-primary mx-auto" />
           </motion.div>
 

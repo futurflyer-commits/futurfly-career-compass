@@ -1,12 +1,30 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Rocket, User, Mail, Lock, Upload, Sparkles } from "lucide-react";
+import { Rocket, User, Mail, Lock, Upload, Sparkles, ArrowRight, Search, Bot, Pen, Monitor, Leaf, Bitcoin, Shield, Cog, RocketIcon, Dna, FlaskConical, GraduationCap, Eye } from "lucide-react";
+
+const interests = [
+  { label: "AI Ethics", icon: Bot },
+  { label: "Generative Art", icon: Pen },
+  { label: "Fintech", icon: Monitor },
+  { label: "Sustainability", icon: Leaf },
+  { label: "Web3 & DeFi", icon: Bitcoin },
+  { label: "Cybersecurity", icon: Shield },
+  { label: "Robotics", icon: Cog },
+  { label: "Space Tech", icon: RocketIcon },
+  { label: "BioTech", icon: Dna },
+  { label: "Quantum Computing", icon: FlaskConical },
+  { label: "EdTech", icon: GraduationCap },
+  { label: "UX Research", icon: Eye },
+];
 
 const Register = () => {
   const [step, setStep] = useState(1);
   const [parsing, setParsing] = useState(false);
   const navigate = useNavigate();
+
+  const [selected, setSelected] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,10 +32,23 @@ const Register = () => {
   };
 
   const handleUpload = () => {
+    setStep(3);
+  };
+
+  const toggleInterest = (label: string) => {
+    setSelected((prev) =>
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
+    );
+  };
+
+  const handleFinalize = () => {
     setParsing(true);
     setTimeout(() => navigate("/dashboard"), 3000);
   };
 
+  const filteredInterests = interests.filter((i) =>
+    i.label.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   if (parsing) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center">
@@ -144,7 +175,7 @@ const Register = () => {
               </div>
             </motion.div>
           </div>
-        ) : (
+        ) : step === 2 ? (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-2xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl font-display font-bold mb-2">
               Tell us your <span className="text-gradient">story</span>
@@ -169,6 +200,61 @@ const Register = () => {
               className="inline-flex items-center gap-2 bg-muted rounded-full px-8 py-3 text-sm font-semibold hover:bg-muted/80 transition-colors"
             >
               Connect LinkedIn
+            </button>
+          </motion.div>
+        ) : (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
+            <h1 className="text-3xl md:text-5xl font-display font-bold mb-3">
+              What fuels your <span className="text-gradient">curiosity?</span>
+            </h1>
+            <p className="text-muted-foreground mb-10 max-w-lg mx-auto">
+              Select the domains that define your ambition. We'll tailor your AI career co-pilot to match your unique interests.
+            </p>
+
+            <div className="flex items-center gap-3 bg-card border border-border/50 rounded-xl px-4 py-3 max-w-lg mx-auto mb-10 focus-within:border-primary/50 transition-colors">
+              <Search className="h-5 w-5 text-muted-foreground" />
+              <input
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground"
+                placeholder="Search interests (e.g. AI Ethics, Fintech, Space Tech...)"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-12">
+              {filteredInterests.map((item, i) => {
+                const Icon = item.icon;
+                const isSelected = selected.includes(item.label);
+                return (
+                  <motion.button
+                    key={item.label}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.03 }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => toggleInterest(item.label)}
+                    className={`flex flex-col items-center gap-3 p-6 rounded-xl border transition-all duration-200 ${
+                      isSelected
+                        ? "border-primary bg-primary/15 glow-aqua-sm"
+                        : "border-border/50 bg-card hover:border-primary/30"
+                    }`}
+                  >
+                    <Icon className={`h-7 w-7 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
+                    <span className={`text-sm font-medium ${isSelected ? "text-primary" : "text-foreground"}`}>
+                      {item.label}
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </div>
+
+            <button
+              onClick={handleFinalize}
+              disabled={selected.length === 0}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-10 py-3.5 text-sm font-semibold text-primary-foreground glow-aqua-sm hover:opacity-90 transition-all disabled:opacity-30"
+            >
+              Finalize My Profile <ArrowRight className="h-4 w-4" />
             </button>
           </motion.div>
         )}

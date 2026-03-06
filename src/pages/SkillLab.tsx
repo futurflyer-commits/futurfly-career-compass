@@ -8,6 +8,8 @@ import {
 import { DashboardNav } from "@/components/DashboardNav";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
+type SkillCategory = "all" | "technical" | "domain" | "soft";
+
 interface SkillNode {
   id: string;
   label: string;
@@ -17,6 +19,7 @@ interface SkillNode {
   size: "lg" | "md" | "sm";
   type: "core" | "adjacent" | "gap";
   proficiency: number;
+  category: SkillCategory;
   tag?: string;
   marketDemand?: string;
   careerMatch?: string;

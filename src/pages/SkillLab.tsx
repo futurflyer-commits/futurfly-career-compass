@@ -4,8 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, X, Code, Database, BarChart3, Brain, Layers,
   Settings, Plus, Minus, Maximize2, Grid3X3, TrendingUp,
-  MessageSquare, Users, Presentation, Target, GitBranch,
-  Shield, Cloud, PieChart, BookOpen, Lightbulb, Handshake,
+  MessageSquare, Users, Target, Handshake,
 } from "lucide-react";
 import { DashboardNav } from "@/components/DashboardNav";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -30,9 +29,9 @@ interface SkillNode {
 }
 
 const skillNodes: SkillNode[] = [
-  // === DOMAIN ===
+  // === DOMAIN (3) ===
   {
-    id: "core", label: "Core Skillset", icon: Layers, x: 38, y: 50, size: "lg", type: "core", proficiency: 78, category: "domain",
+    id: "core", label: "Core Skillset", icon: Layers, x: 42, y: 48, size: "lg", type: "core", proficiency: 78, category: "domain",
     tag: "DATA SCIENCE", marketDemand: "+62%", careerMatch: "88%", targetLevel: "Expert",
     modules: [
       { title: "Advanced Statistical Methods", count: 5, duration: "4h 20m" },
@@ -40,24 +39,19 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "dataviz", label: "Data Viz", icon: BarChart3, x: 52, y: 72, size: "md", type: "core", proficiency: 65, category: "domain",
+    id: "dataviz", label: "Data Viz", icon: BarChart3, x: 28, y: 75, size: "md", type: "core", proficiency: 65, category: "domain",
     marketDemand: "+32%", careerMatch: "70%", targetLevel: "Advanced",
     modules: [{ title: "Interactive Dashboard Design", count: 4, duration: "3h 30m" }],
   },
   {
-    id: "bizstrat", label: "Biz Strategy", icon: Target, x: 55, y: 88, size: "sm", type: "adjacent", proficiency: 42, category: "domain",
+    id: "bizstrat", label: "Biz Strategy", icon: Target, x: 55, y: 80, size: "sm", type: "adjacent", proficiency: 42, category: "domain",
     marketDemand: "+38%", careerMatch: "65%", targetLevel: "Advanced",
     modules: [{ title: "Data-Driven Decision Making", count: 3, duration: "2h 40m" }],
   },
-  {
-    id: "product", label: "Product Sense", icon: Lightbulb, x: 22, y: 88, size: "sm", type: "gap", proficiency: 12, category: "domain",
-    tag: "GROWTH GAP", marketDemand: "+55%", careerMatch: "74%", targetLevel: "Intermediate",
-    modules: [{ title: "Product Analytics Fundamentals", count: 4, duration: "3h" }],
-  },
 
-  // === TECHNICAL ===
+  // === TECHNICAL (4) ===
   {
-    id: "python", label: "Python", icon: Code, x: 20, y: 30, size: "md", type: "adjacent", proficiency: 72, category: "technical",
+    id: "python", label: "Python", icon: Code, x: 18, y: 32, size: "md", type: "adjacent", proficiency: 72, category: "technical",
     marketDemand: "+45%", careerMatch: "85%", targetLevel: "Advanced",
     modules: [
       { title: "Python for ML Pipelines", count: 6, duration: "5h 15m" },
@@ -65,56 +59,40 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "llms", label: "LLMs", icon: Brain, x: 58, y: 25, size: "md", type: "adjacent", proficiency: 25, category: "technical",
+    id: "llms", label: "LLMs", icon: Brain, x: 60, y: 22, size: "md", type: "adjacent", proficiency: 25, category: "technical",
     tag: "TOP TREND", marketDemand: "+84%", careerMatch: "92%", targetLevel: "Expert",
     modules: [
       { title: "Transformer Architecture Basics", count: 4, duration: "2h 30m" },
       { title: "Fine-tuning Strategies", count: 6, duration: "5h 15m" },
-      { title: "Retrieval Augmented Generation", count: 3, duration: "3h 45m" },
     ],
   },
   {
-    id: "sql", label: "SQL", icon: Database, x: 22, y: 68, size: "md", type: "core", proficiency: 80, category: "technical",
+    id: "sql", label: "SQL", icon: Database, x: 12, y: 60, size: "md", type: "core", proficiency: 80, category: "technical",
     marketDemand: "+28%", careerMatch: "76%", targetLevel: "Advanced",
     modules: [{ title: "Window Functions & CTEs", count: 3, duration: "2h" }],
   },
   {
-    id: "mlops", label: "MLOps", icon: Settings, x: 78, y: 45, size: "sm", type: "gap", proficiency: 10, category: "technical",
+    id: "mlops", label: "MLOps", icon: Settings, x: 80, y: 38, size: "sm", type: "gap", proficiency: 10, category: "technical",
     tag: "GROWTH GAP", marketDemand: "+91%", careerMatch: "88%", targetLevel: "Intermediate",
     modules: [
       { title: "CI/CD for ML Models", count: 5, duration: "4h" },
       { title: "Model Monitoring & Drift", count: 3, duration: "2h 30m" },
     ],
   },
-  {
-    id: "cloud", label: "Cloud Infra", icon: Cloud, x: 82, y: 25, size: "sm", type: "gap", proficiency: 8, category: "technical",
-    tag: "NOVICE", marketDemand: "+72%", careerMatch: "68%", targetLevel: "Intermediate",
-    modules: [{ title: "AWS / GCP for Data Engineers", count: 5, duration: "4h 30m" }],
-  },
-  {
-    id: "git", label: "Version Control", icon: GitBranch, x: 8, y: 48, size: "sm", type: "core", proficiency: 85, category: "technical",
-    marketDemand: "+20%", careerMatch: "80%", targetLevel: "Advanced",
-    modules: [{ title: "Advanced Git Workflows", count: 2, duration: "1h 30m" }],
-  },
 
-  // === SOFT SKILLS ===
+  // === SOFT SKILLS (3) ===
   {
-    id: "communication", label: "Communication", icon: MessageSquare, x: 75, y: 72, size: "md", type: "core", proficiency: 70, category: "soft",
+    id: "communication", label: "Communication", icon: MessageSquare, x: 72, y: 62, size: "md", type: "core", proficiency: 70, category: "soft",
     marketDemand: "+40%", careerMatch: "82%", targetLevel: "Expert",
     modules: [{ title: "Stakeholder Communication", count: 3, duration: "2h 15m" }],
   },
   {
-    id: "leadership", label: "Leadership", icon: Users, x: 88, y: 60, size: "sm", type: "adjacent", proficiency: 45, category: "soft",
+    id: "leadership", label: "Leadership", icon: Users, x: 88, y: 50, size: "sm", type: "adjacent", proficiency: 45, category: "soft",
     marketDemand: "+50%", careerMatch: "78%", targetLevel: "Advanced",
     modules: [{ title: "Leading Cross-functional Teams", count: 4, duration: "3h" }],
   },
   {
-    id: "presenting", label: "Presenting", icon: Presentation, x: 90, y: 82, size: "sm", type: "gap", proficiency: 18, category: "soft",
-    tag: "NOVICE", marketDemand: "+35%", careerMatch: "60%", targetLevel: "Intermediate",
-    modules: [{ title: "Data Storytelling & Presentations", count: 3, duration: "2h 30m" }],
-  },
-  {
-    id: "collab", label: "Collaboration", icon: Handshake, x: 68, y: 90, size: "sm", type: "core", proficiency: 76, category: "soft",
+    id: "collab", label: "Collaboration", icon: Handshake, x: 75, y: 82, size: "sm", type: "core", proficiency: 76, category: "soft",
     marketDemand: "+30%", careerMatch: "75%", targetLevel: "Advanced",
     modules: [{ title: "Remote Team Collaboration", count: 2, duration: "1h 45m" }],
   },
@@ -122,9 +100,8 @@ const skillNodes: SkillNode[] = [
 
 const connections: [string, string][] = [
   ["core", "python"], ["core", "llms"], ["core", "sql"], ["core", "dataviz"],
-  ["core", "mlops"], ["core", "communication"], ["python", "git"], ["python", "cloud"],
-  ["llms", "mlops"], ["llms", "cloud"], ["dataviz", "bizstrat"], ["dataviz", "product"],
-  ["communication", "leadership"], ["communication", "presenting"], ["communication", "collab"],
+  ["core", "mlops"], ["core", "communication"], ["llms", "mlops"],
+  ["dataviz", "bizstrat"], ["communication", "leadership"], ["communication", "collab"],
   ["sql", "dataviz"], ["bizstrat", "collab"],
 ];
 

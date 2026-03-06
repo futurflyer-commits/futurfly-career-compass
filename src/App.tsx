@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Simulation from "./pages/Simulation";
 import Roadmap from "./pages/Roadmap";
 import Market from "./pages/Market";
+import SkillLab from "./pages/SkillLab";
 import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/simulation" element={<Simulation />} />
           <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/market" element={<Market />} />
+          <Route path="/skill-lab" element={<SkillLab />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

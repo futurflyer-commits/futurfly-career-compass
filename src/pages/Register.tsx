@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Rocket, User, Mail, Lock, Upload, Sparkles, ArrowRight, Search, Bot, Pen, Monitor, Leaf, Bitcoin, Shield, Cog, RocketIcon, Dna, FlaskConical, GraduationCap, Eye, TrendingUp, GitBranch, Brain } from "lucide-react";
+import { Rocket, User, Mail, Lock, Upload, Sparkles, ArrowRight, Search, Bot, Pen, Monitor, Leaf, Bitcoin, Shield, Cog, RocketIcon, Dna, FlaskConical, GraduationCap, Eye, TrendingUp, GitBranch, Brain, Loader2 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 const interests = [
   { label: "AI Ethics", icon: Bot },
@@ -248,10 +250,62 @@ const Register = () => {
 
   const [selected, setSelected] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // If already logged in, redirect to dashboard
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
+
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(2);
+    setAuthError("");
+    setLoading(true);
+    
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: name, }
+        }
+      });
+      
+      if (error) throw error;
+      setStep(2);
+    } catch (err: any) {
+      setAuthError(err.message || "An error occurred during registration");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError("");
+    setLoading(true);
+    
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) throw error;
+      navigate("/dashboard");
+    } catch (err: any) {
+      setAuthError(err.message || "Invalid login credentials");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUpload = () => {
@@ -329,26 +383,46 @@ const Register = () => {
                   <>
                     <h2 className="text-xl font-display font-bold mb-1">Welcome Back</h2>
                     <p className="text-sm text-muted-foreground mb-6">Log in to your FuturFly account.</p>
-                    <form onSubmit={(e) => { e.preventDefault(); navigate("/dashboard"); }} className="flex flex-col gap-4">
+                    <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
+                      {authError && (
+                        <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-lg">
+                          {authError}
+                        </div>
+                      )}
                       <div>
                         <label className="text-sm font-medium mb-1.5 block">Email Address</label>
                         <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
                           <Mail className="h-4 w-4 text-muted-foreground" />
-                          <input className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" placeholder="name@company.com" />
+                          <input 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            type="email"
+                            required
+                            className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" 
+                            placeholder="name@company.com" 
+                          />
                         </div>
                       </div>
                       <div>
                         <label className="text-sm font-medium mb-1.5 block">Password</label>
                         <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
                           <Lock className="h-4 w-4 text-muted-foreground" />
-                          <input type="password" className="bg-transparent text-sm flex-1 outline-none" placeholder="••••••••" />
+                          <input 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            type="password" 
+                            required
+                            className="bg-transparent text-sm flex-1 outline-none" 
+                            placeholder="••••••••" 
+                          />
                         </div>
                       </div>
                       <div className="flex justify-end">
                         <button type="button" className="text-xs text-primary hover:underline">Forgot Password?</button>
                       </div>
-                      <button type="submit" className="w-full rounded-lg bg-gradient-to-r from-primary to-secondary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-all">
-                        Log In
+                      <button disabled={loading} type="submit" className="w-full flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-all disabled:opacity-70">
+                        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+                        {loading ? "Logging in..." : "Log In"}
                       </button>
                     </form>
                     <div className="flex items-center gap-3 my-5">
@@ -372,30 +446,57 @@ const Register = () => {
                   <>
                 <h2 className="text-xl font-display font-bold mb-1">Create Account</h2>
                 <p className="text-sm text-muted-foreground mb-6">Start your AI-native career journey today.</p>
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-4">
+                  {authError && (
+                    <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-lg">
+                      {authError}
+                    </div>
+                  )}
                   <div>
                     <label className="text-sm font-medium mb-1.5 block">Full Name</label>
                     <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
                       <User className="h-4 w-4 text-muted-foreground" />
-                      <input className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" placeholder="John Doe" />
+                      <input 
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                        className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" 
+                        placeholder="John Doe" 
+                      />
                     </div>
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-1.5 block">Email Address</label>
                     <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
                       <Mail className="h-4 w-4 text-muted-foreground" />
-                      <input className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" placeholder="name@company.com" />
+                      <input 
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        type="email"
+                        required
+                        className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" 
+                        placeholder="name@company.com" 
+                      />
                     </div>
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-1.5 block">Password</label>
                     <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
                       <Lock className="h-4 w-4 text-muted-foreground" />
-                      <input type="password" className="bg-transparent text-sm flex-1 outline-none" placeholder="••••••••" />
+                      <input 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        type="password" 
+                        required
+                        minLength={6}
+                        className="bg-transparent text-sm flex-1 outline-none" 
+                        placeholder="••••••••" 
+                      />
                     </div>
                   </div>
-                  <button type="submit" className="w-full rounded-lg bg-gradient-to-r from-primary to-secondary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-all">
-                    Create Account
+                  <button disabled={loading} type="submit" className="w-full flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-all disabled:opacity-70">
+                    {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+                    {loading ? "Creating Account..." : "Create Account"}
                   </button>
                 </form>
                 <div className="flex items-center gap-3 my-5">

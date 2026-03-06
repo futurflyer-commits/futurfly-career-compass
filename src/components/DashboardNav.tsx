@@ -1,5 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
-import { Rocket, Search, Bell, Bot } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Rocket, Search, Bell, Bot, LogOut, User } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { label: "Dashboard", href: "/dashboard" },
@@ -22,6 +31,13 @@ const mobileLinks = [
 
 export const DashboardNav = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/register");
+  };
 
   return (
     <>
@@ -52,7 +68,32 @@ export const DashboardNav = () => {
           </nav>
           <div className="flex items-center gap-3">
             <Bell className="h-5 w-5 text-muted-foreground" />
-            <Link to="/settings" className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary" />
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-primary-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background transition-all">
+                  <User className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <div className="px-2 py-1.5 text-xs text-muted-foreground truncate">
+                  {user?.email}
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/settings" className="w-full flex items-center">
+                    <Bot className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignOut} className="text-destructive focus:bg-destructive/10 cursor-pointer">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>

@@ -69,14 +69,6 @@ const Settings = () => {
                 </button>
               ))}
             </nav>
-
-            <button
-              onClick={() => navigate("/register")}
-              className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors w-full mt-4"
-            >
-              <LogOut className="h-4 w-4" />
-              Sign Out
-            </button>
           </aside>
 
           {/* Main Content */}

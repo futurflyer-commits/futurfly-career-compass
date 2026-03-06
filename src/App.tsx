@@ -19,35 +19,43 @@ import RoleHub from "./pages/RoleHub";
 import RoleDetail from "./pages/RoleDetail";
 import DetailedAssessment from "./pages/DetailedAssessment";
 import NotFound from "./pages/NotFound";
+import { AuthProvider } from "./contexts/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/assessment" element={<Assessment />} />
-          <Route path="/persona" element={<Persona />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/simulation" element={<Simulation />} />
-          <Route path="/roadmap" element={<Roadmap />} />
-          <Route path="/market" element={<Market />} />
-          <Route path="/skill-lab" element={<SkillLab />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/career-nav-ai" element={<CoPilot />} />
-          <Route path="/role-hub" element={<RoleHub />} />
-          <Route path="/role/:id" element={<RoleDetail />} />
-          <Route path="/detailed-assessment" element={<DetailedAssessment />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/assessment" element={<Assessment />} />
+            <Route path="/persona" element={<Persona />} />
+            <Route path="/register" element={<Register />} />
+            
+            {/* Protected Routes */}
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/simulation" element={<ProtectedRoute><Simulation /></ProtectedRoute>} />
+            <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
+            <Route path="/market" element={<ProtectedRoute><Market /></ProtectedRoute>} />
+            <Route path="/skill-lab" element={<ProtectedRoute><SkillLab /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/career-nav-ai" element={<ProtectedRoute><CoPilot /></ProtectedRoute>} />
+            <Route path="/role-hub" element={<ProtectedRoute><RoleHub /></ProtectedRoute>} />
+            <Route path="/role/:id" element={<ProtectedRoute><RoleDetail /></ProtectedRoute>} />
+            <Route path="/detailed-assessment" element={<ProtectedRoute><DetailedAssessment /></ProtectedRoute>} />
+            
+            {/* Public Routes */}
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

@@ -8,6 +8,8 @@ import {
 import { DashboardNav } from "@/components/DashboardNav";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
+type SkillCategory = "all" | "technical" | "domain" | "soft";
+
 interface SkillNode {
   id: string;
   label: string;
@@ -17,6 +19,7 @@ interface SkillNode {
   size: "lg" | "md" | "sm";
   type: "core" | "adjacent" | "gap";
   proficiency: number;
+  category: SkillCategory;
   tag?: string;
   marketDemand?: string;
   careerMatch?: string;
@@ -26,7 +29,7 @@ interface SkillNode {
 
 const skillNodes: SkillNode[] = [
   {
-    id: "core", label: "Core Skillset", icon: Layers, x: 38, y: 52, size: "lg", type: "core", proficiency: 78,
+    id: "core", label: "Core Skillset", icon: Layers, x: 38, y: 52, size: "lg", type: "core", proficiency: 78, category: "domain",
     tag: "DATA SCIENCE", marketDemand: "+62%", careerMatch: "88%", targetLevel: "Expert",
     modules: [
       { title: "Advanced Statistical Methods", count: 5, duration: "4h 20m" },
@@ -34,7 +37,7 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "python", label: "Python", icon: Code, x: 22, y: 32, size: "md", type: "adjacent", proficiency: 72,
+    id: "python", label: "Python", icon: Code, x: 22, y: 32, size: "md", type: "adjacent", proficiency: 72, category: "technical",
     marketDemand: "+45%", careerMatch: "85%", targetLevel: "Advanced",
     modules: [
       { title: "Python for ML Pipelines", count: 6, duration: "5h 15m" },
@@ -42,7 +45,7 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "llms", label: "LLMs", icon: Brain, x: 58, y: 28, size: "md", type: "adjacent", proficiency: 25,
+    id: "llms", label: "LLMs", icon: Brain, x: 58, y: 28, size: "md", type: "adjacent", proficiency: 25, category: "technical",
     tag: "TOP TREND", marketDemand: "+84%", careerMatch: "92%", targetLevel: "Expert",
     modules: [
       { title: "Transformer Architecture Basics", count: 4, duration: "2h 30m" },
@@ -51,17 +54,17 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "sql", label: "SQL", icon: Database, x: 25, y: 72, size: "md", type: "core", proficiency: 80,
+    id: "sql", label: "SQL", icon: Database, x: 25, y: 72, size: "md", type: "core", proficiency: 80, category: "technical",
     marketDemand: "+28%", careerMatch: "76%", targetLevel: "Advanced",
     modules: [{ title: "Window Functions & CTEs", count: 3, duration: "2h" }],
   },
   {
-    id: "dataviz", label: "Data Viz", icon: BarChart3, x: 55, y: 72, size: "md", type: "core", proficiency: 65,
+    id: "dataviz", label: "Data Viz", icon: BarChart3, x: 55, y: 72, size: "md", type: "core", proficiency: 65, category: "domain",
     marketDemand: "+32%", careerMatch: "70%", targetLevel: "Advanced",
     modules: [{ title: "Interactive Dashboard Design", count: 4, duration: "3h 30m" }],
   },
   {
-    id: "mlops", label: "MLOps", icon: Settings, x: 75, y: 50, size: "sm", type: "gap", proficiency: 10,
+    id: "mlops", label: "MLOps", icon: Settings, x: 75, y: 50, size: "sm", type: "gap", proficiency: 10, category: "technical",
     tag: "GROWTH GAP", marketDemand: "+91%", careerMatch: "88%", targetLevel: "Intermediate",
     modules: [
       { title: "CI/CD for ML Models", count: 5, duration: "4h" },
@@ -69,7 +72,7 @@ const skillNodes: SkillNode[] = [
     ],
   },
   {
-    id: "kubernetes", label: "K8s", icon: Grid3X3, x: 10, y: 55, size: "sm", type: "gap", proficiency: 5,
+    id: "kubernetes", label: "K8s", icon: Grid3X3, x: 10, y: 55, size: "sm", type: "gap", proficiency: 5, category: "soft",
     tag: "NOVICE", marketDemand: "+67%", careerMatch: "72%", targetLevel: "Intermediate",
     modules: [
       { title: "Container Orchestration Basics", count: 4, duration: "3h 15m" },
@@ -86,7 +89,26 @@ const sizeMap = { lg: 110, md: 80, sm: 60 };
 
 const SkillLab = () => {
   const [selected, setSelected] = useState<SkillNode | null>(null);
+  const [activeFilter, setActiveFilter] = useState<SkillCategory>("all");
 
+  const filters: { value: SkillCategory; label: string }[] = [
+    { value: "all", label: "All" },
+    { value: "technical", label: "Technical" },
+    { value: "domain", label: "Domain" },
+    { value: "soft", label: "Soft Skills" },
+  ];
+
+  const proficiencyLevels = [
+    { label: "Expert", color: "hsl(var(--accent))", min: 75 },
+    { label: "Intermediate", color: "hsl(var(--primary))", min: 40 },
+    { label: "Novice", color: "hsl(var(--secondary))", min: 15 },
+    { label: "Missing / Gap", color: "hsl(var(--destructive))", min: 0 },
+  ];
+
+  const getProficiencyLevel = (p: number) => proficiencyLevels.find((l) => p >= l.min)!;
+
+  const filteredNodes = activeFilter === "all" ? skillNodes : skillNodes.filter((n) => n.category === activeFilter);
+  const filteredIds = new Set(filteredNodes.map((n) => n.id));
   const getNodePos = (id: string) => {
     const node = skillNodes.find((n) => n.id === id);
     return node ? { x: node.x, y: node.y } : { x: 0, y: 0 };
@@ -115,6 +137,37 @@ const SkillLab = () => {
           <div className="px-6 md:px-10 pt-6 pb-4">
             <h1 className="text-2xl md:text-3xl font-display font-bold">Skill Lab</h1>
             <p className="text-sm text-muted-foreground mt-1">Visualize your expertise and plot your next move.</p>
+
+            {/* Filter tabs & Proficiency legend */}
+            <div className="flex flex-wrap items-center justify-between mt-5 gap-4">
+              <div className="flex items-center gap-2">
+                {filters.map((f) => (
+                  <button
+                    key={f.value}
+                    onClick={() => setActiveFilter(f.value)}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                      activeFilter === f.value
+                        ? "bg-primary text-primary-foreground shadow-md"
+                        : "border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground/30"
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="glass-card px-5 py-3 rounded-xl">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Proficiency</p>
+                <div className="flex flex-col gap-1.5">
+                  {proficiencyLevels.map((l) => (
+                    <span key={l.label} className="flex items-center gap-2 text-xs text-foreground">
+                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: l.color }} />
+                      {l.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="flex-1 flex overflow-hidden">
@@ -124,13 +177,15 @@ const SkillLab = () => {
 
               <svg className="absolute inset-0 w-full h-full pointer-events-none">
                 {connections.map(([from, to]) => {
+                  if (!filteredIds.has(from) && !filteredIds.has(to)) return null;
                   const a = getNodePos(from);
                   const b = getNodePos(to);
                   const isGap = skillNodes.find((n) => n.id === from)?.type === "gap" || skillNodes.find((n) => n.id === to)?.type === "gap";
+                  const dimmed = !filteredIds.has(from) || !filteredIds.has(to);
                   return (
                     <line key={`${from}-${to}`} x1={`${a.x}%`} y1={`${a.y}%`} x2={`${b.x}%`} y2={`${b.y}%`}
                       stroke={isGap ? "hsl(var(--aqua) / 0.15)" : "hsl(var(--aqua) / 0.3)"} strokeWidth="1.5"
-                      strokeDasharray={isGap ? "6 4" : "none"} />
+                      strokeDasharray={isGap ? "6 4" : "none"} opacity={dimmed ? 0.2 : 1} />
                   );
                 })}
               </svg>
@@ -139,18 +194,27 @@ const SkillLab = () => {
                 const size = sizeMap[node.size];
                 const isGap = node.type === "gap";
                 const isSelected = selected?.id === node.id;
+                const isVisible = filteredIds.has(node.id);
+                const profLevel = getProficiencyLevel(node.proficiency);
 
                 return (
                   <Tooltip key={node.id}>
                     <TooltipTrigger asChild>
                       <motion.button
                         initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
+                        animate={{ opacity: isVisible ? 1 : 0.15, scale: isVisible ? 1 : 0.85 }}
                         transition={{ delay: 0.1 }}
-                        onClick={() => setSelected(node)}
-                        className="absolute group"
+                        onClick={() => isVisible && setSelected(node)}
+                        className={`absolute group ${!isVisible ? "pointer-events-none" : ""}`}
                         style={{ left: `${node.x}%`, top: `${node.y}%`, width: size, height: size, transform: "translate(-50%, -50%)" }}
                       >
+                        {/* Proficiency ring */}
+                        <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                          <circle cx="50" cy="50" r="47" fill="none" stroke="hsl(var(--border) / 0.2)" strokeWidth="3" />
+                          <circle cx="50" cy="50" r="47" fill="none" stroke={profLevel.color} strokeWidth="3"
+                            strokeDasharray={`${node.proficiency * 2.95} ${295 - node.proficiency * 2.95}`}
+                            strokeLinecap="round" />
+                        </svg>
                         {isGap && (
                           <>
                             <span className="absolute inset-0 rounded-full border border-aqua/40 animate-[pulse-ring_2s_cubic-bezier(0.4,0,0.6,1)_infinite]" />

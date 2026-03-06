@@ -168,7 +168,7 @@ const SkillLab = () => {
         {/* Main content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="px-6 md:px-10 pt-6 pb-4">
-            <h1 className="text-2xl md:text-3xl font-display font-bold">Skill Lab</h1>
+            <h1 className="text-2xl md:text-3xl font-display font-bold">SkillLab</h1>
             <p className="text-sm text-muted-foreground mt-1">Visualize your expertise and plot your next move.</p>
 
             {/* Overall proficiency summary */}

@@ -152,6 +152,14 @@ const SkillLab = () => {
 
   const filteredNodes = activeFilter === "all" ? skillNodes : skillNodes.filter((n) => n.category === activeFilter);
   const filteredIds = new Set(filteredNodes.map((n) => n.id));
+
+  // Aggregate stats
+  const avgProficiency = Math.round(skillNodes.reduce((s, n) => s + n.proficiency, 0) / skillNodes.length);
+  const expertCount = skillNodes.filter((n) => n.proficiency >= 75).length;
+  const gapCount = skillNodes.filter((n) => n.proficiency < 15).length;
+  const strongestSkill = [...skillNodes].sort((a, b) => b.proficiency - a.proficiency)[0];
+  const weakestSkill = [...skillNodes].sort((a, b) => a.proficiency - b.proficiency)[0];
+
   const getNodePos = (id: string) => {
     const node = skillNodes.find((n) => n.id === id);
     return node ? { x: node.x, y: node.y } : { x: 0, y: 0 };
@@ -181,7 +189,35 @@ const SkillLab = () => {
             <h1 className="text-2xl md:text-3xl font-display font-bold">Skill Lab</h1>
             <p className="text-sm text-muted-foreground mt-1">Visualize your expertise and plot your next move.</p>
 
-            {/* Filter tabs & Proficiency legend */}
+            {/* Overall proficiency summary */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-5">
+              <div className="glass-card p-4 rounded-xl flex items-center gap-3 col-span-2 md:col-span-1">
+                <div className="relative w-12 h-12 shrink-0">
+                  <svg className="w-full h-full -rotate-90" viewBox="0 0 44 44">
+                    <circle cx="22" cy="22" r="18" fill="none" stroke="hsl(var(--border) / 0.3)" strokeWidth="4" />
+                    <circle cx="22" cy="22" r="18" fill="none" stroke={getProficiencyLevel(avgProficiency).color} strokeWidth="4"
+                      strokeDasharray={`${avgProficiency * 1.13} ${113 - avgProficiency * 1.13}`} strokeLinecap="round" />
+                  </svg>
+                  <span className="absolute inset-0 flex items-center justify-center text-xs font-bold">{avgProficiency}%</span>
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Overall</p>
+                  <p className="text-sm font-display font-bold">Proficiency</p>
+                </div>
+              </div>
+              {[
+                { label: "Expert Skills", value: expertCount, sub: `of ${skillNodes.length}`, color: "hsl(142, 71%, 45%)" },
+                { label: "Skill Gaps", value: gapCount, sub: "need focus", color: "hsl(0, 84%, 60%)" },
+                { label: "Strongest", value: strongestSkill.label, sub: `${strongestSkill.proficiency}%`, color: "hsl(142, 71%, 45%)" },
+                { label: "Weakest", value: weakestSkill.label, sub: `${weakestSkill.proficiency}%`, color: "hsl(0, 84%, 60%)" },
+              ].map((stat) => (
+                <div key={stat.label} className="glass-card p-4 rounded-xl">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">{stat.label}</p>
+                  <p className="text-lg font-display font-bold" style={{ color: stat.color }}>{stat.value}</p>
+                  <p className="text-[10px] text-muted-foreground">{stat.sub}</p>
+                </div>
+              ))}
+            </div>
             <div className="flex flex-wrap items-center justify-between mt-5 gap-4">
               <div className="flex items-center gap-2">
                 {filters.map((f) => (

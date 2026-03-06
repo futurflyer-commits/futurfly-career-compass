@@ -199,6 +199,7 @@ const CoPilot = () => {
           </p>
         </div>
       </div>
+      </div>
     </div>
   );
 };

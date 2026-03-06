@@ -284,12 +284,12 @@ const SkillLab = () => {
                             <span className="absolute -inset-2 rounded-full border border-aqua/20 animate-[pulse-ring_2s_cubic-bezier(0.4,0,0.6,1)_infinite_0.5s]" />
                           </>
                         )}
-                        <div className={`relative w-full h-full rounded-full flex flex-col items-center justify-center border-2 transition-all duration-300 ${
-                          isSelected ? "border-aqua bg-aqua/15 shadow-[0_0_25px_hsl(var(--aqua)/0.3)]"
-                            : isGap ? "border-aqua/40 bg-aqua/5 hover:border-aqua hover:bg-aqua/10"
-                              : node.type === "core" ? "border-aqua/60 bg-aqua/10 hover:border-aqua hover:bg-aqua/15"
-                                : "border-border/60 bg-background/80 hover:border-aqua/50 hover:bg-aqua/5"
-                        }`}>
+                        <div className={`relative w-full h-full rounded-full flex flex-col items-center justify-center border-2 transition-all duration-300`}
+                          style={{
+                            borderColor: isSelected ? profLevel.color : `${profLevel.color}80`,
+                            backgroundColor: isSelected ? `${profLevel.color}22` : `${profLevel.color}0D`,
+                            boxShadow: isSelected ? `0 0 25px ${profLevel.color}4D` : "none",
+                          }}>
                           <node.icon className={`${node.size === "lg" ? "h-6 w-6" : node.size === "md" ? "h-5 w-5" : "h-4 w-4"} transition-colors`} style={{ color: profLevel.color }} />
                           <span className={`${node.size === "lg" ? "text-xs mt-1.5" : "text-[10px] mt-1"} font-semibold`} style={{ color: profLevel.color }}>{node.label}</span>
                           {node.tag && (

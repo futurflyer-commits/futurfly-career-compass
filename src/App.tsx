@@ -43,6 +43,7 @@ const App = () => (
           <Route path="/career-nav-ai" element={<CoPilot />} />
           <Route path="/role-hub" element={<RoleHub />} />
           <Route path="/role/:id" element={<RoleDetail />} />
+          <Route path="/detailed-assessment" element={<DetailedAssessment />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

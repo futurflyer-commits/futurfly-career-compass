@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { DashboardNav } from "@/components/DashboardNav";
 import { Footer } from "@/components/Footer";
 import {
@@ -19,6 +20,7 @@ const tabs = [
 ];
 
 const Settings = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("account");
   const [careerVisible, setCareerVisible] = useState(true);
 
@@ -68,7 +70,10 @@ const Settings = () => {
               ))}
             </nav>
 
-            <button className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors w-full mt-4">
+            <button
+              onClick={() => navigate("/register")}
+              className="flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors w-full mt-4"
+            >
               <LogOut className="h-4 w-4" />
               Sign Out
             </button>

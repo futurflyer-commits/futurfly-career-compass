@@ -137,6 +137,37 @@ const SkillLab = () => {
           <div className="px-6 md:px-10 pt-6 pb-4">
             <h1 className="text-2xl md:text-3xl font-display font-bold">Skill Lab</h1>
             <p className="text-sm text-muted-foreground mt-1">Visualize your expertise and plot your next move.</p>
+
+            {/* Filter tabs & Proficiency legend */}
+            <div className="flex flex-wrap items-center justify-between mt-5 gap-4">
+              <div className="flex items-center gap-2">
+                {filters.map((f) => (
+                  <button
+                    key={f.value}
+                    onClick={() => setActiveFilter(f.value)}
+                    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
+                      activeFilter === f.value
+                        ? "bg-primary text-primary-foreground shadow-md"
+                        : "border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground/30"
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="glass-card px-5 py-3 rounded-xl">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-2">Proficiency</p>
+                <div className="flex flex-col gap-1.5">
+                  {proficiencyLevels.map((l) => (
+                    <span key={l.label} className="flex items-center gap-2 text-xs text-foreground">
+                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: l.color }} />
+                      {l.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="flex-1 flex overflow-hidden">

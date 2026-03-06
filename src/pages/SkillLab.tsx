@@ -177,13 +177,15 @@ const SkillLab = () => {
 
               <svg className="absolute inset-0 w-full h-full pointer-events-none">
                 {connections.map(([from, to]) => {
+                  if (!filteredIds.has(from) && !filteredIds.has(to)) return null;
                   const a = getNodePos(from);
                   const b = getNodePos(to);
                   const isGap = skillNodes.find((n) => n.id === from)?.type === "gap" || skillNodes.find((n) => n.id === to)?.type === "gap";
+                  const dimmed = !filteredIds.has(from) || !filteredIds.has(to);
                   return (
                     <line key={`${from}-${to}`} x1={`${a.x}%`} y1={`${a.y}%`} x2={`${b.x}%`} y2={`${b.y}%`}
                       stroke={isGap ? "hsl(var(--aqua) / 0.15)" : "hsl(var(--aqua) / 0.3)"} strokeWidth="1.5"
-                      strokeDasharray={isGap ? "6 4" : "none"} />
+                      strokeDasharray={isGap ? "6 4" : "none"} opacity={dimmed ? 0.2 : 1} />
                   );
                 })}
               </svg>
@@ -192,18 +194,27 @@ const SkillLab = () => {
                 const size = sizeMap[node.size];
                 const isGap = node.type === "gap";
                 const isSelected = selected?.id === node.id;
+                const isVisible = filteredIds.has(node.id);
+                const profLevel = getProficiencyLevel(node.proficiency);
 
                 return (
                   <Tooltip key={node.id}>
                     <TooltipTrigger asChild>
                       <motion.button
                         initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
+                        animate={{ opacity: isVisible ? 1 : 0.15, scale: isVisible ? 1 : 0.85 }}
                         transition={{ delay: 0.1 }}
-                        onClick={() => setSelected(node)}
-                        className="absolute group"
+                        onClick={() => isVisible && setSelected(node)}
+                        className={`absolute group ${!isVisible ? "pointer-events-none" : ""}`}
                         style={{ left: `${node.x}%`, top: `${node.y}%`, width: size, height: size, transform: "translate(-50%, -50%)" }}
                       >
+                        {/* Proficiency ring */}
+                        <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                          <circle cx="50" cy="50" r="47" fill="none" stroke="hsl(var(--border) / 0.2)" strokeWidth="3" />
+                          <circle cx="50" cy="50" r="47" fill="none" stroke={profLevel.color} strokeWidth="3"
+                            strokeDasharray={`${node.proficiency * 2.95} ${295 - node.proficiency * 2.95}`}
+                            strokeLinecap="round" />
+                        </svg>
                         {isGap && (
                           <>
                             <span className="absolute inset-0 rounded-full border border-aqua/40 animate-[pulse-ring_2s_cubic-bezier(0.4,0,0.6,1)_infinite]" />

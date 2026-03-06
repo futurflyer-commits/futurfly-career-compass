@@ -144,12 +144,12 @@ const Dashboard = () => {
           </div>
 
           {/* Critical Skill Gaps */}
-          <div className="glass-card p-5">
-            <div className="flex items-center justify-between mb-4">
+          <div className="glass-card p-5 flex flex-col">
+            <div className="flex items-center justify-between mb-3">
               <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Critical Skill Gaps</p>
               <AlertTriangle className="h-4 w-4 text-primary" />
             </div>
-            <div className="space-y-3 mb-4">
+            <div className="space-y-2.5 flex-1">
               <div className="flex items-center gap-3 bg-muted rounded-lg p-3">
                 <Sparkles className="h-5 w-5 text-primary shrink-0" />
                 <div>
@@ -161,16 +161,23 @@ const Dashboard = () => {
                 <Sparkles className="h-5 w-5 text-primary shrink-0" />
                 <div>
                   <p className="text-sm font-semibold">LLM Orchestration</p>
-                  <p className="text-[10px] text-muted-foreground">Secondary priority</p>
+                  <p className="text-[10px] text-muted-foreground">Critical for pipeline architecture</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 bg-muted rounded-lg p-3">
+                <Sparkles className="h-5 w-5 text-primary shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold">RAG Architecture</p>
+                  <p className="text-[10px] text-muted-foreground">Emerging requirement in 72% of listings</p>
                 </div>
               </div>
             </div>
-            <Link to="/skill-lab" className="text-xs font-semibold text-primary hover:underline">View SkillLab</Link>
+            <Link to="/skill-lab" className="text-xs font-semibold text-primary hover:underline mt-3">View SkillLab</Link>
           </div>
 
           {/* Hyper-Local Analysis */}
-          <div className="glass-card p-5">
-            <div className="flex items-center justify-between mb-4">
+          <div className="glass-card p-5 flex flex-col">
+            <div className="flex items-center justify-between mb-3">
               <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Growth: Bengaluru</p>
               <TrendingUp className="h-4 w-4 text-secondary" />
             </div>
@@ -178,13 +185,13 @@ const Dashboard = () => {
               <span className="text-sm font-semibold">AI Product Manager</span>
               <span className="text-xs font-bold text-secondary">+24.8% YoY</span>
             </div>
-            <div className="flex items-end gap-1.5 h-20 mb-3">
+            <div className="flex items-end gap-1.5 flex-1 min-h-[100px] mb-3">
               {[35, 45, 50, 60, 70, 80, 95].map((h, i) => (
                 <motion.div key={i} className="flex-1 rounded-sm bg-gradient-to-t from-secondary/60 to-secondary" initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ duration: 0.6, delay: 0.4 + i * 0.08 }} />
               ))}
             </div>
             <p className="text-[10px] text-muted-foreground italic mb-3">"Concentrated demand surge in Indiranagar and Whitefield clusters."</p>
-            <Link to="/market" className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-semibold text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/market" className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-semibold text-muted-foreground hover:text-primary transition-colors mt-auto">
               <BarChart3 className="h-3 w-3" /> Hyper-Local Analysis
             </Link>
           </div>

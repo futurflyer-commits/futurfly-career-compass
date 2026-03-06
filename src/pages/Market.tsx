@@ -177,17 +177,28 @@ const Market = () => {
               <p className="text-xs text-muted-foreground uppercase tracking-wider mt-1">Market Scarcity vs Institutional Demand</p>
             </div>
             <div className="flex items-center gap-4 text-[10px] uppercase tracking-wider text-muted-foreground">
-              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-border/50" /> Legacy</span>
-              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm bg-aqua" /> Critical</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm" style={{ backgroundColor: 'hsl(120, 60%, 40%)' }} /> Low</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm" style={{ backgroundColor: 'hsl(45, 90%, 50%)' }} /> Medium</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm" style={{ backgroundColor: 'hsl(15, 90%, 50%)' }} /> High</span>
+              <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded-sm" style={{ backgroundColor: 'hsl(0, 85%, 45%)' }} /> Critical</span>
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-            {heatmapSkills.map((skill) => (
-              <div key={skill.name} className={`rounded-xl p-4 ${skill.critical ? "bg-aqua/15 border border-aqua/30" : "bg-border/10 border border-border/30"}`}>
-                <p className={`text-[10px] font-bold uppercase tracking-wider mb-3 ${skill.critical ? "text-aqua" : "text-muted-foreground"}`}>{skill.name}</p>
-                <p className={`text-2xl font-display font-bold ${skill.critical ? "text-foreground" : "text-muted-foreground"}`}>{skill.score}</p>
-              </div>
-            ))}
+            {heatmapSkills.map((skill) => {
+              const getHeatColor = (score: number) => {
+                if (score >= 9) return { bg: 'hsla(0, 85%, 45%, 0.2)', border: 'hsla(0, 85%, 45%, 0.4)', text: 'hsl(0, 85%, 55%)' };
+                if (score >= 8) return { bg: 'hsla(15, 90%, 50%, 0.2)', border: 'hsla(15, 90%, 50%, 0.4)', text: 'hsl(15, 90%, 55%)' };
+                if (score >= 6) return { bg: 'hsla(45, 90%, 50%, 0.15)', border: 'hsla(45, 90%, 50%, 0.35)', text: 'hsl(45, 85%, 55%)' };
+                return { bg: 'hsla(120, 60%, 40%, 0.15)', border: 'hsla(120, 60%, 40%, 0.3)', text: 'hsl(120, 55%, 50%)' };
+              };
+              const heat = getHeatColor(skill.score);
+              return (
+                <div key={skill.name} className="rounded-xl p-4" style={{ backgroundColor: heat.bg, borderWidth: 1, borderColor: heat.border }}>
+                  <p className="text-[10px] font-bold uppercase tracking-wider mb-3" style={{ color: heat.text }}>{skill.name}</p>
+                  <p className="text-2xl font-display font-bold" style={{ color: skill.score >= 8 ? 'hsl(var(--foreground))' : 'hsl(var(--muted-foreground))' }}>{skill.score}</p>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
 

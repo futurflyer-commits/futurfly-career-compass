@@ -64,12 +64,12 @@ const Index = () => {
               >
                 Get Started <ArrowUpRight className="h-4 w-4" />
               </Link>
-              <Link
-                to="/pricing"
+              <a
+                href="#how-it-works"
                 className="inline-flex items-center gap-2 rounded-full border border-primary/40 px-6 py-3 text-sm font-semibold text-foreground hover:border-primary/80 transition-colors"
               >
                 How It Works
-              </Link>
+              </a>
             </div>
           </motion.div>
 

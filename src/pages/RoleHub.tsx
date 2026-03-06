@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { DashboardNav } from "@/components/DashboardNav";
 import { Footer } from "@/components/Footer";
-import { Search, SlidersHorizontal, TrendingUp, ArrowRight, ChevronDown } from "lucide-react";
+import { Search, SlidersHorizontal, TrendingUp, ChevronDown, BarChart3 } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface RoleCard {
   id: string;
@@ -12,37 +13,17 @@ interface RoleCard {
   location: string;
   trending: boolean;
   tags: string[];
+  demand: string;
+  tier: string;
+  trend: string;
 }
 
 const roles: RoleCard[] = [
-  { id: "1", title: "AI Solutions Architect", matchPercent: 95, salaryRange: "₹35L - ₹60L PA", type: "Full-time", location: "Remote", trending: true, tags: ["LLMs", "Cloud Infra"] },
-  { id: "2", title: "Technical Product Manager", matchPercent: 88, salaryRange: "₹28L - ₹45L PA", type: "Hybrid", location: "Bangalore", trending: true, tags: ["Agile", "Strategy"] },
-  { id: "3", title: "Data Strategist", matchPercent: 82, salaryRange: "₹22L - ₹40L PA", type: "Contract", location: "Remote", trending: true, tags: ["Data Viz", "Big Query"] },
-  { id: "4", title: "Operations Manager", matchPercent: 43, salaryRange: "₹18L - ₹25L PA", type: "Full-time", location: "Mumbai", trending: false, tags: [] },
+  { id: "1", title: "AI Solutions Architect", matchPercent: 95, salaryRange: "₹35L - ₹60L", type: "Full-time", location: "Remote", trending: true, tags: ["LLMs", "Cloud Infra"], demand: "High Demand", tier: "Tier 1 MNCs", trend: "Strong Market Uptrend" },
+  { id: "2", title: "Technical Product Manager", matchPercent: 88, salaryRange: "₹28L - ₹45L", type: "Hybrid", location: "Bangalore", trending: true, tags: ["Agile", "Strategy"], demand: "Growth Stage", tier: "Startups", trend: "Rapidly Emerging" },
+  { id: "3", title: "Data Strategist", matchPercent: 82, salaryRange: "₹22L - ₹40L", type: "Contract", location: "Remote", trending: true, tags: ["Data Viz", "Big Query"], demand: "High Demand", tier: "Tech Giants", trend: "Stable Growth" },
+  { id: "4", title: "Operations Manager", matchPercent: 43, salaryRange: "₹18L - ₹25L", type: "Full-time", location: "Mumbai", trending: false, tags: [], demand: "Moderate", tier: "Mid-size", trend: "Flat" },
 ];
-
-const getMatchColor = (percent: number) => {
-  if (percent >= 80) return "text-primary stroke-primary";
-  if (percent >= 60) return "text-secondary stroke-secondary";
-  return "text-muted-foreground stroke-muted-foreground";
-};
-
-const MatchCircle = ({ percent }: { percent: number }) => {
-  const radius = 22;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percent / 100) * circumference;
-  const colorClass = getMatchColor(percent);
-
-  return (
-    <div className="relative w-14 h-14 flex items-center justify-center flex-shrink-0">
-      <svg className="w-14 h-14 -rotate-90" viewBox="0 0 52 52">
-        <circle cx="26" cy="26" r={radius} fill="none" strokeWidth="3" className="stroke-muted/40" />
-        <circle cx="26" cy="26" r={radius} fill="none" strokeWidth="3" strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} className={colorClass} />
-      </svg>
-      <span className={`absolute text-xs font-bold ${colorClass}`}>{percent}%</span>
-    </div>
-  );
-};
 
 const RoleHub = () => {
   const [search, setSearch] = useState("");
@@ -56,7 +37,7 @@ const RoleHub = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <DashboardNav />
 
-      <main className="flex-1 container max-w-4xl py-10 md:py-16 px-4">
+      <main className="flex-1 container max-w-5xl py-10 md:py-16 px-4">
         <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">Role Hub</h1>
         <p className="text-muted-foreground text-sm md:text-base max-w-xl mb-8">
           AI-native matching engine analyzing your profile against 5,000+ high-growth career paths in tech and AI.
@@ -76,41 +57,40 @@ const RoleHub = () => {
           </button>
         </div>
 
-        {/* Role Cards */}
-        <div className="space-y-4">
-          {filtered.map((role) => (
-            <div
+        {/* Role Cards Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filtered.map((role, i) => (
+            <motion.div
               key={role.id}
-              className={`flex items-center gap-4 md:gap-6 bg-card border rounded-2xl px-5 py-5 transition-colors ${
-                role.matchPercent >= 60
-                  ? "border-border/50 hover:border-primary/40"
-                  : "border-border/30 opacity-60"
-              }`}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className={`glass-card-hover p-5 cursor-pointer ${role.matchPercent < 60 ? "opacity-60" : ""}`}
             >
-              <MatchCircle percent={role.matchPercent} />
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-display font-bold text-base md:text-lg truncate">{role.title}</h3>
-                  {role.trending && <TrendingUp className="h-4 w-4 text-primary flex-shrink-0" />}
-                </div>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  💰 {role.salaryRange} &nbsp;🏢 {role.type} / {role.location}
-                </p>
+              <div className="flex items-start justify-between mb-3">
+                <BarChart3 className="h-8 w-8 text-primary" />
+                <span className="text-xs font-semibold text-neon bg-neon/10 border border-neon/30 rounded-full px-2 py-0.5">
+                  {role.matchPercent}% Match
+                </span>
               </div>
-
-              <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-                {role.tags.map((tag) => (
-                  <span key={tag} className="text-[10px] uppercase tracking-wider font-semibold border border-primary/40 text-primary rounded-full px-3 py-1">
-                    {tag}
-                  </span>
-                ))}
+              <h4 className="font-display font-semibold mb-1">{role.title}</h4>
+              <p className="text-xs text-muted-foreground mb-3">{role.demand} • {role.tier}</p>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">Avg. Salary (Annual)</span>
+                <span className="text-sm font-semibold">{role.salaryRange}</span>
               </div>
-
-              <button className="flex items-center gap-1.5 text-sm font-medium border border-border/50 rounded-xl px-4 py-2 hover:border-primary/50 hover:text-primary transition-colors flex-shrink-0">
-                View Details <ArrowRight className="h-3.5 w-3.5" />
-              </button>
-            </div>
+              <div className="w-full h-1 bg-muted rounded-full mt-3 overflow-hidden">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-primary to-secondary rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${role.matchPercent}%` }}
+                  transition={{ duration: 0.6, delay: 0.3 + i * 0.08 }}
+                />
+              </div>
+              <p className="flex items-center gap-1 text-xs text-primary mt-2">
+                <TrendingUp className="h-3 w-3" /> {role.trend}
+              </p>
+            </motion.div>
           ))}
         </div>
 

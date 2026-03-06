@@ -86,16 +86,11 @@ const CoPilot = () => {
   };
 
   return (
-    <div className="h-screen flex bg-background overflow-hidden">
+    <div className="min-h-screen bg-background">
+      <DashboardNav />
+      <div className="flex h-[calc(100vh-4rem)]">
       {/* Sidebar */}
       <aside className="hidden md:flex flex-col w-72 border-r border-border/30 bg-card/50">
-        <div className="p-5 border-b border-border/30">
-          <Link to="/" className="flex items-center gap-2">
-            <Rocket className="h-5 w-5 text-primary" />
-            <span className="font-display text-base font-bold">FuturFly</span>
-          </Link>
-        </div>
-
         <div className="p-4">
           <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-3">Chat History</p>
           <div className="space-y-1">
@@ -128,27 +123,18 @@ const CoPilot = () => {
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Header */}
-        <header className="flex items-center justify-between px-6 py-4 border-b border-border/30 bg-background/80 backdrop-blur-xl">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
-              <Bot className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-base">Flynn</h1>
-              <p className="text-xs text-primary flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" /> AI Career Co-pilot
-              </p>
-            </div>
+        {/* Chat Header */}
+        <div className="flex items-center gap-3 px-6 py-4 border-b border-border/30">
+          <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
+            <Bot className="h-5 w-5 text-primary" />
           </div>
-          <div className="flex items-center gap-3">
-            <Search className="h-5 w-5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors" />
-            <Link to="/settings">
-              <Settings className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
-            </Link>
-            <Link to="/dashboard" className="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary" />
+          <div>
+            <h1 className="font-display font-bold text-base">Flynn</h1>
+            <p className="text-xs text-primary flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" /> AI Career Co-pilot
+            </p>
           </div>
-        </header>
+        </div>
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto px-4 md:px-16 py-8 space-y-6">

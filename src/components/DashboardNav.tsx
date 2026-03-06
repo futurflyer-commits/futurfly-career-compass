@@ -6,7 +6,7 @@ const navLinks = [
   { label: "CareerNavAI", href: "/career-nav-ai" },
   { label: "SkillLab", href: "/skill-lab" },
   { label: "RoleHub", href: "/role-hub" },
-  { label: "Simulation", href: "/simulation" },
+  { label: "CareerSimulation", href: "/simulation" },
   { label: "Roadmap", href: "/roadmap" },
   { label: "MarketRadar", href: "/market" },
 ];

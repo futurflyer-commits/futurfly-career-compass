@@ -164,57 +164,81 @@ const Dashboard = () => {
           </div>
         </motion.div>
 
-        {/* Skill Gap */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card p-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-            <div>
-              <h2 className="flex items-center gap-2 font-display font-bold mb-1"><BarChart3 className="h-5 w-5 text-primary" /> Skill Gap Snapshot</h2>
-              <p className="text-sm text-muted-foreground">Mapping your current abilities against the '<strong>AI Solutions Architect</strong>' benchmark</p>
+        {/* Market Intelligence Cards */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="grid md:grid-cols-3 gap-4">
+          {/* Critical Skill Gaps */}
+          <div className="glass-card p-5">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Critical Skill Gaps</p>
+              <AlertTriangle className="h-4 w-4 text-primary" />
             </div>
-            <Link to="/roadmap" className="inline-flex items-center gap-2 mt-4 md:mt-0 rounded-full border border-border px-5 py-2 text-sm font-semibold hover:border-primary/50 transition-colors">
-              <Eye className="h-4 w-4" /> Open Skill Lab
+            <div className="space-y-3 mb-4">
+              <div className="flex items-center gap-3 bg-muted rounded-lg p-3">
+                <Sparkles className="h-5 w-5 text-primary shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold">Prompt Engineering</p>
+                  <p className="text-[10px] text-muted-foreground">Required for 85% of AI PM roles</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 bg-muted rounded-lg p-3">
+                <Sparkles className="h-5 w-5 text-primary shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold">LLM Orchestration</p>
+                  <p className="text-[10px] text-muted-foreground">Secondary priority</p>
+                </div>
+              </div>
+            </div>
+            <Link to="/skill-lab" className="text-xs font-semibold text-primary hover:underline">VIEW 3 MORE GAPS</Link>
+          </div>
+
+          {/* Growth Chart */}
+          <div className="glass-card p-5">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Growth: Bengaluru</p>
+              <TrendingUp className="h-4 w-4 text-secondary" />
+            </div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm font-semibold">AI Product Manager</span>
+              <span className="text-xs font-bold text-secondary">+24.8% YoY</span>
+            </div>
+            <div className="flex items-end gap-1.5 h-20 mb-3">
+              {[35, 45, 50, 60, 70, 80, 95].map((h, i) => (
+                <motion.div
+                  key={i}
+                  className="flex-1 rounded-sm bg-gradient-to-t from-secondary/60 to-secondary"
+                  initial={{ height: 0 }}
+                  animate={{ height: `${h}%` }}
+                  transition={{ duration: 0.6, delay: 0.4 + i * 0.08 }}
+                />
+              ))}
+            </div>
+            <p className="text-[10px] text-muted-foreground italic mb-3">"Concentrated demand surge in Indiranagar and Whitefield clusters."</p>
+            <Link to="/market" className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-semibold text-muted-foreground hover:text-primary transition-colors">
+              <BarChart3 className="h-3 w-3" /> Hyper-Local Analysis
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <p className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-neon font-semibold mb-3">
-                <CheckCircle className="h-3.5 w-3.5" /> Verified Mastery
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {verifiedSkills.map((s) => (
-                  <span key={s} className="rounded-full bg-muted px-3 py-1.5 text-xs font-medium">{s}</span>
-                ))}
-              </div>
+          {/* Market Salary */}
+          <div className="glass-card p-5">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">Market Salary (INR)</p>
+              <IndianRupee className="h-4 w-4 text-primary" />
             </div>
-            <div>
-              <p className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-primary font-semibold mb-3">
-                <Sparkles className="h-3.5 w-3.5" /> Critical Gaps
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {criticalGaps.map((s) => (
-                  <span key={s} className="rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary">{s}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between text-sm mb-2">
-              <span className="font-medium">Readiness Benchmark</span>
-              <span className="font-semibold text-primary">65% Progress</span>
-            </div>
-            <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-primary to-neon rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: "65%" }}
-                transition={{ duration: 1, delay: 0.5 }}
-              />
-            </div>
-            <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
-              <Sparkles className="h-3 w-3 text-primary" /> AI Recommendation: Mastering <strong className="text-foreground">Vector Databases</strong> will increase your role match by 7.4%.
+            <p className="text-2xl md:text-3xl font-display font-bold mb-1">
+              <span className="text-secondary">₹45L</span> - <span className="text-secondary">₹62L</span>
             </p>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-4">Median for Strategic Climbers</p>
+            <div className="h-16 flex items-end relative">
+              <svg viewBox="0 0 120 50" className="w-full h-full" preserveAspectRatio="none">
+                <path d="M0 45 Q20 42 40 38 T80 30 Q90 20 100 8 L105 5" fill="none" stroke="hsl(var(--secondary))" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="105" cy="5" r="3" fill="hsl(var(--secondary))" />
+              </svg>
+            </div>
+            <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
+              <span>2022</span>
+              <span>2023</span>
+              <span className="font-bold text-secondary">2024 Proj.</span>
+            </div>
           </div>
         </motion.div>
       </div>

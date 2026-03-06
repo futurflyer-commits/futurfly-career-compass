@@ -24,7 +24,7 @@ const Dashboard = () => {
           <p className="text-sm text-muted-foreground">Your personalized roadmap to the future of Indian Tech, powered by advanced generative AI.</p>
         </motion.div>
 
-        {/* Persona + Roles */}
+        {/* Persona + Career Path */}
         <div className="grid lg:grid-cols-5 gap-6 mb-8">
           {/* Persona Card */}
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-2">
@@ -46,41 +46,123 @@ const Dashboard = () => {
             </div>
           </motion.div>
 
-          {/* Role Matches */}
+          {/* Career Path Status */}
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-3">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="flex items-center gap-2 font-display font-bold"><Target className="h-5 w-5 text-primary" /> Top Role Matches</h2>
-              <div className="flex gap-2">
-                <button className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:border-primary/50 transition-colors">
-                  <ChevronLeft className="h-4 w-4" />
-                </button>
-                <button className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:border-primary/50 transition-colors">
-                  <ChevronRight className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {roleMatches.slice(0, 2).map((role) => (
-                <Link to="/simulation" key={role.title} className="glass-card-hover p-5">
-                  <div className="flex items-start justify-between mb-3">
-                    <BarChart3 className="h-8 w-8 text-primary" />
-                    <span className="text-xs font-semibold text-neon bg-neon/10 border border-neon/30 rounded-full px-2 py-0.5">{role.match}% Match</span>
-                  </div>
-                  <h4 className="font-display font-semibold mb-1">{role.title}</h4>
-                  <p className="text-xs text-muted-foreground mb-3">{role.demand} • {role.tier}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Avg. Salary (Annual)</span>
-                    <span className="text-sm font-semibold">{role.salary}</span>
-                  </div>
-                  <div className="w-full h-1 bg-muted rounded-full mt-3 overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-primary to-secondary rounded-full" style={{ width: `${role.match}%` }} />
-                  </div>
-                  <p className="flex items-center gap-1 text-xs text-primary mt-2"><TrendingUp className="h-3 w-3" /> {role.trend}</p>
+            <div className="glass-card p-6 h-full flex flex-col">
+              <div className="flex items-start justify-between mb-1">
+                <div>
+                  <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-1">Current Chosen Path</p>
+                  <h3 className="text-xl md:text-2xl font-display font-bold">AI Solutions Architect</h3>
+                </div>
+                <Link to="/simulation" className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs font-semibold hover:border-primary/50 transition-colors">
+                  <Sparkles className="h-3.5 w-3.5" /> Modify Strategy
                 </Link>
-              ))}
+              </div>
+              <div className="flex gap-3 mb-6 mt-2">
+                <span className="text-xs border border-border rounded-full px-3 py-1 text-muted-foreground flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" /> 18 Month Path
+                </span>
+                <span className="text-xs border border-border rounded-full px-3 py-1 text-muted-foreground flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-secondary" /> Tier 1 MNC Track
+                </span>
+              </div>
+
+              {/* Phase Timeline */}
+              <div className="flex-1 flex flex-col justify-center">
+                <div className="relative flex items-start justify-between mb-4">
+                  <div className="absolute top-5 left-[10%] right-[10%] h-0.5 bg-border" />
+                  <div className="absolute top-5 left-[10%] h-0.5 bg-secondary" style={{ width: '30%' }} />
+
+                  {[
+                    { label: "Baseline Audit", status: "COMPLETED", done: true },
+                    { label: "Skill Acquisition", status: "COMPLETED", done: true },
+                    { label: "Portfolio Building", status: "IN PROGRESS", active: true },
+                    { label: "Market Readiness", status: "UPCOMING" },
+                    { label: "Placement", status: "FINAL PHASE" },
+                  ].map((step, i) => (
+                    <div key={i} className="relative z-10 flex flex-col items-center text-center w-1/5">
+                      <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center mb-2 ${
+                        step.done
+                          ? "bg-secondary/20 border-secondary text-secondary"
+                          : step.active
+                          ? "bg-primary/20 border-primary text-primary animate-pulse"
+                          : "bg-muted border-border text-muted-foreground"
+                      }`}>
+                        {step.done ? (
+                          <CheckCircle className="h-5 w-5" />
+                        ) : step.active ? (
+                          <Target className="h-4 w-4" />
+                        ) : (
+                          <span className="w-2 h-2 rounded-full bg-muted-foreground" />
+                        )}
+                      </div>
+                      <span className="text-[10px] md:text-xs font-medium leading-tight">{step.label}</span>
+                      <span className={`text-[9px] md:text-[10px] uppercase tracking-wider mt-0.5 ${
+                        step.done ? "text-secondary" : step.active ? "text-primary" : "text-muted-foreground"
+                      }`}>{step.status}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Overall Readiness */}
+              <div className="mt-auto pt-4 border-t border-border/50">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs uppercase tracking-wider font-semibold flex items-center gap-2">
+                    Overall Path Readiness <span className="text-[10px] text-muted-foreground border border-border rounded px-1.5 py-0.5">18M Horizon</span>
+                  </span>
+                  <span className="text-sm font-semibold text-secondary">58% Total Progress</span>
+                </div>
+                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-secondary to-accent rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: "58%" }}
+                    transition={{ duration: 1, delay: 0.4 }}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
+                  <Sparkles className="h-3 w-3 text-primary" /> You are <strong className="text-foreground">ahead of schedule</strong> by 14 days in the 'Portfolio' phase. Keep the momentum.
+                </p>
+              </div>
             </div>
           </motion.div>
         </div>
+
+        {/* Top Role Matches */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="flex items-center gap-2 font-display font-bold"><Target className="h-5 w-5 text-primary" /> Top Role Matches</h2>
+            <div className="flex gap-2">
+              <button className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:border-primary/50 transition-colors">
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button className="w-8 h-8 rounded-full border border-border flex items-center justify-center hover:border-primary/50 transition-colors">
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {roleMatches.map((role) => (
+              <Link to="/simulation" key={role.title} className="glass-card-hover p-5">
+                <div className="flex items-start justify-between mb-3">
+                  <BarChart3 className="h-8 w-8 text-primary" />
+                  <span className="text-xs font-semibold text-neon bg-neon/10 border border-neon/30 rounded-full px-2 py-0.5">{role.match}% Match</span>
+                </div>
+                <h4 className="font-display font-semibold mb-1">{role.title}</h4>
+                <p className="text-xs text-muted-foreground mb-3">{role.demand} • {role.tier}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-muted-foreground">Avg. Salary (Annual)</span>
+                  <span className="text-sm font-semibold">{role.salary}</span>
+                </div>
+                <div className="w-full h-1 bg-muted rounded-full mt-3 overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-primary to-secondary rounded-full" style={{ width: `${role.match}%` }} />
+                </div>
+                <p className="flex items-center gap-1 text-xs text-primary mt-2"><TrendingUp className="h-3 w-3" /> {role.trend}</p>
+              </Link>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Skill Gap */}
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card p-6">

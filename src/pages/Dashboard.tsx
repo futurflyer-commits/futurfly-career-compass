@@ -36,7 +36,7 @@ const Dashboard = () => {
               <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                 You bridge the gap between technical AI capabilities and strategic product requirements. Your background in software engineering combined with business intuition makes you a 1% profile in India's tech ecosystem.
               </p>
-              <Link to="/assessment" className="inline-flex items-center gap-2 w-full justify-center rounded-full bg-muted py-2.5 text-sm font-semibold hover:bg-muted/80 transition-colors">
+              <Link to="/detailed-assessment" className="inline-flex items-center gap-2 w-full justify-center rounded-full bg-muted py-2.5 text-sm font-semibold hover:bg-muted/80 transition-colors">
                 Full Persona Analysis →
               </Link>
             </div>

@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import CoPilot from "./pages/CoPilot";
 import RoleHub from "./pages/RoleHub";
 import RoleDetail from "./pages/RoleDetail";
+import DetailedAssessment from "./pages/DetailedAssessment";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/career-nav-ai" element={<CoPilot />} />
           <Route path="/role-hub" element={<RoleHub />} />
           <Route path="/role/:id" element={<RoleDetail />} />
+          <Route path="/detailed-assessment" element={<DetailedAssessment />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

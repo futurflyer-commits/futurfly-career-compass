@@ -1,8 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import { Rocket, Search, Bell } from "lucide-react";
+import { Rocket, Search, Bell, Bot } from "lucide-react";
 
 const navLinks = [
   { label: "Dashboard", href: "/dashboard" },
+  { label: "Co-Pilot", href: "/co-pilot" },
   { label: "Skill Lab", href: "/skill-lab" },
   { label: "Simulation", href: "/simulation" },
   { label: "Roadmap", href: "/roadmap" },
@@ -11,9 +12,9 @@ const navLinks = [
 
 const mobileLinks = [
   { label: "Dashboard", href: "/dashboard" },
+  { label: "Co-Pilot", href: "/co-pilot" },
   { label: "Skills", href: "/skill-lab" },
   { label: "Simulate", href: "/simulation" },
-  { label: "Roadmap", href: "/roadmap" },
   { label: "Market", href: "/market" },
 ];
 

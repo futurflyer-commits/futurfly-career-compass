@@ -18,7 +18,7 @@ const skills = [
 ];
 
 const Simulation = () => {
-  const [mode, setMode] = useState<"conservative" | "aggressive" | "ai-native">("aggressive");
+  const [mode, setMode] = useState<"conservative" | "aggressive" | "native">("aggressive");
 
   return (
     <div className="min-h-screen bg-background">

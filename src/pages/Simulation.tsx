@@ -18,7 +18,7 @@ const skills = [
 ];
 
 const Simulation = () => {
-  const [mode, setMode] = useState<"conservative" | "aggressive" | "ai-native">("aggressive");
+  const [mode, setMode] = useState<"conservative" | "aggressive" | "native">("aggressive");
 
   return (
     <div className="min-h-screen bg-background">
@@ -35,7 +35,7 @@ const Simulation = () => {
               Path <span className="text-gradient">Simulation</span>
             </h1>
             <div className="flex rounded-full border border-border overflow-hidden">
-              {(["conservative", "aggressive", "ai-native"] as const).map((m) => (
+              {(["conservative", "aggressive", "native"] as const).map((m) => (
                 <button
                   key={m}
                   onClick={() => setMode(m)}
@@ -102,7 +102,7 @@ const Simulation = () => {
           </div>
 
           <div className="glass-card p-6">
-            <h3 className="font-display font-bold mb-1"><span className="text-primary font-mono text-xs mr-2">terminal</span>Skill Matrix</h3>
+            <h3 className="font-display font-bold mb-1">Skill Matrix</h3>
             <div className="mt-4 flex flex-col gap-4">
               {skills.map((s) => (
                 <div key={s.name} className="flex items-center justify-between">

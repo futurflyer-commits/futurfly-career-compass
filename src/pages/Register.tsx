@@ -247,6 +247,7 @@ const Register = () => {
   const [parsing, setParsing] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selected, setSelected] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -335,6 +336,46 @@ const Register = () => {
 
   const handleUpload = () => {
     setStep(3);
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setParsing(true);
+      
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Normally you pull the JWT from Supabase session here
+        const token = user?.id;
+        if (!token) throw new Error("Not logged in");
+
+        const response = await fetch("http://localhost:8000/api/cv/parse", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          },
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to parse CV");
+        }
+
+        const data = await response.json();
+        console.log("Extracted Skills Payload:", data);
+        
+        // Skip step 3, go straight to dashboard because AI parsed it
+        navigate("/dashboard");
+
+      } catch (err) {
+        console.error("CV Parsing Error:", err);
+        setParsing(false);
+        // Fallback to manual selection if AI fails
+        setStep(3);
+      }
+    }
   };
 
   const toggleInterest = (label: string) => {
@@ -553,8 +594,15 @@ const Register = () => {
             <p className="text-muted-foreground mb-10">
               Upload your CV or Portfolio to let our AI map your career DNA and unlock your future potential.
             </p>
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              className="hidden" 
+              accept=".pdf,.docx,.jpg,.jpeg,.png"
+              onChange={handleFileChange}
+            />
             <div
-              onClick={handleUpload}
+              onClick={() => fileInputRef.current?.click()}
               className="glass-card border-dashed border-2 border-primary/30 p-12 cursor-pointer hover:border-primary/60 transition-colors mb-6"
             >
               <Upload className="h-10 w-10 text-primary mx-auto mb-4" />

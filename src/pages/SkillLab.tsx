@@ -168,7 +168,7 @@ const SkillLab = () => {
         {/* Main content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="px-6 md:px-10 pt-6 pb-4">
-            <h1 className="text-2xl md:text-3xl font-display font-bold">SkillLab</h1>
+            <h1 className="text-2xl md:text-3xl font-display font-bold">Skill <span className="text-gradient">Lab</span></h1>
             <p className="text-sm text-muted-foreground mt-1">Visualize your expertise and plot your next move.</p>
 
             {/* Overall proficiency summary */}
@@ -206,11 +206,10 @@ const SkillLab = () => {
                   <button
                     key={f.value}
                     onClick={() => setActiveFilter(f.value)}
-                    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${
-                      activeFilter === f.value
+                    className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeFilter === f.value
                         ? "bg-primary text-primary-foreground shadow-md"
                         : "border border-border/50 text-muted-foreground hover:text-foreground hover:border-foreground/30"
-                    }`}
+                      }`}
                   >
                     {f.label}
                   </button>
@@ -238,85 +237,84 @@ const SkillLab = () => {
 
               <div className="absolute inset-0" style={{ transform: `scale(${zoom})`, transformOrigin: "center center", transition: "transform 0.3s ease" }}>
 
-              <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                {connections.map(([from, to]) => {
-                  if (!filteredIds.has(from) && !filteredIds.has(to)) return null;
-                  const a = getNodePos(from);
-                  const b = getNodePos(to);
-                  const isGap = skillNodes.find((n) => n.id === from)?.type === "gap" || skillNodes.find((n) => n.id === to)?.type === "gap";
-                  const dimmed = !filteredIds.has(from) || !filteredIds.has(to);
+                <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                  {connections.map(([from, to]) => {
+                    if (!filteredIds.has(from) && !filteredIds.has(to)) return null;
+                    const a = getNodePos(from);
+                    const b = getNodePos(to);
+                    const isGap = skillNodes.find((n) => n.id === from)?.type === "gap" || skillNodes.find((n) => n.id === to)?.type === "gap";
+                    const dimmed = !filteredIds.has(from) || !filteredIds.has(to);
+                    return (
+                      <line key={`${from}-${to}`} x1={`${a.x}%`} y1={`${a.y}%`} x2={`${b.x}%`} y2={`${b.y}%`}
+                        stroke={isGap ? "hsl(var(--aqua) / 0.15)" : "hsl(var(--aqua) / 0.3)"} strokeWidth="1.5"
+                        strokeDasharray={isGap ? "6 4" : "none"} opacity={dimmed ? 0.2 : 1} />
+                    );
+                  })}
+                </svg>
+
+                {skillNodes.map((node) => {
+                  const size = sizeMap[node.size];
+                  const isGap = node.type === "gap";
+                  const isSelected = selected?.id === node.id;
+                  const isVisible = filteredIds.has(node.id);
+                  const profLevel = getProficiencyLevel(node.proficiency);
+
                   return (
-                    <line key={`${from}-${to}`} x1={`${a.x}%`} y1={`${a.y}%`} x2={`${b.x}%`} y2={`${b.y}%`}
-                      stroke={isGap ? "hsl(var(--aqua) / 0.15)" : "hsl(var(--aqua) / 0.3)"} strokeWidth="1.5"
-                      strokeDasharray={isGap ? "6 4" : "none"} opacity={dimmed ? 0.2 : 1} />
+                    <Tooltip key={node.id}>
+                      <TooltipTrigger asChild>
+                        <motion.button
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: isVisible ? 1 : 0.15, scale: isVisible ? 1 : 0.85 }}
+                          transition={{ delay: 0.1 }}
+                          onClick={() => isVisible && setSelected(node)}
+                          className={`absolute group ${!isVisible ? "pointer-events-none" : ""}`}
+                          style={{ left: `${node.x}%`, top: `${node.y}%`, width: size, height: size, transform: "translate(-50%, -50%)" }}
+                        >
+                          {/* Proficiency ring */}
+                          <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="47" fill="none" stroke="hsl(var(--border) / 0.2)" strokeWidth="3" />
+                            <circle cx="50" cy="50" r="47" fill="none" stroke={profLevel.color} strokeWidth="3"
+                              strokeDasharray={`${node.proficiency * 2.95} ${295 - node.proficiency * 2.95}`}
+                              strokeLinecap="round" />
+                          </svg>
+                          {isGap && (
+                            <>
+                              <span className="absolute inset-0 rounded-full border border-aqua/40 animate-[pulse-ring_2s_cubic-bezier(0.4,0,0.6,1)_infinite]" />
+                              <span className="absolute -inset-2 rounded-full border border-aqua/20 animate-[pulse-ring_2s_cubic-bezier(0.4,0,0.6,1)_infinite_0.5s]" />
+                            </>
+                          )}
+                          <div className={`relative w-full h-full rounded-full flex flex-col items-center justify-center border-2 transition-all duration-300`}
+                            style={{
+                              borderColor: isSelected ? profLevel.color : `${profLevel.color}80`,
+                              backgroundColor: isSelected ? `${profLevel.color}22` : `${profLevel.color}0D`,
+                              boxShadow: isSelected ? `0 0 25px ${profLevel.color}4D` : "none",
+                            }}>
+                            <node.icon className={`${node.size === "lg" ? "h-6 w-6" : node.size === "md" ? "h-5 w-5" : "h-4 w-4"} transition-colors`} style={{ color: profLevel.color }} />
+                            <span className={`${node.size === "lg" ? "text-xs mt-1.5" : "text-[10px] mt-1"} font-semibold`} style={{ color: profLevel.color }}>{node.label}</span>
+                            {node.tag && (
+                              <span className={`text-[8px] font-bold uppercase tracking-wider mt-0.5 px-1.5 py-0.5 rounded-full ${node.tag === "TOP TREND" ? "bg-aqua/20 text-aqua"
+                                  : node.tag === "GROWTH GAP" || node.tag === "NOVICE" ? "bg-primary/20 text-primary"
+                                    : "bg-muted text-muted-foreground"
+                                }`}>{node.tag}</span>
+                            )}
+                          </div>
+                        </motion.button>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="bg-background/95 border-border/50 backdrop-blur-xl p-3 max-w-[200px]">
+                        <p className="font-display font-bold text-sm mb-1">{node.label}</p>
+                        <div className="flex items-center gap-3 text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+                          <span>{node.type === "gap" ? "Gap" : node.type === "core" ? "Core" : "Adjacent"}</span>
+                          <span>•</span>
+                          <span>{node.proficiency}% proficient</span>
+                        </div>
+                        <div className="w-full h-1.5 rounded-full bg-border/30 overflow-hidden">
+                          <div className="h-full rounded-full bg-aqua" style={{ width: `${node.proficiency}%` }} />
+                        </div>
+                        {isGap && <p className="text-[10px] text-primary mt-2 font-medium">⚡ High growth opportunity</p>}
+                      </TooltipContent>
+                    </Tooltip>
                   );
                 })}
-              </svg>
-
-              {skillNodes.map((node) => {
-                const size = sizeMap[node.size];
-                const isGap = node.type === "gap";
-                const isSelected = selected?.id === node.id;
-                const isVisible = filteredIds.has(node.id);
-                const profLevel = getProficiencyLevel(node.proficiency);
-
-                return (
-                  <Tooltip key={node.id}>
-                    <TooltipTrigger asChild>
-                      <motion.button
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: isVisible ? 1 : 0.15, scale: isVisible ? 1 : 0.85 }}
-                        transition={{ delay: 0.1 }}
-                        onClick={() => isVisible && setSelected(node)}
-                        className={`absolute group ${!isVisible ? "pointer-events-none" : ""}`}
-                        style={{ left: `${node.x}%`, top: `${node.y}%`, width: size, height: size, transform: "translate(-50%, -50%)" }}
-                      >
-                        {/* Proficiency ring */}
-                        <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
-                          <circle cx="50" cy="50" r="47" fill="none" stroke="hsl(var(--border) / 0.2)" strokeWidth="3" />
-                          <circle cx="50" cy="50" r="47" fill="none" stroke={profLevel.color} strokeWidth="3"
-                            strokeDasharray={`${node.proficiency * 2.95} ${295 - node.proficiency * 2.95}`}
-                            strokeLinecap="round" />
-                        </svg>
-                        {isGap && (
-                          <>
-                            <span className="absolute inset-0 rounded-full border border-aqua/40 animate-[pulse-ring_2s_cubic-bezier(0.4,0,0.6,1)_infinite]" />
-                            <span className="absolute -inset-2 rounded-full border border-aqua/20 animate-[pulse-ring_2s_cubic-bezier(0.4,0,0.6,1)_infinite_0.5s]" />
-                          </>
-                        )}
-                        <div className={`relative w-full h-full rounded-full flex flex-col items-center justify-center border-2 transition-all duration-300`}
-                          style={{
-                            borderColor: isSelected ? profLevel.color : `${profLevel.color}80`,
-                            backgroundColor: isSelected ? `${profLevel.color}22` : `${profLevel.color}0D`,
-                            boxShadow: isSelected ? `0 0 25px ${profLevel.color}4D` : "none",
-                          }}>
-                          <node.icon className={`${node.size === "lg" ? "h-6 w-6" : node.size === "md" ? "h-5 w-5" : "h-4 w-4"} transition-colors`} style={{ color: profLevel.color }} />
-                          <span className={`${node.size === "lg" ? "text-xs mt-1.5" : "text-[10px] mt-1"} font-semibold`} style={{ color: profLevel.color }}>{node.label}</span>
-                          {node.tag && (
-                            <span className={`text-[8px] font-bold uppercase tracking-wider mt-0.5 px-1.5 py-0.5 rounded-full ${
-                              node.tag === "TOP TREND" ? "bg-aqua/20 text-aqua"
-                                : node.tag === "GROWTH GAP" || node.tag === "NOVICE" ? "bg-primary/20 text-primary"
-                                  : "bg-muted text-muted-foreground"
-                            }`}>{node.tag}</span>
-                          )}
-                        </div>
-                      </motion.button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" className="bg-background/95 border-border/50 backdrop-blur-xl p-3 max-w-[200px]">
-                      <p className="font-display font-bold text-sm mb-1">{node.label}</p>
-                      <div className="flex items-center gap-3 text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
-                        <span>{node.type === "gap" ? "Gap" : node.type === "core" ? "Core" : "Adjacent"}</span>
-                        <span>•</span>
-                        <span>{node.proficiency}% proficient</span>
-                      </div>
-                      <div className="w-full h-1.5 rounded-full bg-border/30 overflow-hidden">
-                        <div className="h-full rounded-full bg-aqua" style={{ width: `${node.proficiency}%` }} />
-                      </div>
-                      {isGap && <p className="text-[10px] text-primary mt-2 font-medium">⚡ High growth opportunity</p>}
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              })}
               </div>{/* end zoom wrapper */}
 
               {/* Zoom controls */}

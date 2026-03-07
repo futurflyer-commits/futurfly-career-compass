@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Share2, Download, Sparkles } from "lucide-react";
 import { DashboardNav } from "@/components/DashboardNav";
+import { AssessmentResult } from "@/lib/scoring";
+import { useAuth } from "@/contexts/AuthContext";
 
 const traits = [
   { label: "Strategic Vision", value: 94, color: "from-primary to-secondary" },
@@ -10,10 +12,83 @@ const traits = [
   { label: "Human-AI Interaction", value: 82, color: "from-primary to-mint" },
 ];
 
+const PERSONA_CONTENT: Record<string, { desc: string; image: string; title: string[] }> = {
+  "Emerging Builder": {
+    desc: "You are an Emerging Builder. You thrive on exploration, fast learning, and getting your hands dirty building the future. Short-term growth and iteration are your superpowers.",
+    image: "/personas/emerging_builder", // We will append the regex match for the timestamp part
+    title: ["THE EMERGING", "BUILDER"],
+  },
+  "Strategic Climber": {
+    desc: "You are a Strategic Climber. Focused, analytical, and ready to optimize complex systems. You have a knack for leadership and structured career advancement.",
+    image: "/personas/strategic_climber",
+    title: ["THE STRATEGIC", "CLIMBER"],
+  },
+  "Purpose Architect": {
+    desc: "You are a Purpose Architect. You build with meaning, aiming for long-term impact and human-centered design. Aligning your career with your deep personal values is essential.",
+    image: "/personas/purpose_architect",
+    title: ["THE PURPOSE", "ARCHITECT"],
+  },
+  "Growth Explorer": {
+    desc: "You are a Growth Explorer (EB + SC mix). You balance rapid experimentation with ambitious, structured career strategy. You can build fast and scale smart.",
+    image: "/personas/growth_explorer",
+    title: ["THE GROWTH", "EXPLORER"],
+  },
+  "Strategic Visionary": {
+    desc: "You are a Strategic Visionary (SC + PA mix). You combine sharp analytical leadership with a profound desire to build meaningful, human-centric solutions.",
+    image: "/personas/strategic_visionary",
+    title: ["THE STRATEGIC", "VISIONARY"],
+  },
+  "Purpose Explorer": {
+    desc: "You are a Purpose Explorer (EB + PA mix). You lean into rapidly building innovative products, but always ensure they serve a larger, impact-driven mission.",
+    image: "/personas/purpose_explorer",
+    title: ["THE PURPOSE", "EXPLORER"],
+  },
+}
+
 const Persona = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  
+  const result: AssessmentResult | null = location.state?.result || 
+    (localStorage.getItem('discovery_assessment_result') 
+      ? JSON.parse(localStorage.getItem('discovery_assessment_result')!) 
+      : null);
+
+  if (!result) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+        <h2 className="text-xl font-bold mb-4">No assessment results found</h2>
+        <button onClick={() => navigate('/assessment')} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg">
+          Take Assessment
+        </button>
+      </div>
+    );
+  }
+
+  const content = PERSONA_CONTENT[result.persona] || PERSONA_CONTENT["Emerging Builder"];
+
+  const getImagePath = (basePath: string) => {
+    // In a real scenario we might know the exact file name.
+    // Given the generated image pattern has a timestamp: name_123456.png
+    // The easiest way is to use the exact names from public/personas/
+    // We can map these directly since they are static assets copied over.
+    // For now we'll match by start string if we were dynamically importing, but since we copied them, 
+    // we need their exact filenames or to rename them during the copy. 
+    return basePath; // Let's use a dynamic search in the render or just rely on a unified name format.
+  };
+
+  // We map the traits directly to the scores for dynamic progress bars
+  const dynamicTraits = [
+    { label: "Experimentation (EB)", value: Math.round((result.persona_score.EB / 10) * 100), color: "from-primary to-secondary" },
+    { label: "Strategy (SC)", value: Math.round((result.persona_score.SC / 12) * 100), color: "from-secondary to-accent" },
+    { label: "Impact (PA)", value: Math.round((result.persona_score.PA / 10) * 100), color: "from-accent to-neon" },
+    { label: "Adaptability", value: 85, color: "from-primary to-mint" }, // Static filler for aesthetics
+  ];
+
   return (
     <div className="min-h-screen bg-background">
-      <DashboardNav />
+      {user && <DashboardNav />}
 
       <div className="flex flex-col items-center justify-center px-4 py-16 md:py-24">
         <motion.div
@@ -25,29 +100,37 @@ const Persona = () => {
             Assessment Complete
           </span>
 
-          <h1 className="text-4xl md:text-6xl font-display font-bold mb-2">THE AI PRODUCT</h1>
-          <h1 className="text-4xl md:text-6xl font-display font-bold text-gradient mb-10">ARCHITECT</h1>
+          <h1 className="text-4xl md:text-6xl font-display font-bold mb-2">{content.title[0]}</h1>
+          <h1 className="text-4xl md:text-6xl font-display font-bold text-gradient mb-10">{content.title[1]}</h1>
 
           {/* Avatar area */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3 }}
-            className="relative w-48 h-48 mx-auto mb-8"
+            className="relative w-64 h-64 mx-auto mb-8"
           >
             <div className="absolute inset-0 rounded-2xl bg-primary/10 blur-2xl animate-pulse-glow" />
-            <div className="relative w-full h-full rounded-2xl bg-card border border-border/50 flex items-center justify-center">
-              <Sparkles className="h-16 w-16 text-primary" />
+            <div className="relative w-full h-full rounded-2xl bg-card border border-border/50 flex items-center justify-center overflow-hidden">
+              <img 
+                src={`${content.image}.png`}
+                alt={result.persona}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                   e.currentTarget.style.display = 'none';
+                   e.currentTarget.parentElement!.innerHTML = '<div class="flex items-center justify-center w-full h-full"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>';
+                }}
+              />
             </div>
           </motion.div>
 
           <p className="text-muted-foreground leading-relaxed mb-10 max-w-lg mx-auto">
-            "You don't just solve problems; you design the intelligence that prevents them. Your vision bridges the gap between human empathy and algorithmic precision."
+            {content.desc}
           </p>
 
           {/* Trait bars */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto mb-12">
-            {traits.map((t, i) => (
+            {dynamicTraits.map((t, i) => (
               <motion.div
                 key={t.label}
                 initial={{ opacity: 0, x: -20 }}

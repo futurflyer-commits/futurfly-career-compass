@@ -25,32 +25,38 @@ interface RoleCard {
 }
 
 const roles: RoleCard[] = [
-  { id: "1", title: "AI Solutions Architect", matchPercent: 95, salaryRange: "₹35L - ₹60L", salaryMin: 35, type: "Full-time", location: "Remote", trending: true, tags: ["LLMs", "Cloud Infra"], demand: "High Demand", tier: "Tier 1 MNCs", trend: "Strong Market Uptrend",
+  {
+    id: "1", title: "AI Solutions Architect", matchPercent: 95, salaryRange: "₹35L - ₹60L", salaryMin: 35, type: "Full-time", location: "Remote", trending: true, tags: ["LLMs", "Cloud Infra"], demand: "High Demand", tier: "Tier 1 MNCs", trend: "Strong Market Uptrend",
     description: "Design and implement end-to-end AI solutions spanning cloud infrastructure, LLM orchestration, and enterprise integration.",
     whyFit: ["Strong system design background", "Cloud infrastructure expertise", "Product-engineering bridge skills"],
     skillsNeeded: [{ name: "System Design", have: true }, { name: "Cloud (AWS/GCP)", have: true }, { name: "LLM Fine-tuning", have: false }, { name: "Vector Databases", have: false }, { name: "RAG Orchestration", have: false }],
   },
-  { id: "2", title: "Technical Product Manager", matchPercent: 88, salaryRange: "₹28L - ₹45L", salaryMin: 28, type: "Hybrid", location: "Bangalore", trending: true, tags: ["Agile", "Strategy"], demand: "Growth Stage", tier: "Startups", trend: "Rapidly Emerging",
+  {
+    id: "2", title: "Technical Product Manager", matchPercent: 88, salaryRange: "₹28L - ₹45L", salaryMin: 28, type: "Hybrid", location: "Bangalore", trending: true, tags: ["Agile", "Strategy"], demand: "Growth Stage", tier: "Startups", trend: "Rapidly Emerging",
     description: "Own the product roadmap for AI-powered features, translating complex technical capabilities into user-centric experiences.",
     whyFit: ["Agile product management skills", "Technical background", "Cross-functional collaboration"],
     skillsNeeded: [{ name: "Agile/Scrum", have: true }, { name: "Product Strategy", have: true }, { name: "AI Product Metrics", have: false }, { name: "Prompt Engineering", have: false }, { name: "A/B Testing for AI", have: false }],
   },
-  { id: "3", title: "Data Strategist", matchPercent: 82, salaryRange: "₹22L - ₹40L", salaryMin: 22, type: "Contract", location: "Remote", trending: true, tags: ["Data Viz", "Big Query"], demand: "High Demand", tier: "Tech Giants", trend: "Stable Growth",
+  {
+    id: "3", title: "Data Strategist", matchPercent: 82, salaryRange: "₹22L - ₹40L", salaryMin: 22, type: "Contract", location: "Remote", trending: true, tags: ["Data Viz", "Big Query"], demand: "High Demand", tier: "Tech Giants", trend: "Stable Growth",
     description: "Transform raw data into strategic business insights using advanced analytics, visualization, and AI-driven forecasting.",
     whyFit: ["Data visualization proficiency", "BigQuery and analytics tools", "Business intelligence mindset"],
     skillsNeeded: [{ name: "Data Visualization", have: true }, { name: "BigQuery/SQL", have: true }, { name: "Advanced ML Models", have: false }, { name: "Data Governance", have: false }, { name: "Real-time Analytics", have: false }],
   },
-  { id: "4", title: "ML Platform Engineer", matchPercent: 78, salaryRange: "₹22L - ₹40L", salaryMin: 22, type: "Full-time", location: "Hyderabad", trending: true, tags: ["MLOps", "Kubernetes"], demand: "High Demand", tier: "Tech Giants", trend: "Stable Growth",
+  {
+    id: "4", title: "ML Platform Engineer", matchPercent: 78, salaryRange: "₹22L - ₹40L", salaryMin: 22, type: "Full-time", location: "Hyderabad", trending: true, tags: ["MLOps", "Kubernetes"], demand: "High Demand", tier: "Tech Giants", trend: "Stable Growth",
     description: "Build and maintain scalable ML infrastructure, including model training pipelines, feature stores, and deployment systems.",
     whyFit: ["Cloud infrastructure skills", "Python proficiency", "DevOps understanding"],
     skillsNeeded: [{ name: "Python", have: true }, { name: "Docker/K8s", have: true }, { name: "MLOps Pipelines", have: false }, { name: "Feature Engineering", have: false }, { name: "Model Monitoring", have: false }],
   },
-  { id: "5", title: "GenAI Product Lead", matchPercent: 85, salaryRange: "₹20L - ₹38L", salaryMin: 20, type: "Full-time", location: "Bangalore", trending: true, tags: ["GenAI", "Product"], demand: "Growth Stage", tier: "Startups", trend: "Rapidly Emerging",
+  {
+    id: "5", title: "GenAI Product Lead", matchPercent: 85, salaryRange: "₹20L - ₹38L", salaryMin: 20, type: "Full-time", location: "Bangalore", trending: true, tags: ["GenAI", "Product"], demand: "Growth Stage", tier: "Startups", trend: "Rapidly Emerging",
     description: "Lead the strategy and execution for generative AI products, from ideation through launch.",
     whyFit: ["Product leadership experience", "AI domain understanding", "User-centric design thinking"],
     skillsNeeded: [{ name: "Product Management", have: true }, { name: "GenAI Concepts", have: true }, { name: "GenAI Evaluation", have: false }, { name: "Responsible AI", have: false }, { name: "LLM Cost Optimization", have: false }],
   },
-  { id: "6", title: "Operations Manager", matchPercent: 43, salaryRange: "₹18L - ₹25L", salaryMin: 18, type: "Full-time", location: "Mumbai", trending: false, tags: [], demand: "Moderate", tier: "Mid-size", trend: "Flat",
+  {
+    id: "6", title: "Operations Manager", matchPercent: 43, salaryRange: "₹18L - ₹25L", salaryMin: 18, type: "Full-time", location: "Mumbai", trending: false, tags: [], demand: "Moderate", tier: "Mid-size", trend: "Flat",
     description: "Manage day-to-day operations, optimize workflows, and drive process improvements across teams.",
     whyFit: ["Organizational skills", "Process optimization mindset"],
     skillsNeeded: [{ name: "Process Design", have: true }, { name: "Operations Analytics", have: false }, { name: "Supply Chain AI", have: false }, { name: "Automation Tools", have: false }, { name: "Six Sigma", have: false }],
@@ -106,7 +112,7 @@ const RoleHub = () => {
       <DashboardNav />
 
       <main className="flex-1 container max-w-5xl py-10 md:py-16 px-4">
-        <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">RoleHub</h1>
+        <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">Role <span className="text-gradient">Hub</span></h1>
         <p className="text-muted-foreground text-sm md:text-base max-w-xl mb-8">
           AI-native matching engine analyzing your profile against 5,000+ high-growth career paths in tech and AI.
         </p>
@@ -122,11 +128,10 @@ const RoleHub = () => {
           />
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-1.5 text-xs transition-colors border-l border-border/50 pl-3 ${
-              showFilters || activeFilterCount > 0
-                ? "text-primary font-semibold"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+            className={`flex items-center gap-1.5 text-xs transition-colors border-l border-border/50 pl-3 ${showFilters || activeFilterCount > 0
+              ? "text-primary font-semibold"
+              : "text-muted-foreground hover:text-foreground"
+              }`}
           >
             <SlidersHorizontal className="h-4 w-4" /> Filters
             {activeFilterCount > 0 && (
@@ -308,11 +313,10 @@ const RoleHub = () => {
                         )}
                         <span className="text-sm font-medium">{skill.name}</span>
                       </div>
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                        skill.have
-                          ? "bg-neon/10 text-neon"
-                          : "bg-destructive/10 text-destructive"
-                      }`}>
+                      <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${skill.have
+                        ? "bg-neon/10 text-neon"
+                        : "bg-destructive/10 text-destructive"
+                        }`}>
                         {skill.have ? "Acquired" : "Gap"}
                       </span>
                     </div>

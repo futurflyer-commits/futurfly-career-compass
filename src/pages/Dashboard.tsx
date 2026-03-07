@@ -1,7 +1,43 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, TrendingUp, CheckCircle, Sparkles, BarChart3, Target, AlertTriangle } from "lucide-react";
+import { ChevronLeft, ChevronRight, TrendingUp, CheckCircle, Sparkles, BarChart3, Target, AlertTriangle, ArrowRight, Loader2 } from "lucide-react";
 import { DashboardNav } from "@/components/DashboardNav";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
+
+const PERSONA_CONTENT: Record<string, { desc: string; image: string; title: string[] }> = {
+  "Emerging Builder": {
+    desc: "You are an Emerging Builder. You thrive on exploration, fast learning, and getting your hands dirty building the future. Short-term growth and iteration are your superpowers.",
+    image: "/personas/emerging_builder",
+    title: ["The Emerging", "Builder"],
+  },
+  "Strategic Climber": {
+    desc: "You are a Strategic Climber. Focused, analytical, and ready to optimize complex systems. You have a knack for leadership and structured career advancement.",
+    image: "/personas/strategic_climber",
+    title: ["The Strategic", "Climber"],
+  },
+  "Purpose Architect": {
+    desc: "You are a Purpose Architect. You build with meaning, aiming for long-term impact and human-centered design. Aligning your career with your deep personal values is essential.",
+    image: "/personas/purpose_architect",
+    title: ["The Purpose", "Architect"],
+  },
+  "Growth Explorer": {
+    desc: "You are a Growth Explorer (EB + SC mix). You balance rapid experimentation with ambitious, structured career strategy. You can build fast and scale smart.",
+    image: "/personas/growth_explorer",
+    title: ["The Growth", "Explorer"],
+  },
+  "Strategic Visionary": {
+    desc: "You are a Strategic Visionary (SC + PA mix). You combine sharp analytical leadership with a profound desire to build meaningful, human-centric solutions.",
+    image: "/personas/strategic_visionary",
+    title: ["The Strategic", "Visionary"],
+  },
+  "Purpose Explorer": {
+    desc: "You are a Purpose Explorer (EB + PA mix). You lean into rapidly building innovative products, but always ensure they serve a larger, impact-driven mission.",
+    image: "/personas/purpose_explorer",
+    title: ["The Purpose", "Explorer"],
+  },
+};
 
 const roleMatches = [
   { title: "AI Solutions Architect", match: 98, demand: "High Demand", tier: "Tier 1 MNCs", salary: "₹25L - ₹45L", trend: "Strong Market Uptrend", icon: "🎯" },
@@ -9,6 +45,43 @@ const roleMatches = [
 ];
 
 const Dashboard = () => {
+  const { user } = useAuth();
+  const [personaData, setPersonaData] = useState<any>(null);
+  const [loadingPersona, setLoadingPersona] = useState(true);
+
+  useEffect(() => {
+    async function fetchPersona() {
+      if (!user) {
+        setLoadingPersona(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('discovery_persona')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching persona:", error);
+        } else if (data && data.discovery_persona) {
+          setPersonaData(data.discovery_persona);
+        }
+      } catch (err) {
+        console.error("Unexpected error fetching persona:", err);
+      } finally {
+        setLoadingPersona(false);
+      }
+    }
+
+    fetchPersona();
+  }, [user]);
+
+  const personaContent = personaData && PERSONA_CONTENT[personaData.persona] 
+    ? PERSONA_CONTENT[personaData.persona] 
+    : null;
+
   return (
     <div className="min-h-screen bg-background">
       <DashboardNav />
@@ -16,7 +89,7 @@ const Dashboard = () => {
       <div className="container py-8 md:py-12">
         {/* Title */}
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-display font-bold mb-1">Career Dashboard</h1>
+          <h1 className="text-2xl md:text-3xl font-display font-bold mb-1">Career <span className="text-gradient">Dashboard</span></h1>
           <p className="text-sm text-muted-foreground">Your personalized roadmap to the future of Indian Tech, powered by advanced generative AI.</p>
         </motion.div>
 
@@ -24,21 +97,52 @@ const Dashboard = () => {
         <div className="grid lg:grid-cols-5 gap-6 mb-8">
           {/* Persona Card */}
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-2">
-            <div className="glass-card p-6 h-full">
-              <div className="relative bg-muted rounded-xl h-40 flex items-center justify-center mb-4">
-                <span className="absolute top-3 right-3 text-xs font-semibold text-neon bg-neon/10 border border-neon/30 rounded-full px-2.5 py-0.5 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-neon" /> 94% Confidence
-                </span>
-                <Target className="h-16 w-16 text-primary" />
-              </div>
-              <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-1">Primary Persona</p>
-              <h3 className="text-lg font-display font-bold mb-2">The AI Product Architect</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                You bridge the gap between technical AI capabilities and strategic product requirements. Your background in software engineering combined with business intuition makes you a 1% profile in India's tech ecosystem.
-              </p>
-              <Link to="/detailed-assessment" className="inline-flex items-center gap-2 w-full justify-center rounded-full bg-muted py-2.5 text-sm font-semibold hover:bg-muted/80 transition-colors">
-                Full Persona Analysis →
-              </Link>
+            <div className="glass-card p-6 h-full flex flex-col">
+              {loadingPersona ? (
+                <div className="flex-1 flex flex-col items-center justify-center min-h-[300px]">
+                  <Loader2 className="h-8 w-8 text-primary animate-spin mb-4" />
+                  <p className="text-sm font-semibold text-muted-foreground animate-pulse">Loading Identity Matrix...</p>
+                </div>
+              ) : !personaContent ? (
+                <div className="flex-1 flex flex-col items-center justify-center text-center min-h-[300px]">
+                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <Target className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-display font-bold mb-2">Discover Your Edge</h3>
+                  <p className="text-sm text-muted-foreground mb-6 max-w-[250px]">
+                    Take the 60-second assessment to unlock your personalized AI product career roadmap.
+                  </p>
+                  <Link to="/assessment" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
+                    Take Assessment <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <div className="relative bg-muted rounded-xl h-48 sm:h-56 flex items-center justify-center mb-5 overflow-hidden border border-border/50">
+                    <span className="absolute top-3 right-3 z-10 text-xs font-semibold text-neon bg-background/80 backdrop-blur-md border border-neon/30 rounded-full px-2.5 py-0.5 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-neon shadow-[0_0_8px_rgba(var(--neon),0.8)]" /> 94% Confidence
+                    </span>
+                    <img 
+                      src={`${personaContent.image}.png`}
+                      alt={personaData.persona}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                         e.currentTarget.style.display = 'none';
+                         e.currentTarget.parentElement!.innerHTML = '<div class="absolute inset-0 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary opacity-50"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>';
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+                  </div>
+                  <p className="text-[10px] uppercase tracking-widest text-primary font-bold mb-1">Primary Persona</p>
+                  <h3 className="text-2xl font-display font-bold mb-3">{personaContent.title.join(" ")}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                    {personaContent.desc}
+                  </p>
+                  <Link to="/persona" state={{ result: personaData }} className="inline-flex items-center gap-2 w-full justify-center rounded-full bg-muted py-3 text-sm font-semibold hover:bg-muted/80 transition-colors mt-auto">
+                    Full Persona Analysis <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </>
+              )}
             </div>
           </motion.div>
 
@@ -76,17 +180,15 @@ const Dashboard = () => {
                     { label: "Placement", status: "FINAL PHASE" },
                   ].map((step, i) => (
                     <div key={i} className="relative z-10 flex flex-col items-center text-center w-1/5">
-                      <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center mb-2 ${
-                        step.done ? "bg-secondary/20 border-secondary text-secondary"
+                      <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center mb-2 ${step.done ? "bg-secondary/20 border-secondary text-secondary"
                           : step.active ? "bg-primary/20 border-primary text-primary animate-pulse"
-                          : "bg-muted border-border text-muted-foreground"
-                      }`}>
+                            : "bg-muted border-border text-muted-foreground"
+                        }`}>
                         {step.done ? <CheckCircle className="h-5 w-5" /> : step.active ? <Target className="h-4 w-4" /> : <span className="w-2 h-2 rounded-full bg-muted-foreground" />}
                       </div>
                       <span className="text-[10px] md:text-xs font-medium leading-tight">{step.label}</span>
-                      <span className={`text-[9px] md:text-[10px] uppercase tracking-wider mt-0.5 ${
-                        step.done ? "text-secondary" : step.active ? "text-primary" : "text-muted-foreground"
-                      }`}>{step.status}</span>
+                      <span className={`text-[9px] md:text-[10px] uppercase tracking-wider mt-0.5 ${step.done ? "text-secondary" : step.active ? "text-primary" : "text-muted-foreground"
+                        }`}>{step.status}</span>
                     </div>
                   ))}
                 </div>

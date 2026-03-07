@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Rocket, ArrowLeft, ArrowRight, Shield } from "lucide-react";
+import { calculatePersona } from "@/lib/scoring";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 
 const questions = [
   {
@@ -76,6 +79,7 @@ const Assessment = () => {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const q = questions[current];
   const progress = ((current + 1) / questions.length) * 100;
@@ -85,12 +89,31 @@ const Assessment = () => {
     setAnswers((prev) => ({ ...prev, [q.id]: idx }));
   };
 
-  const next = () => {
+  const next = async () => {
     if (current < questions.length - 1) {
       setCurrent(current + 1);
     } else {
       setLoading(true);
-      setTimeout(() => navigate("/persona"), 3000);
+      
+      // Calculate persona
+      const result = calculatePersona(answers);
+      
+      // Save to localStorage for guests
+      localStorage.setItem("discovery_assessment_result", JSON.stringify(result));
+      
+      // If logged in, save to profile
+      if (user) {
+        try {
+          await supabase
+            .from('profiles')
+            .update({ discovery_persona: result })
+            .eq('id', user.id);
+        } catch (error) {
+          console.error("Error saving assessment to profile:", error);
+        }
+      }
+
+      setTimeout(() => navigate("/persona", { state: { result } }), 3000);
     }
   };
 

@@ -274,7 +274,7 @@ const Register = () => {
     setLoading(true);
     
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -283,6 +283,26 @@ const Register = () => {
       });
       
       if (error) throw error;
+      
+      // If we got a user back, let's sync their discovery assessment if any exists
+      if (data.user) {
+        const savedAssessment = localStorage.getItem('discovery_assessment_result');
+        if (savedAssessment) {
+          try {
+            const parsedAssessment = JSON.parse(savedAssessment);
+            await supabase
+              .from('profiles')
+              .update({ discovery_persona: parsedAssessment })
+              .eq('id', data.user.id);
+              
+            // Clean it up so it doesn't leak or override future sessions
+            localStorage.removeItem('discovery_assessment_result');
+          } catch (e) {
+            console.error("Failed to sync assessment data on signup:", e);
+          }
+        }
+      }
+
       // Intentionally DO NOT navigate to dashboard here. Let them proceed to step 2.
       setStep(2);
     } catch (err: any) {

@@ -57,7 +57,7 @@ const Market = () => {
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div>
               <h1 className="text-4xl md:text-5xl font-display font-bold mb-3">
-                India Tech Pulse<span className="text-aqua">.</span>
+                India <span className="text-gradient">Tech Pulse</span>
               </h1>
               <p className="text-sm text-muted-foreground max-w-lg">
                 Real-time displacement risk analysis and emerging opportunity signals across the Indian tech ecosystem.

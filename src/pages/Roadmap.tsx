@@ -46,7 +46,7 @@ const Roadmap = () => {
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>
             <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-2">AI-Native Career Co-Pilot</p>
-            <h1 className="text-3xl md:text-4xl font-display font-bold">Personalized Roadmap</h1>
+            <h1 className="text-3xl md:text-4xl font-display font-bold">Personalized <span className="text-gradient">Roadmap</span></h1>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground uppercase tracking-wider">Overall Completion</span>
@@ -66,9 +66,8 @@ const Roadmap = () => {
               transition={{ delay: pi * 0.15 }}
               className="relative pl-14 md:pl-16 mb-12"
             >
-              <div className={`absolute left-3 md:left-4 top-1 w-4 h-4 rounded-full border-2 ${
-                phase.active ? "border-primary bg-primary/20" : "border-border bg-background"
-              }`} />
+              <div className={`absolute left-3 md:left-4 top-1 w-4 h-4 rounded-full border-2 ${phase.active ? "border-primary bg-primary/20" : "border-border bg-background"
+                }`} />
 
               <div className="flex items-center gap-3 mb-4">
                 <span className={`text-xs uppercase tracking-widest font-semibold ${phase.active ? "text-primary" : "text-muted-foreground"}`}>

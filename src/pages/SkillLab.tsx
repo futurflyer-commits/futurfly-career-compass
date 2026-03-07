@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, X, Code, Database, BarChart3, Brain, Layers,
   Settings, Plus, Minus, Maximize2, Grid3X3, TrendingUp,
-  MessageSquare, Users, Target, Handshake,
+  MessageSquare, Users, Target, Handshake, BrainCircuit
 } from "lucide-react";
 import { DashboardNav } from "@/components/DashboardNav";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 type SkillCategory = "all" | "technical" | "domain" | "soft";
 
@@ -25,89 +27,16 @@ interface SkillNode {
   marketDemand?: string;
   careerMatch?: string;
   targetLevel?: string;
-  modules?: { title: string; count: number; duration: string }[];
+  evidence_array?: string[];
 }
-
-const skillNodes: SkillNode[] = [
-  // === DOMAIN (3) ===
-  {
-    id: "core", label: "Core Skillset", icon: Layers, x: 42, y: 48, size: "lg", type: "core", proficiency: 78, category: "domain",
-    tag: "DATA SCIENCE", marketDemand: "+62%", careerMatch: "88%", targetLevel: "Expert",
-    modules: [
-      { title: "Advanced Statistical Methods", count: 5, duration: "4h 20m" },
-      { title: "Feature Engineering Mastery", count: 4, duration: "3h 10m" },
-    ],
-  },
-  {
-    id: "dataviz", label: "Data Viz", icon: BarChart3, x: 28, y: 75, size: "md", type: "core", proficiency: 65, category: "domain",
-    marketDemand: "+32%", careerMatch: "70%", targetLevel: "Advanced",
-    modules: [{ title: "Interactive Dashboard Design", count: 4, duration: "3h 30m" }],
-  },
-  {
-    id: "bizstrat", label: "Biz Strategy", icon: Target, x: 55, y: 80, size: "sm", type: "adjacent", proficiency: 42, category: "domain",
-    marketDemand: "+38%", careerMatch: "65%", targetLevel: "Advanced",
-    modules: [{ title: "Data-Driven Decision Making", count: 3, duration: "2h 40m" }],
-  },
-
-  // === TECHNICAL (4) ===
-  {
-    id: "python", label: "Python", icon: Code, x: 18, y: 32, size: "md", type: "adjacent", proficiency: 72, category: "technical",
-    marketDemand: "+45%", careerMatch: "85%", targetLevel: "Advanced",
-    modules: [
-      { title: "Python for ML Pipelines", count: 6, duration: "5h 15m" },
-      { title: "Async & Concurrency Patterns", count: 3, duration: "2h 45m" },
-    ],
-  },
-  {
-    id: "llms", label: "LLMs", icon: Brain, x: 60, y: 22, size: "md", type: "adjacent", proficiency: 25, category: "technical",
-    tag: "TOP TREND", marketDemand: "+84%", careerMatch: "92%", targetLevel: "Expert",
-    modules: [
-      { title: "Transformer Architecture Basics", count: 4, duration: "2h 30m" },
-      { title: "Fine-tuning Strategies", count: 6, duration: "5h 15m" },
-    ],
-  },
-  {
-    id: "sql", label: "SQL", icon: Database, x: 12, y: 60, size: "md", type: "core", proficiency: 80, category: "technical",
-    marketDemand: "+28%", careerMatch: "76%", targetLevel: "Advanced",
-    modules: [{ title: "Window Functions & CTEs", count: 3, duration: "2h" }],
-  },
-  {
-    id: "mlops", label: "MLOps", icon: Settings, x: 80, y: 38, size: "sm", type: "gap", proficiency: 10, category: "technical",
-    tag: "GROWTH GAP", marketDemand: "+91%", careerMatch: "88%", targetLevel: "Intermediate",
-    modules: [
-      { title: "CI/CD for ML Models", count: 5, duration: "4h" },
-      { title: "Model Monitoring & Drift", count: 3, duration: "2h 30m" },
-    ],
-  },
-
-  // === SOFT SKILLS (3) ===
-  {
-    id: "communication", label: "Communication", icon: MessageSquare, x: 72, y: 62, size: "md", type: "core", proficiency: 70, category: "soft",
-    marketDemand: "+40%", careerMatch: "82%", targetLevel: "Expert",
-    modules: [{ title: "Stakeholder Communication", count: 3, duration: "2h 15m" }],
-  },
-  {
-    id: "leadership", label: "Leadership", icon: Users, x: 88, y: 50, size: "sm", type: "adjacent", proficiency: 45, category: "soft",
-    marketDemand: "+50%", careerMatch: "78%", targetLevel: "Advanced",
-    modules: [{ title: "Leading Cross-functional Teams", count: 4, duration: "3h" }],
-  },
-  {
-    id: "collab", label: "Collaboration", icon: Handshake, x: 75, y: 82, size: "sm", type: "core", proficiency: 76, category: "soft",
-    marketDemand: "+30%", careerMatch: "75%", targetLevel: "Advanced",
-    modules: [{ title: "Remote Team Collaboration", count: 2, duration: "1h 45m" }],
-  },
-];
-
-const connections: [string, string][] = [
-  ["core", "python"], ["core", "llms"], ["core", "sql"], ["core", "dataviz"],
-  ["core", "mlops"], ["core", "communication"], ["llms", "mlops"],
-  ["dataviz", "bizstrat"], ["communication", "leadership"], ["communication", "collab"],
-  ["sql", "dataviz"], ["bizstrat", "collab"],
-];
 
 const sizeMap = { lg: 110, md: 80, sm: 60 };
 
 const SkillLab = () => {
+  const { user } = useAuth();
+  const [skills, setSkills] = useState<SkillNode[]>([]);
+  const [loading, setLoading] = useState(true);
+  
   const [selected, setSelected] = useState<SkillNode | null>(null);
   const [activeFilter, setActiveFilter] = useState<SkillCategory>("all");
   const [zoom, setZoom] = useState(1);
@@ -115,6 +44,97 @@ const SkillLab = () => {
   const handleZoomIn = () => setZoom((z) => Math.min(z + 0.2, 2));
   const handleZoomOut = () => setZoom((z) => Math.max(z - 0.2, 0.4));
   const handleReset = () => setZoom(1);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      if (!user) return;
+      try {
+        const { data, error } = await supabase
+          .from("vw_user_skill_profile_enriched")
+          .select("*")
+          .eq("user_id", user.id);
+
+        if (error) throw error;
+        
+        // Algorithmic layout mapper
+        const mappedSkills: SkillNode[] = (data || []).map((row: any, i: number, arr: any[]) => {
+          // Calculate angle for radial distribution
+          const angle = (i / arr.length) * Math.PI * 2;
+          
+          let radius = 20; // Default exact middle cluster
+          let prof = 50;
+          let nodeType: "core" | "adjacent" | "gap" = "adjacent";
+          let sz: "lg" | "md" | "sm" = "md";
+          
+          if (row.competency_level === 3) {
+            radius = 15; // Tightly packed in center
+            prof = 95;
+            nodeType = "core";
+            sz = "lg";
+          } else if (row.competency_level === 2) {
+            radius = 35; // Orbiting cleanly
+            prof = 66;
+            nodeType = "adjacent";
+            sz = "md";
+          } else if (row.competency_level === 1) {
+            radius = 45; // Furthest out
+            prof = 33;
+            nodeType = "gap";
+            sz = "sm";
+          }
+
+          // Offset slightly so they don't form a perfect uniform ring
+          radius = radius + (Math.random() * 8 - 4);
+
+          // Convert polar to cartesian (scaled to 0-100% boundary box where 50,50 is center)
+          const x = 50 + radius * Math.cos(angle);
+          const y = 50 + radius * Math.sin(angle);
+
+          // Randomly assign icons based on abstract categories for now
+          const catStr = (row.category_name || "").toLowerCase();
+          let icon = BrainCircuit;
+          let catEnum: SkillCategory = "technical";
+          
+          if (catStr.includes("data") || catStr.includes("sql")) { icon = Database; catEnum = "domain"; }
+          else if (catStr.includes("soft") || catStr.includes("lead")) { icon = Users; catEnum = "soft"; }
+          else if (catStr.includes("python") || catStr.includes("java")) { icon = Code; catEnum = "technical"; }
+
+          // Try parsing JSON or split by pipe if it's the raw string we saved
+          let evArray: string[] = [];
+          if (row.evidence) {
+             if (typeof row.evidence === 'string' && row.evidence.includes('|')) {
+                 evArray = row.evidence.split('|').map((s: string) => s.trim());
+             } else {
+                 evArray = [String(row.evidence)];
+             }
+          }
+
+          return {
+            id: row.skill_id,
+            label: row.skill_name || "Unknown Skill",
+            icon: icon,
+            x: x,
+            y: y,
+            size: sz,
+            type: nodeType,
+            proficiency: prof,
+            category: catEnum,
+            marketDemand: "+45%", // Placeholder for future DB wiring
+            careerMatch: "85%", // Placeholder for future DB wiring
+            targetLevel: "Expert", // Placeholder
+            evidence_array: evArray
+          };
+        });
+
+        setSkills(mappedSkills);
+      } catch (err) {
+        console.error("Failed to load skills:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSkills();
+  }, [user]);
 
   const filters: { value: SkillCategory; label: string }[] = [
     { value: "all", label: "All" },
@@ -132,20 +152,29 @@ const SkillLab = () => {
 
   const getProficiencyLevel = (p: number) => proficiencyLevels.find((l) => p >= l.min)!;
 
-  const filteredNodes = activeFilter === "all" ? skillNodes : skillNodes.filter((n) => n.category === activeFilter);
+  const filteredNodes = activeFilter === "all" ? skills : skills.filter((n) => n.category === activeFilter);
   const filteredIds = new Set(filteredNodes.map((n) => n.id));
 
   // Aggregate stats
-  const avgProficiency = Math.round(skillNodes.reduce((s, n) => s + n.proficiency, 0) / skillNodes.length);
-  const expertCount = skillNodes.filter((n) => n.proficiency >= 75).length;
-  const gapCount = skillNodes.filter((n) => n.proficiency < 15).length;
-  const strongestSkill = [...skillNodes].sort((a, b) => b.proficiency - a.proficiency)[0];
-  const weakestSkill = [...skillNodes].sort((a, b) => a.proficiency - b.proficiency)[0];
+  const avgProficiency = skills.length > 0 ? Math.round(skills.reduce((s, n) => s + n.proficiency, 0) / skills.length) : 0;
+  const expertCount = skills.filter((n) => n.proficiency >= 75).length;
+  const gapCount = skills.filter((n) => n.proficiency < 15).length;
+  const strongestSkill = skills.length > 0 ? [...skills].sort((a, b) => b.proficiency - a.proficiency)[0] : null;
+  const weakestSkill = skills.length > 0 ? [...skills].sort((a, b) => a.proficiency - b.proficiency)[0] : null;
 
   const getNodePos = (id: string) => {
-    const node = skillNodes.find((n) => n.id === id);
+    const node = skills.find((n) => n.id === id);
     return node ? { x: node.x, y: node.y } : { x: 0, y: 0 };
   };
+
+  if (!user || loading) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center">
+        <div className="w-16 h-16 border-4 border-aqua/30 border-t-aqua rounded-full animate-spin mb-4" />
+        <p className="text-muted-foreground font-display tracking-widest uppercase">Initializing Canvas...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -188,10 +217,10 @@ const SkillLab = () => {
                 </div>
               </div>
               {[
-                { label: "Expert Skills", value: expertCount, sub: `of ${skillNodes.length}`, color: "hsl(142, 71%, 45%)" },
+                { label: "Expert Skills", value: expertCount, sub: `of ${skills.length}`, color: "hsl(142, 71%, 45%)" },
                 { label: "Skill Gaps", value: gapCount, sub: "need focus", color: "hsl(0, 84%, 60%)" },
-                { label: "Strongest", value: strongestSkill.label, sub: `${strongestSkill.proficiency}%`, color: "hsl(142, 71%, 45%)" },
-                { label: "Weakest", value: weakestSkill.label, sub: `${weakestSkill.proficiency}%`, color: "hsl(0, 84%, 60%)" },
+                { label: "Strongest", value: strongestSkill?.label || "None", sub: `${strongestSkill?.proficiency || 0}%`, color: "hsl(142, 71%, 45%)" },
+                { label: "Weakest", value: weakestSkill?.label || "None", sub: `${weakestSkill?.proficiency || 0}%`, color: "hsl(0, 84%, 60%)" },
               ].map((stat) => (
                 <div key={stat.label} className="glass-card p-4 rounded-xl">
                   <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">{stat.label}</p>
@@ -238,21 +267,30 @@ const SkillLab = () => {
               <div className="absolute inset-0" style={{ transform: `scale(${zoom})`, transformOrigin: "center center", transition: "transform 0.3s ease" }}>
 
                 <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                  {connections.map(([from, to]) => {
-                    if (!filteredIds.has(from) && !filteredIds.has(to)) return null;
-                    const a = getNodePos(from);
-                    const b = getNodePos(to);
-                    const isGap = skillNodes.find((n) => n.id === from)?.type === "gap" || skillNodes.find((n) => n.id === to)?.type === "gap";
-                    const dimmed = !filteredIds.has(from) || !filteredIds.has(to);
-                    return (
-                      <line key={`${from}-${to}`} x1={`${a.x}%`} y1={`${a.y}%`} x2={`${b.x}%`} y2={`${b.y}%`}
-                        stroke={isGap ? "hsl(var(--aqua) / 0.15)" : "hsl(var(--aqua) / 0.3)"} strokeWidth="1.5"
-                        strokeDasharray={isGap ? "6 4" : "none"} opacity={dimmed ? 0.2 : 1} />
-                    );
+                  {skills.map((nodeA) => {
+                    return skills.map((nodeB) => {
+                      if (nodeA.id >= nodeB.id || nodeA.category !== nodeB.category) return null;
+                      
+                      const dimmed = !filteredIds.has(nodeA.id) || !filteredIds.has(nodeB.id);
+                      if (dimmed) return null;
+                      
+                      const isGap = nodeA.type === "gap" || nodeB.type === "gap";
+                      
+                      return (
+                        <line 
+                          key={`${nodeA.id}-${nodeB.id}`} 
+                          x1={`${nodeA.x}%`} y1={`${nodeA.y}%`} 
+                          x2={`${nodeB.x}%`} y2={`${nodeB.y}%`}
+                          stroke={isGap ? "hsl(var(--aqua) / 0.15)" : "hsl(var(--aqua) / 0.3)"} 
+                          strokeWidth="1.5"
+                          strokeDasharray={isGap ? "6 4" : "none"} 
+                        />
+                      );
+                    });
                   })}
                 </svg>
 
-                {skillNodes.map((node) => {
+                {skills.map((node) => {
                   const size = sizeMap[node.size];
                   const isGap = node.type === "gap";
                   const isSelected = selected?.id === node.id;
@@ -378,16 +416,15 @@ const SkillLab = () => {
                     <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{selected.proficiency}% Competency Acquired</p>
                   </div>
 
-                  {selected.modules && selected.modules.length > 0 && (
+                  {selected.evidence_array && selected.evidence_array.length > 0 && (
                     <div className="mb-8">
-                      <h3 className="text-xs font-display font-bold uppercase tracking-widest mb-4">Recommended Path</h3>
+                      <h3 className="text-xs font-display font-bold uppercase tracking-widest mb-4">Extracted Context</h3>
                       <div className="space-y-3">
-                        {selected.modules.map((m, i) => (
-                          <div key={m.title} className="flex items-start gap-3">
-                            <span className="w-7 h-7 rounded-full bg-aqua/15 text-aqua text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
+                        {selected.evidence_array.map((ev, i) => (
+                          <div key={i} className="flex items-start gap-3 glass-card p-3 rounded-xl border border-border/30">
+                            <span className="w-5 h-5 rounded-full bg-aqua/15 text-aqua text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">{i + 1}</span>
                             <div>
-                              <p className="text-sm font-semibold">{m.title}</p>
-                              <p className="text-xs text-muted-foreground">{m.count} modules · {m.duration}</p>
+                              <p className="text-xs text-muted-foreground italic">&ldquo;{ev}&rdquo;</p>
                             </div>
                           </div>
                         ))}

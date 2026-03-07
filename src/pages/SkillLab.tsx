@@ -56,6 +56,16 @@ const SkillLab = () => {
 
         if (error) throw error;
         
+        let topSkillsData: any[] = [];
+        try {
+           const { data: tsData } = await supabase.from("v_top_skills").select("*").limit(100);
+           if (tsData) topSkillsData = tsData;
+        } catch (e) {
+           console.log("Failed to load v_top_skills, using baseline");
+        }
+        
+        const maxDemand = topSkillsData.length > 0 ? Math.max(...topSkillsData.map((s: any) => Number(s.demand_count) || 0)) : 100;
+
         // Algorithmic layout mapper
         const mappedSkills: SkillNode[] = (data || []).map((row: any, i: number, arr: any[]) => {
           // Calculate angle for radial distribution
@@ -108,6 +118,20 @@ const SkillLab = () => {
                  evArray = [String(row.evidence)];
              }
           }
+          
+          let demandStr = "+12%"; // baseline
+          let targetLvl = "Intermediate";
+          
+          const match = topSkillsData.find((s: any) => (s.skill_name || "").toUpperCase() === (row.skill_name || "").toUpperCase());
+          if (match && Number(match.demand_count) > 0) {
+             const maxD = maxDemand < 1 ? 1 : maxDemand;
+             const pct = Math.round((Number(match.demand_count) / maxD) * 100);
+             if (pct > 0) {
+                 demandStr = "+" + pct + "%";
+                 if (pct > 75) targetLvl = "Expert";
+                 else if (pct > 40) targetLvl = "Advanced";
+             }
+          }
 
           return {
             id: row.skill_id,
@@ -119,14 +143,17 @@ const SkillLab = () => {
             type: nodeType,
             proficiency: prof,
             category: catEnum,
-            marketDemand: "+45%", // Placeholder for future DB wiring
-            careerMatch: "85%", // Placeholder for future DB wiring
-            targetLevel: "Expert", // Placeholder
+            marketDemand: demandStr,
+            careerMatch: "85%", // To be updated next
+            targetLevel: targetLvl,
             evidence_array: evArray
           };
         });
+        
+        const avgAll = Math.round(mappedSkills.reduce((s, n) => s + n.proficiency, 0) / (mappedSkills.length || 1));
+        const finalMapped = mappedSkills.map(m => ({...m, careerMatch: avgAll + "%"}));
 
-        setSkills(mappedSkills);
+        setSkills(finalMapped);
       } catch (err) {
         console.error("Failed to load skills:", err);
       } finally {

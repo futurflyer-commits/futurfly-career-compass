@@ -16,7 +16,7 @@ const navSections = [
     items: [
       { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
       { label: "CareerNav AI", href: "/career-nav-ai", icon: BrainCircuit },
-      { label: "Skill Lab", href: "/skill-lab", icon: Microscope },
+      { label: "Skill Matrix", href: "/skill-lab", icon: Microscope },
     ]
   },
   {

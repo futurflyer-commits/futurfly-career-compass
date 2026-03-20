@@ -200,20 +200,23 @@ const SkillLab = () => {
                 <div className="absolute w-[450px] h-[450px] rounded-full border border-dotted border-muted-foreground animate-[spin_90s_linear_infinite_reverse]" />
               </div>
 
-              <div className="absolute inset-0 z-10 p-4">
-                <SkillGapWheel 
-                  data={wheelData?.clusters || []} 
-                  showRoleOverlay={showTarget}
-                  onClusterClick={() => {}}
-                />
-              </div>
-
-              {/* Center Score Overlay */}
-              <div className="absolute z-20 flex flex-col items-center justify-center w-32 h-32 rounded-full bg-background/80 backdrop-blur-md border border-aqua/20 shadow-[0_0_30px_rgba(45,212,191,0.15)]">
+              {/* Center Score Overlay rendered underneath */}
+              <div className="absolute z-0 flex flex-col items-center justify-center w-32 h-32 rounded-full bg-background/80 backdrop-blur-md border border-aqua/20 shadow-[0_0_30px_rgba(45,212,191,0.15)] pointer-events-none">
                 <span className="text-4xl font-display font-bold text-foreground">
                   {wheelData?.overall_score}%
                 </span>
                 <span className="text-[9px] uppercase tracking-widest text-muted-foreground font-bold mt-1">Total Score</span>
+              </div>
+
+              {/* The Graph rendered on top */}
+              <div className="absolute inset-0 z-10 p-4 pointer-events-auto flex items-center justify-center">
+                <div className="w-full h-full relative z-10">
+                  <SkillGapWheel 
+                    data={wheelData?.clusters || []} 
+                    showRoleOverlay={showTarget}
+                    onClusterClick={() => {}}
+                  />
+                </div>
               </div>
             </div>
 

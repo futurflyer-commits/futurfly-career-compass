@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DashboardNav } from "@/components/DashboardNav";
 import { Footer } from "@/components/Footer";
 import {
   User,
@@ -33,8 +32,7 @@ const Settings = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardNav />
-
+      
       <div className="container py-10 md:py-14">
         <div className="grid md:grid-cols-[260px_1fr] gap-8">
           {/* Sidebar */}

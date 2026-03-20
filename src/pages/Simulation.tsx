@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { TrendingUp } from "lucide-react";
-import { DashboardNav } from "@/components/DashboardNav";
 
 const phases = [
   { phase: "Phase 00", title: "Graduate Trainee", salary: "₹8,50,000", tag: "" },
@@ -22,8 +21,7 @@ const Simulation = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardNav />
-
+      
       <div className="container py-8 md:py-12">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-2 mb-2">

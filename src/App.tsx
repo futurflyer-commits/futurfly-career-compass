@@ -21,6 +21,7 @@ import DetailedAssessment from "./pages/DetailedAssessment";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { DashboardLayout } from "./layouts/DashboardLayout";
 
 const queryClient = new QueryClient();
 
@@ -38,16 +39,19 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             
             {/* Protected Routes */}
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/simulation" element={<ProtectedRoute><Simulation /></ProtectedRoute>} />
-            <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
-            <Route path="/market" element={<ProtectedRoute><Market /></ProtectedRoute>} />
-            <Route path="/skill-lab" element={<ProtectedRoute><SkillLab /></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-            <Route path="/career-nav-ai" element={<ProtectedRoute><CoPilot /></ProtectedRoute>} />
-            <Route path="/role-hub" element={<ProtectedRoute><RoleHub /></ProtectedRoute>} />
-            <Route path="/role/:id" element={<ProtectedRoute><RoleDetail /></ProtectedRoute>} />
-            <Route path="/detailed-assessment" element={<ProtectedRoute><DetailedAssessment /></ProtectedRoute>} />
+            <Route element={<DashboardLayout />}>
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/simulation" element={<ProtectedRoute><Simulation /></ProtectedRoute>} />
+              <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
+              <Route path="/market" element={<ProtectedRoute><Market /></ProtectedRoute>} />
+              <Route path="/skill-lab" element={<ProtectedRoute><SkillLab /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/career-nav-ai" element={<ProtectedRoute><CoPilot /></ProtectedRoute>} />
+              <Route path="/role-hub" element={<ProtectedRoute><RoleHub /></ProtectedRoute>} />
+              <Route path="/role/:id" element={<ProtectedRoute><RoleDetail /></ProtectedRoute>} />
+              <Route path="/detailed-assessment" element={<ProtectedRoute><DetailedAssessment /></ProtectedRoute>} />
+            </Route>
+            
             
             {/* Public Routes */}
             <Route path="/pricing" element={<Pricing />} />

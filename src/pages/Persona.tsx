@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Share2, Download, Sparkles } from "lucide-react";
-import { DashboardNav } from "@/components/DashboardNav";
 import { AssessmentResult } from "@/lib/scoring";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -88,7 +87,6 @@ const Persona = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {user && <DashboardNav />}
 
       <div className="flex flex-col items-center justify-center px-4 py-16 md:py-24">
         <motion.div

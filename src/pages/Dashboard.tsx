@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, TrendingUp, CheckCircle, Sparkles, BarChart3, Target, AlertTriangle, ArrowRight, Loader2 } from "lucide-react";
-import { DashboardNav } from "@/components/DashboardNav";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 
@@ -84,8 +83,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <DashboardNav />
-
+      
       <div className="container py-8 md:py-12">
         {/* Title */}
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mb-8">

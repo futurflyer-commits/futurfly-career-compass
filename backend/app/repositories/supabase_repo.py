@@ -135,3 +135,18 @@ class SupabaseRepository:
         )
         response.raise_for_status()
         return response.json()
+
+    def get_skill_wheel_data(self, user_id: str, role_id: Optional[str] = None) -> Dict[str, Any]:
+        """Fetch skill wheel data via Supabase RPC get_user_skill_wheel."""
+        payload = {"p_user_id": user_id}
+        if role_id:
+            payload["p_role_id"] = role_id
+            
+        response = httpx.post(
+            f"{self.url}/rest/v1/rpc/get_user_skill_wheel",
+            json=payload,
+            headers=self.headers
+        )
+        response.raise_for_status()
+        return response.json()
+

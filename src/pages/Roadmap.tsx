@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Gem, BookOpen, Code, Cloud, Snowflake, Shield, Monitor } from "lucide-react";
-import { DashboardNav } from "@/components/DashboardNav";
 
 const phases = [
   {
@@ -40,8 +39,7 @@ const phases = [
 const Roadmap = () => {
   return (
     <div className="min-h-screen bg-background">
-      <DashboardNav />
-
+      
       <div className="container py-8 md:py-12">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>

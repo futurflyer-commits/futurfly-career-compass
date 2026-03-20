@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from app.models.schemas import CVExtractionResponse
 from app.api.dependencies import get_current_user_id, get_cv_orchestrator, get_supabase_repo
 from app.services.orchestrator import CVOrchestrator
@@ -40,6 +40,24 @@ async def get_my_skills(
     """
     try:
         data = repo.get_user_skills(user_id=user_id)
+        return data
+    except Exception as e:
+        detail = str(e)
+        if hasattr(e, "response") and hasattr(e.response, "text"):
+            detail += f" | {e.response.text}"
+        raise HTTPException(status_code=500, detail=detail)
+
+@router.get("/skill-wheel")
+async def get_skill_wheel(
+    role_id: Optional[str] = None,
+    user_id: str = Depends(get_current_user_id),
+    repo: SupabaseRepository = Depends(get_supabase_repo)
+):
+    """
+    Returns the JSON representation of the skill clusters for the Radar Chart.
+    """
+    try:
+        data = repo.get_skill_wheel_data(user_id=user_id, role_id=role_id)
         return data
     except Exception as e:
         detail = str(e)

@@ -1,7 +1,12 @@
+import sys
+import os
+
+# Add the parent directory (backend) to sys.path so Vercel can find the 'app' module
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-import os
 
 # Go up two levels: app/ -> backend/ -> root/
 load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { TrendingUp, Shield, Zap, ChevronRight, ArrowRight, Download, BarChart3, Loader2 } from "lucide-react";
-import { DashboardNav } from "@/components/DashboardNav";
 import { Footer } from "@/components/Footer";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { supabase } from "@/lib/supabase";
@@ -226,8 +225,7 @@ const Market = () => {
   }, []);
   return (
     <div className="min-h-screen bg-background">
-      <DashboardNav />
-      <div className="container pt-24 pb-16">
+            <div className="container pt-24 pb-16">
         {/* Hero Header */}
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
           <p className="flex items-center gap-2 text-xs uppercase tracking-widest text-aqua font-semibold mb-3">

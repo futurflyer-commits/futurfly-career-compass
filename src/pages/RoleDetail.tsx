@@ -1,6 +1,5 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { DashboardNav } from "@/components/DashboardNav";
 import { Footer } from "@/components/Footer";
 import { ArrowLeft, BarChart3, TrendingUp, CheckCircle, AlertTriangle, Clock, Sparkles, MapPin, Briefcase } from "lucide-react";
 
@@ -118,8 +117,7 @@ const RoleDetail = () => {
   if (!role) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
-        <DashboardNav />
-        <div className="flex-1 flex items-center justify-center">
+                <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <p className="text-muted-foreground mb-4">Role not found.</p>
             <Link to="/role-hub" className="text-primary font-semibold hover:underline">← Back to Role Hub</Link>
@@ -133,8 +131,7 @@ const RoleDetail = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <DashboardNav />
-
+      
       <main className="flex-1 container max-w-4xl py-10 md:py-16 px-4">
         {/* Back */}
         <Link to="/role-hub" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">

@@ -1,0 +1,224 @@
+--- user_skill_profiles ---
+[
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_id": "SK009",
+    "competency_level": 1,
+    "confidence_score": 0.95,
+    "estimated_years": 1.0,
+    "evidence": "Developed machine learning models for customer churn prediction",
+    "source": "cv_parse",
+    "parse_run_id": "0aaf3ec7-54e0-4919-8e49-1f48cfcf14e0",
+    "created_at": "2026-03-20T11:16:02.31631+00:00",
+    "updated_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_id": "SK010",
+    "competency_level": 1,
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Built deep learning model using CNN for image classification achieving 92% accuracy",
+    "source": "cv_parse",
+    "parse_run_id": "0aaf3ec7-54e0-4919-8e49-1f48cfcf14e0",
+    "created_at": "2026-03-20T11:16:02.31631+00:00",
+    "updated_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_id": "SK001",
+    "competency_level": 1,
+    "confidence_score": 0.95,
+    "estimated_years": 1.0,
+    "evidence": "Strong foundation in Python",
+    "source": "cv_parse",
+    "parse_run_id": "0aaf3ec7-54e0-4919-8e49-1f48cfcf14e0",
+    "created_at": "2026-03-20T11:16:02.31631+00:00",
+    "updated_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_id": "SK004",
+    "competency_level": 1,
+    "confidence_score": 0.95,
+    "estimated_years": 1.0,
+    "evidence": "Deployed applications on AWS using Docker containers",
+    "source": "cv_parse",
+    "parse_run_id": "0aaf3ec7-54e0-4919-8e49-1f48cfcf14e0",
+    "created_at": "2026-03-20T11:16:02.31631+00:00",
+    "updated_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_id": "SK006",
+    "competency_level": 1,
+    "confidence_score": 0.95,
+    "estimated_years": 1.0,
+    "evidence": "Deployed applications on AWS using Docker containers",
+    "source": "cv_parse",
+    "parse_run_id": "0aaf3ec7-54e0-4919-8e49-1f48cfcf14e0",
+    "created_at": "2026-03-20T11:16:02.31631+00:00",
+    "updated_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_id": "SK017",
+    "competency_level": 1,
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Worked on LLM-based chatbot using LangChain and OpenAI APIs",
+    "source": "cv_parse",
+    "parse_run_id": "0aaf3ec7-54e0-4919-8e49-1f48cfcf14e0",
+    "created_at": "2026-03-20T11:16:02.31631+00:00",
+    "updated_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_id": "SK012",
+    "competency_level": 1,
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Frameworks: TensorFlow",
+    "source": "cv_parse",
+    "parse_run_id": "0aaf3ec7-54e0-4919-8e49-1f48cfcf14e0",
+    "created_at": "2026-03-20T11:16:02.31631+00:00",
+    "updated_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_id": "SK011",
+    "competency_level": 1,
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Frameworks: PyTorch",
+    "source": "cv_parse",
+    "parse_run_id": "0aaf3ec7-54e0-4919-8e49-1f48cfcf14e0",
+    "created_at": "2026-03-20T11:16:02.31631+00:00",
+    "updated_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_id": "SK003",
+    "competency_level": 1,
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Built dashboards for analytics using Python and SQL",
+    "source": "cv_parse",
+    "parse_run_id": "0aaf3ec7-54e0-4919-8e49-1f48cfcf14e0",
+    "created_at": "2026-03-20T11:16:02.31631+00:00",
+    "updated_at": "2026-03-20T11:16:02.31631+00:00"
+  }
+]
+
+--- vw_user_skill_profile_enriched ---
+[
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_name": "Python",
+    "skill_id": "SK001",
+    "competency_level": 1,
+    "competency_name": "Novice",
+    "confidence_score": 0.95,
+    "estimated_years": 1.0,
+    "evidence": "Strong foundation in Python",
+    "source": "cv_parse",
+    "created_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_name": "SQL",
+    "skill_id": "SK003",
+    "competency_level": 1,
+    "competency_name": "Novice",
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Built dashboards for analytics using Python and SQL",
+    "source": "cv_parse",
+    "created_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_name": "AWS",
+    "skill_id": "SK004",
+    "competency_level": 1,
+    "competency_name": "Novice",
+    "confidence_score": 0.95,
+    "estimated_years": 1.0,
+    "evidence": "Deployed applications on AWS using Docker containers",
+    "source": "cv_parse",
+    "created_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_name": "Docker",
+    "skill_id": "SK006",
+    "competency_level": 1,
+    "competency_name": "Novice",
+    "confidence_score": 0.95,
+    "estimated_years": 1.0,
+    "evidence": "Deployed applications on AWS using Docker containers",
+    "source": "cv_parse",
+    "created_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_name": "Machine Learning",
+    "skill_id": "SK009",
+    "competency_level": 1,
+    "competency_name": "Novice",
+    "confidence_score": 0.95,
+    "estimated_years": 1.0,
+    "evidence": "Developed machine learning models for customer churn prediction",
+    "source": "cv_parse",
+    "created_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_name": "Deep Learning",
+    "skill_id": "SK010",
+    "competency_level": 1,
+    "competency_name": "Novice",
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Built deep learning model using CNN for image classification achieving 92% accuracy",
+    "source": "cv_parse",
+    "created_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_name": "PyTorch",
+    "skill_id": "SK011",
+    "competency_level": 1,
+    "competency_name": "Novice",
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Frameworks: PyTorch",
+    "source": "cv_parse",
+    "created_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_name": "TensorFlow",
+    "skill_id": "SK012",
+    "competency_level": 1,
+    "competency_name": "Novice",
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Frameworks: TensorFlow",
+    "source": "cv_parse",
+    "created_at": "2026-03-20T11:16:02.31631+00:00"
+  },
+  {
+    "user_id": "62ae02c5-7e57-4488-b4d7-d6f283a42394",
+    "skill_name": "LangChain",
+    "skill_id": "SK017",
+    "competency_level": 1,
+    "competency_name": "Novice",
+    "confidence_score": 0.95,
+    "estimated_years": 0.0,
+    "evidence": "Worked on LLM-based chatbot using LangChain and OpenAI APIs",
+    "source": "cv_parse",
+    "created_at": "2026-03-20T11:16:02.31631+00:00"
+  }
+]
+

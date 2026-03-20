@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+openai
+httpx
+python-dotenv
+python-multipart==0.0.9
+PyPDF2==3.0.1
+python-docx==1.1.0

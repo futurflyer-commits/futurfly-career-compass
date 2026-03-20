@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { DashboardNav } from "@/components/DashboardNav";
 import { Footer } from "@/components/Footer";
 import { Search, SlidersHorizontal, TrendingUp, ChevronDown, BarChart3, X, MapPin, Briefcase, IndianRupee, Eye, CheckCircle, AlertTriangle, Sparkles, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -109,8 +108,7 @@ const RoleHub = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <DashboardNav />
-
+      
       <main className="flex-1 container max-w-5xl py-10 md:py-16 px-4">
         <h1 className="font-display text-3xl md:text-4xl font-bold mb-3">Role <span className="text-gradient">Hub</span></h1>
         <p className="text-muted-foreground text-sm md:text-base max-w-xl mb-8">

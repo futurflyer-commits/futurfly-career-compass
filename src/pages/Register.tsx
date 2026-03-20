@@ -52,15 +52,10 @@ const analysisTexts = [
   "Finalizing persona synthesis...",
 ];
 
-const AIProcessingScreen = ({ onComplete }: { onComplete: () => void }) => {
+const AIProcessingScreen = () => {
   const [progress, setProgress] = useState(0);
   const [visibleLogs, setVisibleLogs] = useState<number>(0);
   const [analysisIndex, setAnalysisIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setTimeout(onComplete, 5000);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -351,7 +346,10 @@ const Register = () => {
         const token = user?.id;
         if (!token) throw new Error("Not logged in");
 
-        const response = await fetch("http://localhost:8000/api/cv/parse", {
+        // Use relative path on Vercel, localhost in development
+        const API_BASE = import.meta.env.PROD ? '' : 'http://localhost:8000';
+
+        const response = await fetch(`${API_BASE}/api/cv/parse`, {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${token}`
@@ -386,6 +384,10 @@ const Register = () => {
 
   const handleFinalize = () => {
     setParsing(true);
+    // Simulate backend processing time for manual flow
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 5000);
   };
 
   const filteredInterests = interests.filter((i) =>
@@ -393,7 +395,7 @@ const Register = () => {
   );
 
   if (parsing) {
-    return <AIProcessingScreen onComplete={() => navigate("/dashboard")} />;
+    return <AIProcessingScreen />;
   }
 
   return (

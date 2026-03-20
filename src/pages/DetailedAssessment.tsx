@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Shield } from "lucide-react";
-import { DashboardNav } from "@/components/DashboardNav";
 
 type QuestionType = "select" | "swipe" | "slider";
 
@@ -176,8 +175,7 @@ const DetailedAssessment = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <DashboardNav />
-
+      
       {/* Section tracker */}
       <div className="border-b border-border/30 bg-card/50 backdrop-blur-sm">
         <div className="container py-3">

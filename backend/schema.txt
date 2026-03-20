@@ -1,0 +1,41 @@
+Tables: ['vw_user_role_skill_gap', 'v_jobs_by_city_30d', 'job_skills', 'skill_name', 'jobs', 'role_intelligence', 'profiles', 'skill_domains', 'unmatched_user_skills', 'v_top_skills', 'skill_embeddings', 'vw_skill_ontology', 'user_skill_profiles', 'industry_growth', 'v_hiring_velocity_30d', 'skills', 'vw_user_role_fit', 'competency_rubric', 'vw_user_skill_profile_enriched', 'v_role_market_signal', 'vw_skill_normalization_dictionary', 'role_skill_requirements', 'skill_synonyms', 'user_skill_profile_history', 'cv_parse_runs', 'roles', 'vw_profile_user_skills', 'skill_categories', 'vw_role_library_enriched']
+
+skills:
+  - skill_id (string)
+  - skill_name (string)
+  - category (string)
+  - created_at (string)
+skill_name:
+  - skill_id (string)
+  - skill_name (string)
+  - description (string)
+  - skill_type (string)
+  - category_id (string)
+  - is_active (boolean)
+  - created_at (string)
+skill_categories:
+  - category_id (string)
+  - domain_id (string)
+  - category_name (string)
+profiles:
+  - id (string)
+  - full_name (string)
+  - discovery_persona (None)
+  - updated_at (string)
+roles:
+  - role_id (string)
+  - role_name (string)
+  - salary_min_lpa (number)
+  - salary_max_lpa (number)
+  - created_at (string)
+user_skill_profiles:
+  - user_id (string)
+  - skill_id (string)
+  - competency_level (integer)
+  - confidence_score (number)
+  - estimated_years (number)
+  - evidence (string)
+  - source (string)
+  - parse_run_id (string)
+  - created_at (string)
+  - updated_at (string)

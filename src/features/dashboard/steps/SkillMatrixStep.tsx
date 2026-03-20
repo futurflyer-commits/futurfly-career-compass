@@ -1,5 +1,8 @@
 import { ArrowLeft, Target, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 import { SkillGapWheel } from "@/components/SkillGapWheel";
 
 interface SkillMatrixStepProps {
@@ -9,6 +12,60 @@ interface SkillMatrixStepProps {
 }
 
 export const SkillMatrixStep = ({ onNext, onBack, selectedRoleId }: SkillMatrixStepProps) => {
+  const { user } = useAuth();
+  const [wheelData, setWheelData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fallback data if the real RPC function hasn't been executed by the user yet
+  const mockData = {
+    overall_score: 68,
+    clusters: [
+      { name: "Programming", score: 8, gap: 1.5, skills: [{name: "Python", level: 8}] },
+      { name: "Cloud & DevOps", score: 6, gap: 3, skills: [{name: "Docker", level: 6}] },
+      { name: "AI / ML", score: 5, gap: 4, skills: [{name: "LLMs", level: 4}] },
+      { name: "Data Engineering", score: 7, gap: 1, skills: [{name: "SQL", level: 8}] },
+      { name: "System Design", score: 6.5, gap: 2, skills: [{name: "Architecture", level: 6}] },
+      { name: "Soft Skills", score: 9, gap: 0, skills: [{name: "Leadership", level: 9}] },
+    ]
+  };
+
+  useEffect(() => {
+    const fetchWheelData = async () => {
+      if (!user) return;
+      try {
+        setLoading(true);
+        const { data, error } = await supabase.rpc("get_user_skill_wheel", {
+          p_user_id: user.id,
+          p_role_id: selectedRoleId
+        });
+        
+        if (error) {
+           console.error("RPC Error (falling back to mock data):", error);
+           setWheelData(null);
+        } else {
+           setWheelData(data);
+        }
+      } catch (e) {
+        console.error("Fetch Exception:", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchWheelData();
+  }, [user, selectedRoleId]);
+
+  const currentData = wheelData?.clusters || mockData.clusters;
+  const currentOverallScore = wheelData?.overall_score || mockData.overall_score;
+
+  if (loading) {
+    return (
+      <div className="flex flex-col h-full items-center justify-center p-8">
+        <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4" />
+        <p className="text-muted-foreground font-display tracking-widest uppercase text-xs">Computing Skill Matrix...</p>
+      </div>
+    );
+  }
+
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col h-full">
       <div className="mb-6">
@@ -24,7 +81,7 @@ export const SkillMatrixStep = ({ onNext, onBack, selectedRoleId }: SkillMatrixS
                 {/* Centered Total Score Ring rendered underneath */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
                   <div className="bg-[#11131a]/95 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-2xl border border-white/5 backdrop-blur-md">
-                    <span className="text-2xl font-display font-bold text-white leading-none">68%</span>
+                    <span className="text-2xl font-display font-bold text-white leading-none">{currentOverallScore}%</span>
                     <span className="text-[8px] uppercase tracking-widest text-muted-foreground/80 mt-1 font-bold">Total Score</span>
                   </div>
                 </div>
@@ -32,14 +89,7 @@ export const SkillMatrixStep = ({ onNext, onBack, selectedRoleId }: SkillMatrixS
                 {/* Radar visualization rendered on top so tooltips override the ring */}
                 <div className="relative z-10 w-full h-full pointer-events-auto">
                   <SkillGapWheel 
-                    data={[
-                      { name: "Programming", score: 8, gap: 1.5, skills: [{name: "Python", level: 8}] },
-                      { name: "Cloud & DevOps", score: 6, gap: 3, skills: [{name: "Docker", level: 6}] },
-                      { name: "AI / ML", score: 5, gap: 4, skills: [{name: "LLMs", level: 4}] },
-                      { name: "Data Engineering", score: 7, gap: 1, skills: [{name: "SQL", level: 8}] },
-                      { name: "System Design", score: 6.5, gap: 2, skills: [{name: "Architecture", level: 6}] },
-                      { name: "Soft Skills", score: 9, gap: 0, skills: [{name: "Leadership", level: 9}] },
-                    ]} 
+                    data={currentData} 
                     showRoleOverlay={true} 
                     onClusterClick={() => {}} 
                   />
@@ -54,7 +104,7 @@ export const SkillMatrixStep = ({ onNext, onBack, selectedRoleId }: SkillMatrixS
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Current Readiness</p>
-                <h3 className="text-4xl font-display font-bold text-primary">68%</h3>
+                <h3 className="text-4xl font-display font-bold text-primary">{currentOverallScore}%</h3>
               </div>
               <div className="h-px w-full bg-border/50" />
               <div>

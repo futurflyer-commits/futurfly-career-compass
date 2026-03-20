@@ -88,86 +88,100 @@ const Persona = () => {
   return (
     <div className="min-h-screen bg-background">
 
-      <div className="flex flex-col items-center justify-center px-4 py-16 md:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center max-w-2xl"
-        >
-          <span className="inline-block border border-primary/40 rounded-full px-4 py-1 text-xs font-semibold tracking-widest uppercase text-primary mb-6">
-            Assessment Complete
-          </span>
-
-          <h1 className="text-4xl md:text-6xl font-display font-bold mb-2">{content.title[0]}</h1>
-          <h1 className="text-4xl md:text-6xl font-display font-bold text-gradient mb-10">{content.title[1]}</h1>
-
-          {/* Avatar area */}
+      <div className="flex flex-col justify-center min-h-[calc(100vh-80px)] px-4 py-12 md:py-24 max-w-[1400px] mx-auto w-full relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center w-full">
+          
+          {/* LEFT COLUMN: Title and Avatar */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-            className="relative w-64 h-64 mx-auto mb-8"
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="flex flex-col items-center text-center w-full"
           >
-            <div className="absolute inset-0 rounded-2xl bg-primary/10 blur-2xl animate-pulse-glow" />
-            <div className="relative w-full h-full rounded-2xl bg-card border border-border/50 flex items-center justify-center overflow-hidden">
-              <img 
-                src={`${content.image}.png`}
-                alt={result.persona}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                   e.currentTarget.style.display = 'none';
-                   e.currentTarget.parentElement!.innerHTML = '<div class="flex items-center justify-center w-full h-full"><svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>';
-                }}
-              />
-            </div>
+            <span className="inline-block border border-primary/30 bg-primary/5 rounded-full px-5 py-2 text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase text-primary mb-8 shadow-[0_0_20px_rgba(45,212,191,0.15)] backdrop-blur-sm">
+              Assessment Processing Complete
+            </span>
+
+            <h1 className="text-4xl md:text-6xl xl:text-[5rem] font-display font-black mb-1 leading-none tracking-tight text-foreground">{content.title[0]}</h1>
+            <h1 className="text-4xl md:text-6xl xl:text-[5rem] font-display font-black text-gradient mb-12 leading-none tracking-tight drop-shadow-md">{content.title[1]}</h1>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="relative w-full max-w-[320px] md:max-w-[440px] lg:max-w-[540px] xl:max-w-[640px] aspect-square mx-auto group cursor-default"
+            >
+              <div className="absolute inset-0 rounded-[2.5rem] lg:rounded-[4rem] bg-primary/20 blur-3xl animate-pulse-glow transition-all duration-700 group-hover:bg-primary/30" />
+              <div className="relative w-full h-full rounded-[2.5rem] lg:rounded-[4rem] bg-card border-2 border-border/30 flex items-center justify-center overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
+                <img 
+                  src={`${content.image}.png`}
+                  alt={result.persona}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  onError={(e) => {
+                     e.currentTarget.style.display = 'none';
+                     e.currentTarget.parentElement!.innerHTML = '<div class="flex items-center justify-center w-full h-full"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary opacity-50"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>';
+                  }}
+                />
+              </div>
+            </motion.div>
           </motion.div>
 
-          <p className="text-muted-foreground leading-relaxed mb-10 max-w-lg mx-auto">
-            {content.desc}
-          </p>
-
-          {/* Trait bars */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto mb-12">
-            {dynamicTraits.map((t, i) => (
-              <motion.div
-                key={t.label}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 + i * 0.1 }}
-                className="glass-card p-4"
-              >
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs uppercase tracking-wider text-muted-foreground">{t.label}</span>
-                  <span className="text-sm font-display font-bold text-primary">{t.value}%</span>
-                </div>
-                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                  <motion.div
-                    className={`h-full rounded-full bg-gradient-to-r ${t.color}`}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${t.value}%` }}
-                    transition={{ delay: 0.7 + i * 0.1, duration: 0.8, ease: "easeOut" }}
-                  />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <Link
-            to="/register"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-8 py-3.5 text-sm font-semibold text-primary-foreground glow-aqua hover:opacity-90 transition-all mb-6"
+          {/* RIGHT COLUMN: Description, Stats, CTA */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
+            className="flex flex-col items-center text-center w-full"
           >
-            Unlock My Career Roadmap <ArrowRight className="h-4 w-4" />
-          </Link>
+            <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground leading-relaxed md:leading-loose mb-12 max-w-xl font-medium">
+              {content.desc}
+            </p>
 
-          <div className="flex items-center justify-center gap-6 text-muted-foreground">
-            <button className="flex items-center gap-1.5 text-xs uppercase tracking-wider hover:text-primary transition-colors">
-              <Share2 className="h-3.5 w-3.5" /> Share Result
-            </button>
-            <button className="flex items-center gap-1.5 text-xs uppercase tracking-wider hover:text-primary transition-colors">
-              <Download className="h-3.5 w-3.5" /> Download Portfolio
-            </button>
-          </div>
-        </motion.div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-xl mb-16">
+              {dynamicTraits.map((t, i) => (
+                <motion.div
+                  key={t.label}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 + i * 0.1, duration: 0.5, ease: "easeOut" }}
+                  className="bg-card/40 border border-border/40 p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-colors text-left relative overflow-hidden group"
+                >
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl translate-x-10 -translate-y-10 rounded-full transition-all duration-700 group-hover:bg-primary/10 pointer-events-none" />
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-center mb-5">
+                      <span className="text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground">{t.label}</span>
+                      <span className="text-lg md:text-xl lg:text-2xl font-display font-black text-foreground drop-shadow-sm">{t.value}%</span>
+                    </div>
+                    <div className="h-1.5 md:h-[6px] bg-[#11131a] border border-white/5 rounded-full overflow-hidden shadow-inner w-full">
+                      <motion.div
+                        className={`h-full rounded-full bg-gradient-to-r ${t.color}`}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${t.value}%` }}
+                        transition={{ delay: 0.8 + i * 0.15, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <Link
+              to="/register"
+              className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-primary to-neon px-12 py-6 lg:py-8 text-lg md:text-xl lg:text-2xl font-bold tracking-wide text-[#0a1017] glow-aqua hover:scale-[1.03] transform shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_50px_rgba(45,212,191,0.5)] transition-all duration-300 w-full sm:w-auto mb-12"
+            >
+              Unlock My Curated Roadmap <ArrowRight className="h-6 w-6 md:h-7 md:w-7 animate-pulse text-foreground/80" />
+            </Link>
+
+            <div className="flex items-center justify-center gap-8 text-muted-foreground/70">
+              <button className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">
+                <Share2 className="h-4 w-4" /> Share Result
+              </button>
+              <button className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">
+                <Download className="h-4 w-4" /> Download Portfolio
+              </button>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
       <footer className="py-6 text-center">

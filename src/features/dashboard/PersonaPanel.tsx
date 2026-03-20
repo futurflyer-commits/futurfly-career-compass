@@ -60,7 +60,7 @@ export const PersonaPanel = ({ personaData, compact = false }: PersonaPanelProps
 
   return (
     <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="glass-card p-5 h-full flex flex-col text-left">
-      <div className="relative rounded-xl h-52 w-full mb-5 overflow-hidden border border-border/20 shadow-lg">
+      <div className="relative rounded-xl aspect-video w-full mb-5 overflow-hidden border border-border/20 shadow-lg bg-black/40">
         <img 
           src={`${content.image}.png`}
           alt={personaData?.persona || "Persona"}

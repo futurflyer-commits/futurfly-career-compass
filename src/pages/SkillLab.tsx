@@ -29,24 +29,24 @@ const SkillLab = () => {
   const [showTarget, setShowTarget] = useState(true);
   const [showTargetModal, setShowTargetModal] = useState(false);
   const [targetTitle, setTargetTitle] = useState("Target Role");
-  
+
   // Dummy target role for the UI
   const targetRoleId = "dummy-role-uuid";
 
   useEffect(() => {
     if (user) {
       supabase.from("profiles").select("active_role_id").eq("id", user.id).single()
-      .then(({data}) => {
-         if (data?.active_role_id) {
-           // Basic title mapping (e.g. "role-1" -> "AI Solutions Architect")
-           const titleId = data.active_role_id;
-           if (titleId === "role-1") setTargetTitle("AI Solutions Architect");
-           else if (titleId === "role-2") setTargetTitle("GenAI Product Lead");
-           else if (titleId === "role-3") setTargetTitle("ML Engineering Manager");
-           else if (titleId === "role-4") setTargetTitle("Senior MLOps Engineer");
-           else setTargetTitle(titleId.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()));
-         }
-      });
+        .then(({ data }) => {
+          if (data?.active_role_id) {
+            // Basic title mapping (e.g. "role-1" -> "AI Solutions Architect")
+            const titleId = data.active_role_id;
+            if (titleId === "role-1") setTargetTitle("AI Solutions Architect");
+            else if (titleId === "role-2") setTargetTitle("GenAI Product Lead");
+            else if (titleId === "role-3") setTargetTitle("ML Engineering Manager");
+            else if (titleId === "role-4") setTargetTitle("Senior MLOps Engineer");
+            else setTargetTitle(titleId.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()));
+          }
+        });
     }
   }, [user]);
 
@@ -265,8 +265,8 @@ const SkillLab = () => {
                       <div className="h-full bg-aqua rounded-full shadow-[0_0_10px_rgba(45,212,191,0.5)]" style={{ width: "78%" }} />
                     </div>
 
-                    <button 
-                      onClick={() => setShowTargetModal(true)} 
+                    <button
+                      onClick={() => setShowTargetModal(true)}
                       className="w-full py-2.5 rounded-lg border border-aqua/30 bg-aqua/5 text-aqua font-bold text-[10px] uppercase tracking-widest hover:bg-aqua/20 transition-all flex justify-center items-center gap-2"
                     >
                       View Detailed Target <ArrowRight className="w-3.5 h-3.5" />
@@ -356,11 +356,11 @@ const SkillLab = () => {
                       {/* Target Required marker (rendered underneath) */}
                       <div className="absolute top-0 bottom-0 left-0 bg-muted-foreground/30 rounded-full" style={{ width: `${((cluster.score + cluster.gap) / 10) * 100}%` }} />
                       {/* Actual User competency bar */}
-                      <motion.div 
+                      <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${(cluster.score / 10) * 100}%` }}
                         transition={{ duration: 1, delay: i * 0.1 }}
-                        className={`h-full rounded-full absolute top-0 left-0 z-10 ${cluster.gap > 0 ? 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.4)]' : 'bg-aqua shadow-[0_0_10px_rgba(45,212,191,0.4)]'}`} 
+                        className={`h-full rounded-full absolute top-0 left-0 z-10 ${cluster.gap > 0 ? 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.4)]' : 'bg-aqua shadow-[0_0_10px_rgba(45,212,191,0.4)]'}`}
                       />
                     </div>
                     {cluster.gap > 0 && (

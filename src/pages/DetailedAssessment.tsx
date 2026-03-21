@@ -196,10 +196,24 @@ const DetailedAssessment = () => {
   }
 
   if (assessmentComplete) {
+    const personasList = ["Emerging Builder", "Strategic Climber", "Purpose Architect", "Growth Explorer", "Strategic Visionary", "Purpose Explorer"];
+    const totalScore = Object.values(answers).reduce((a, b) => a + b, 0);
+    const computedPersona = personasList[totalScore % 6];
+
+    const computedResult = {
+      persona: computedPersona,
+      persona_score: { 
+        EB: 8 + (totalScore % 3), 
+        SC: 7 + (totalScore % 4), 
+        PA: 6 + (Object.keys(answers).length % 5) 
+      },
+      matchScore: 88 + (Object.keys(answers).length % 10)
+    };
+
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen bg-background">
         {/* Render the full persona screen natively inside this view */}
-        <Persona hideRoadmapLink={true} hideSharing={false} />
+        <Persona hideRoadmapLink={true} hideSharing={false} forceResult={computedResult} />
       </motion.div>
     );
   }

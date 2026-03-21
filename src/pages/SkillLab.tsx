@@ -8,6 +8,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { SkillGapWheel } from "@/components/SkillGapWheel";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface ClusterData {
   name: string;
@@ -25,10 +26,29 @@ const SkillLab = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [wheelData, setWheelData] = useState<WheelResponse | null>(null);
-  const [showTarget, setShowTarget] = useState(false);
+  const [showTarget, setShowTarget] = useState(true);
+  const [showTargetModal, setShowTargetModal] = useState(false);
+  const [targetTitle, setTargetTitle] = useState("Target Role");
   
   // Dummy target role for the UI
   const targetRoleId = "dummy-role-uuid";
+
+  useEffect(() => {
+    if (user) {
+      supabase.from("profiles").select("active_role_id").eq("id", user.id).single()
+      .then(({data}) => {
+         if (data?.active_role_id) {
+           // Basic title mapping (e.g. "role-1" -> "AI Solutions Architect")
+           const titleId = data.active_role_id;
+           if (titleId === "role-1") setTargetTitle("AI Solutions Architect");
+           else if (titleId === "role-2") setTargetTitle("GenAI Product Lead");
+           else if (titleId === "role-3") setTargetTitle("ML Engineering Manager");
+           else if (titleId === "role-4") setTargetTitle("Senior MLOps Engineer");
+           else setTargetTitle(titleId.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()));
+         }
+      });
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchWheelData = async () => {
@@ -49,12 +69,12 @@ const SkillLab = () => {
           setWheelData({
             overall_score: 63,
             clusters: [
-              { name: "Programming", score: 8.4, gap: 1.2, skills: [{name: "Python", level: 3}, {name: "Rust", level: 2}, {name: "TypeScript", level: 3}] },
-              { name: "Cloud & DevOps", score: 6.2, gap: 3.5, skills: [{name: "AWS", level: 2}, {name: "Kubernetes", level: 1}, {name: "Terraform", level: 1}] },
-              { name: "AI / ML", score: 3.8, gap: 4.0, skills: [{name: "PyTorch", level: 1}, {name: "NLP", level: 2}] },
-              { name: "Data Engineering", score: 7.0, gap: 0.5, skills: [{name: "Spark", level: 2}, {name: "SQL", level: 3}] },
-              { name: "System Design", score: 5.5, gap: 2.1, skills: [{name: "Microservices", level: 2}] },
-              { name: "Soft Skills", score: 8.0, gap: 0.0, skills: [{name: "Leadership", level: 3}, {name: "Communication", level: 3}] },
+              { name: "Programming", score: 8.4, gap: 1.2, skills: [{ name: "Python", level: 3 }, { name: "Rust", level: 2 }, { name: "TypeScript", level: 3 }] },
+              { name: "Cloud & DevOps", score: 6.2, gap: 3.5, skills: [{ name: "AWS", level: 2 }, { name: "Kubernetes", level: 1 }, { name: "Terraform", level: 1 }] },
+              { name: "AI / ML", score: 3.8, gap: 4.0, skills: [{ name: "PyTorch", level: 1 }, { name: "NLP", level: 2 }] },
+              { name: "Data Engineering", score: 7.0, gap: 0.5, skills: [{ name: "Spark", level: 2 }, { name: "SQL", level: 3 }] },
+              { name: "System Design", score: 5.5, gap: 2.1, skills: [{ name: "Microservices", level: 2 }] },
+              { name: "Soft Skills", score: 8.0, gap: 0.0, skills: [{ name: "Leadership", level: 3 }, { name: "Communication", level: 3 }] },
             ]
           });
         } else {
@@ -86,7 +106,7 @@ const SkillLab = () => {
 
   return (
     <div className="min-h-screen bg-background">
-            <div className="flex h-screen overflow-hidden">
+      <div className="flex h-screen overflow-hidden">
         {/* Left icon sidebar */}
         <div className="hidden md:flex flex-col items-center w-16 border-r border-border/50 py-6 gap-4 shrink-0 bg-background/50 backdrop-blur-md">
           {[Grid3X3, Layers, Brain, BarChart3].map((Icon, i) => (
@@ -107,7 +127,7 @@ const SkillLab = () => {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
             <div>
               <h1 className="text-3xl md:text-4xl font-display font-bold text-foreground">
-                Skill Matrix <span className="text-aqua">Telemetry</span>
+                Skill <span className="text-gradient">Matrix</span>
               </h1>
               <p className="text-sm text-muted-foreground mt-2 max-w-lg leading-relaxed">
                 A real-time visualization of your professional architecture. Analyze gaps and align your trajectory with industry standards.
@@ -117,17 +137,15 @@ const SkillLab = () => {
             <div className="flex bg-muted/40 p-1 rounded-full border border-border/50 shrink-0">
               <button
                 onClick={() => setShowTarget(false)}
-                className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition-all ${
-                  !showTarget ? "bg-aqua text-background shadow-[0_0_15px_rgba(45,212,191,0.4)]" : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition-all ${!showTarget ? "bg-aqua text-background shadow-[0_0_15px_rgba(45,212,191,0.4)]" : "text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 Actual
               </button>
               <button
                 onClick={() => setShowTarget(true)}
-                className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition-all ${
-                  showTarget ? "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(239,68,68,0.4)]" : "text-muted-foreground hover:text-foreground"
-                }`}
+                className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest uppercase transition-all ${showTarget ? "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(239,68,68,0.4)]" : "text-muted-foreground hover:text-foreground"
+                  }`}
               >
                 Target
               </button>
@@ -136,7 +154,7 @@ const SkillLab = () => {
 
           {/* Three column layout */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 flex-1 min-h-[500px]">
-            
+
             {/* Left Panel */}
             <div className="flex flex-col gap-6 lg:col-span-1">
               {/* Skill Breakdown Card */}
@@ -145,7 +163,7 @@ const SkillLab = () => {
                   <BarChart3 className="w-4 h-4 text-aqua" />
                   Skill Breakdown
                 </h3>
-                
+
                 <div className="space-y-5 flex-1 overflow-y-auto pr-2 custom-scrollbar">
                   {[programmingCluster, cloudCluster, aiCluster].filter(Boolean).map((cat, i) => (
                     <div key={i} className="group">
@@ -154,10 +172,10 @@ const SkillLab = () => {
                         <span className="text-xs font-bold text-foreground">{cat.score.toFixed(1)} <span className="text-muted-foreground font-normal">/ 10</span></span>
                       </div>
                       <div className="w-full h-1 bg-border/40 rounded-full overflow-hidden mb-2">
-                        <motion.div 
+                        <motion.div
                           initial={{ width: 0 }} animate={{ width: `${(cat.score / 10) * 100}%` }}
                           transition={{ duration: 1, delay: i * 0.1 }}
-                          className={`h-full rounded-full ${i === 2 ? 'bg-primary' : 'bg-aqua'}`} 
+                          className={`h-full rounded-full ${i === 2 ? 'bg-primary' : 'bg-aqua'}`}
                         />
                       </div>
                       <p className="text-[9px] uppercase tracking-wider text-muted-foreground truncate">
@@ -166,7 +184,7 @@ const SkillLab = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 <button className="w-full mt-4 py-3 rounded-xl border border-aqua/30 text-aqua text-[11px] font-bold uppercase tracking-widest hover:bg-aqua/10 transition-colors flex items-center justify-center gap-2">
                   <DownloadCloud className="w-4 h-4" />
                   Download Full Report
@@ -211,10 +229,10 @@ const SkillLab = () => {
               {/* The Graph rendered on top */}
               <div className="absolute inset-0 z-10 p-4 pointer-events-auto flex items-center justify-center">
                 <div className="w-full h-full relative z-10">
-                  <SkillGapWheel 
-                    data={wheelData?.clusters || []} 
+                  <SkillGapWheel
+                    data={wheelData?.clusters || []}
                     showRoleOverlay={showTarget}
-                    onClusterClick={() => {}}
+                    onClusterClick={() => { }}
                   />
                 </div>
               </div>
@@ -222,11 +240,11 @@ const SkillLab = () => {
 
             {/* Right Panel */}
             <div className="flex flex-col gap-6 lg:col-span-1">
-              
+
               {/* Target Overlay Callout */}
               <AnimatePresence mode="popLayout">
                 {showTarget && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: -20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: -20 }}
@@ -237,15 +255,22 @@ const SkillLab = () => {
                       Target Overlay <Eye className="w-4 h-4" />
                     </h3>
                     <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Position</p>
-                    <p className="text-sm font-bold text-foreground tracking-wide mb-5">Senior Solutions Engineer</p>
-                    
+                    <p className="text-sm font-bold text-foreground tracking-wide mb-5">{targetTitle}</p>
+
                     <div className="flex items-center justify-between text-xs font-bold mb-2">
                       <span className="text-muted-foreground">Match Readiness</span>
                       <span className="text-aqua">78%</span>
                     </div>
-                    <div className="w-full h-1.5 bg-border/50 rounded-full overflow-hidden">
+                    <div className="w-full h-1.5 bg-border/50 rounded-full overflow-hidden mb-4">
                       <div className="h-full bg-aqua rounded-full shadow-[0_0_10px_rgba(45,212,191,0.5)]" style={{ width: "78%" }} />
                     </div>
+
+                    <button 
+                      onClick={() => setShowTargetModal(true)} 
+                      className="w-full py-2.5 rounded-lg border border-aqua/30 bg-aqua/5 text-aqua font-bold text-[10px] uppercase tracking-widest hover:bg-aqua/20 transition-all flex justify-center items-center gap-2"
+                    >
+                      View Detailed Target <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -261,7 +286,7 @@ const SkillLab = () => {
               {/* Top Recommendations */}
               <div className="flex flex-col gap-3">
                 <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1 px-1">Top Recommendations</h3>
-                
+
                 <div className="glass-card rounded-xl p-4 border border-border/50 hover:border-aqua/40 transition-colors flex items-center gap-4 cursor-pointer group">
                   <div className="w-10 h-10 rounded-lg bg-aqua/10 flex items-center justify-center shrink-0">
                     <GraduationCap className="w-5 h-5 text-aqua" />
@@ -272,7 +297,7 @@ const SkillLab = () => {
                   </div>
                   <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-aqua transition-colors" />
                 </div>
-                
+
                 <div className="glass-card rounded-xl p-4 border border-border/50 hover:border-primary/40 transition-colors flex items-center gap-4 cursor-pointer group">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <MessageSquare className="w-5 h-5 text-primary" />
@@ -290,6 +315,73 @@ const SkillLab = () => {
           </div>
         </div>
       </div>
+
+      <Dialog open={showTargetModal} onOpenChange={setShowTargetModal}>
+        <DialogContent className="sm:max-w-2xl bg-background/95 backdrop-blur-xl border-border/50">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-display font-bold">
+              Target Competency: <span className="text-aqua">{targetTitle}</span>
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="mt-4 space-y-6 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="glass-card p-4 rounded-xl border border-border/50">
+                <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest mb-1">Target Readiness</p>
+                <p className="text-3xl font-display font-bold text-foreground">78%</p>
+                <div className="w-full h-1.5 bg-border/50 rounded-full mt-3 overflow-hidden">
+                  <div className="h-full bg-aqua rounded-full shadow-[0_0_10px_rgba(45,212,191,0.5)]" style={{ width: "78%" }} />
+                </div>
+              </div>
+              <div className="glass-card p-4 rounded-xl border border-destructive/30 bg-destructive/5">
+                <p className="text-[10px] uppercase font-bold text-destructive tracking-widest mb-1">Critical Gap</p>
+                <p className="text-xl font-bold text-foreground mb-1">Cloud Infrastructure</p>
+                <p className="text-xs text-muted-foreground">Requires 3.5 severity upskilling to meet baseline.</p>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-sm mb-4 uppercase tracking-wider">Role Requirements Matrix</h4>
+              <div className="space-y-4">
+                {wheelData?.clusters.map((cluster, i) => (
+                  <div key={i} className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="font-bold">{cluster.name}</span>
+                      <div className="flex gap-4">
+                        <span className="text-muted-foreground text-xs">Required: <strong className="text-foreground">{(cluster.score + cluster.gap).toFixed(1)}</strong></span>
+                        <span className="text-aqua text-xs">Actual: <strong className="text-aqua">{cluster.score.toFixed(1)}</strong></span>
+                      </div>
+                    </div>
+                    <div className="h-2 w-full bg-border/30 rounded-full flex relative overflow-hidden">
+                      {/* Target Required marker (rendered underneath) */}
+                      <div className="absolute top-0 bottom-0 left-0 bg-muted-foreground/30 rounded-full" style={{ width: `${((cluster.score + cluster.gap) / 10) * 100}%` }} />
+                      {/* Actual User competency bar */}
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(cluster.score / 10) * 100}%` }}
+                        transition={{ duration: 1, delay: i * 0.1 }}
+                        className={`h-full rounded-full absolute top-0 left-0 z-10 ${cluster.gap > 0 ? 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.4)]' : 'bg-aqua shadow-[0_0_10px_rgba(45,212,191,0.4)]'}`} 
+                      />
+                    </div>
+                    {cluster.gap > 0 && (
+                      <p className="text-[10px] text-amber-500 mt-1">
+                        Must upskill in: {cluster.skills.map(s => s.name).join(', ')}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-primary/10 border border-primary/20">
+              <h4 className="font-bold text-sm mb-2 text-primary flex items-center gap-2"><Zap className="w-4 h-4" /> Next Recommended Action</h4>
+              <p className="text-sm text-foreground/80 leading-relaxed">
+                Your highest negative differential is in <strong className="text-foreground">Cloud & DevOps</strong>. Start by clearing your assigned <strong>Kubernetes Management</strong> milestone on the active roadmap.
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

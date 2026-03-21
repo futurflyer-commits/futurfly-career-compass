@@ -47,7 +47,12 @@ const PERSONA_CONTENT: Record<string, { desc: string; image: string; title: stri
   },
 }
 
-const Persona = () => {
+interface PersonaProps {
+  hideRoadmapLink?: boolean;
+  hideSharing?: boolean;
+}
+
+const Persona = ({ hideRoadmapLink = false, hideSharing = false }: PersonaProps = {}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -216,7 +221,7 @@ const Persona = () => {
               ))}
             </div>
 
-            {!isGeneratingPDF && (
+            {!isGeneratingPDF && !hideRoadmapLink && (
               <Link
                 to="/register"
                 className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-primary to-neon px-12 py-6 lg:py-8 text-lg md:text-xl lg:text-2xl font-bold tracking-wide text-[#0a1017] glow-aqua hover:scale-[1.03] transform shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_50px_rgba(45,212,191,0.5)] transition-all duration-300 w-full sm:w-auto mb-12"
@@ -225,7 +230,7 @@ const Persona = () => {
               </Link>
             )}
 
-            {!isGeneratingPDF && (
+            {!isGeneratingPDF && !hideSharing && (
               <div className="flex items-center justify-center gap-8 text-slate-300/70">
                 <button className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">
                   <Share2 className="h-4 w-4" /> Share Result

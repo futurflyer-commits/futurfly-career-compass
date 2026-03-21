@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { PlayCircle, Award, Target, Settings2, Clock, CheckCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { PersonaPanel } from "./PersonaPanel";
 import { RoadmapState } from "./state";
 
@@ -10,6 +11,12 @@ interface ReturningDashboardProps {
 }
 
 export const ReturningDashboard = ({ roadmapState, onReconfigure }: ReturningDashboardProps) => {
+  const { user } = useAuth();
+  
+  // Try to use a stored full_name, fallback to capitalizing the email prefix, fallback to Architect.
+  const displayIdentifier = user?.user_metadata?.full_name 
+    || (user?.email ? user.email.split('@')[0].charAt(0).toUpperCase() + user.email.split('@')[0].slice(1) : "Architect");
+
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col h-full gap-6 overflow-y-auto custom-scrollbar pr-3">
       
@@ -19,7 +26,7 @@ export const ReturningDashboard = ({ roadmapState, onReconfigure }: ReturningDas
          
          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="w-full">
-              <h2 className="text-2xl font-display font-bold mb-1">Welcome back, Architect.</h2>
+              <h2 className="text-2xl font-display font-bold mb-1">Welcome back, {displayIdentifier}.</h2>
               <p className="text-sm text-muted-foreground mb-6">You are actively tracking ahead of the local Bengaluru hiring median.</p>
               
               <div className="flex items-center justify-between mb-2">

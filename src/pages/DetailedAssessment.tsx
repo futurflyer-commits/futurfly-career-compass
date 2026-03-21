@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, Shield } from "lucide-react";
+import { ArrowLeft, ArrowRight, Shield, Sparkles } from "lucide-react";
+import Persona from "./Persona";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 type QuestionType = "select" | "swipe" | "slider";
 
@@ -126,7 +129,10 @@ const DetailedAssessment = () => {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [sliderValues, setSliderValues] = useState<Record<number, number>>({});
   const [loading, setLoading] = useState(false);
+  const [assessmentComplete, setAssessmentComplete] = useState(false);
+  const [isGeneratingInsight, setIsGeneratingInsight] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const q = questions[current];
   const progress = ((current + 1) / questions.length) * 100;
@@ -138,12 +144,28 @@ const DetailedAssessment = () => {
     setAnswers((prev) => ({ ...prev, [q.id]: idx }));
   };
 
-  const next = () => {
+  const next = async () => {
     if (current < questions.length - 1) {
       setCurrent(current + 1);
     } else {
       setLoading(true);
-      setTimeout(() => navigate("/persona"), 3500);
+      
+      // Save the completion status to the authenticated profile
+      if (user) {
+        try {
+          await supabase.from("profiles").update({
+             assessment_completed: true,
+             detailed_persona_synced: true,
+          }).eq("id", user.id);
+        } catch (e) {
+          console.error("Failed to sync detailed persona to profile", e);
+        }
+      }
+
+      setTimeout(() => {
+        setLoading(false);
+        setAssessmentComplete(true);
+      }, 3500);
     }
   };
 
@@ -172,6 +194,27 @@ const DetailedAssessment = () => {
       </div>
     );
   }
+
+  if (assessmentComplete) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen bg-background">
+        {/* Render the full persona screen natively inside this view */}
+        <Persona hideRoadmapLink={true} hideSharing={false} />
+      </motion.div>
+    );
+  }
+
+  const generateInsightText = (qIndex: number, optIndex: number = 0) => {
+    const insights = [
+      "🧠 Strong analytical mindset. Problem-solvers dominate high-impact engineering roles.",
+      "🛡️ Foundational reliability. Consistency is the highest predictor of architectural success.",
+      "🚀 High-risk tolerance. Bold movers are disproportionately represented in unicorn startups.",
+      "💡 Creative synthesizer. The ability to bridge disjoint concepts drives genuine innovation.",
+      "⚙️ Operational efficiency. Structured thinkers scale systems significantly faster.",
+      "🔭 Strategic vision. Long-term forecasting separates senior leads from mid-level execution."
+    ];
+    return insights[(qIndex + optIndex) % insights.length];
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -219,7 +262,7 @@ const DetailedAssessment = () => {
               <p className="text-xs text-slate-300 uppercase tracking-wider mb-4">
                 Question {String(q.id).padStart(2, "0")} of 28 • {pathFound}% Complete
               </p>
-              <h2 className="text-3xl md:text-5xl font-display font-bold leading-tight">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight">
                 {q.question}
               </h2>
             </div>
@@ -233,12 +276,12 @@ const DetailedAssessment = () => {
               }`}>
                 {q.options.map((opt, i) => (
                   <motion.button key={i} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => selectOption(i)}
-                    className={`text-left p-5 rounded-xl border transition-all duration-200 ${
+                    className={`text-center flex flex-col items-center justify-center min-h-[120px] p-6 rounded-xl border transition-all duration-200 ${
                       answers[q.id] === i
-                        ? "border-primary bg-primary/10 glow-aqua-sm"
+                        ? "border-primary bg-primary/10 glow-aqua-sm scale-[1.02] ring-1 ring-primary"
                         : "border-white/10 bg-white/5 backdrop-blur-xl hover:border-primary/30"
                     }`}>
-                    <h4 className="font-display font-semibold text-sm">{opt.title}</h4>
+                    <h4 className={`font-display font-semibold text-lg md:text-xl ${answers[q.id] === i ? 'text-primary' : 'text-foreground/90'}`}>{opt.title}</h4>
                   </motion.button>
                 ))}
               </div>
@@ -266,24 +309,73 @@ const DetailedAssessment = () => {
                 </div>
               </div>
             )}
+            {/* Dynamic Insight & Personalization Bar */}
+            <AnimatePresence>
+              {isAnswered && q.type !== "slider" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: "auto" }}
+                  exit={{ opacity: 0, y: -20, height: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="w-full max-w-4xl mx-auto mt-8 overflow-hidden"
+                >
+                  <div className="bg-white/5 backdrop-blur-xl border border-primary/30 rounded-2xl p-6 md:p-8 relative shadow-[0_0_30px_rgba(45,212,191,0.1)]">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-secondary rounded-l-2xl" />
+                    
+                    <p className="text-base md:text-lg text-foreground/90 font-medium leading-relaxed">
+                      {generateInsightText(current, answers[q.id])}
+                    </p>
+
+                    <div className="mt-8 pt-6 border-t border-white/10">
+                      <h4 className="text-sm font-bold text-foreground mb-4 opacity-80 flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-primary" /> Your profile is shaping up...
+                      </h4>
+                      <div className="flex items-center gap-4 text-sm font-mono">
+                        <span className="w-32 md:w-40 text-slate-300 truncate">Analytical</span>
+                        <div className="flex-1 h-2 bg-white/10 border border-white/5 rounded-full overflow-hidden flex relative">
+                          <motion.div 
+                            initial={{ width: 0 }} 
+                            animate={{ width: `${Math.min(100, 30 + (progress * 0.5) + (answers[q.id] * 5))}%` }} 
+                            transition={{ duration: 1, ease: "easeOut" }}
+                            className="h-full bg-gradient-to-r from-primary to-[#29F2B9] relative" 
+                          />
+                        </div>
+                        <span className="w-12 text-right text-primary font-bold">{Math.round(Math.min(100, 30 + (progress * 0.5) + (answers[q.id] * 5)))}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </AnimatePresence>
 
         {/* Navigation */}
-        <div className="flex items-center gap-4 mt-12">
-          <button onClick={prev} disabled={current === 0}
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-foreground disabled:opacity-30 hover:border-primary/50 transition-colors">
-            <ArrowLeft className="h-4 w-4" /> Previous
-          </button>
-          <button onClick={next} disabled={!isAnswered}
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-8 py-3 text-sm font-semibold text-primary-foreground disabled:opacity-30 glow-aqua-sm hover:opacity-90 transition-all">
-            {current === questions.length - 1 ? "Finish Assessment" : "Continue"} <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
+        <div className="flex flex-col items-center gap-4 mt-8">
+          <AnimatePresence>
+            {isAnswered && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                onClick={next}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-[#29F2B9] px-10 py-4 text-base md:text-lg font-bold text-[#0a1017] glow-aqua hover:scale-[1.03] transform shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_50px_rgba(45,212,191,0.5)] transition-all duration-300"
+              >
+                {current === questions.length - 1 ? "Complete Analysis" : "Reveal Next Insight"} <ArrowRight className="h-5 w-5 animate-pulse text-foreground/80" />
+              </motion.button>
+            )}
+          </AnimatePresence>
 
-        <p className="flex items-center gap-1.5 text-xs text-slate-300 mt-6">
-          <Shield className="h-3.5 w-3.5" /> Progress is autosaved to your neural profile
-        </p>
+          <p className="flex items-center gap-1.5 text-xs text-slate-300 mt-2">
+            <Shield className="h-3.5 w-3.5" /> Auto-saving to neural profile
+          </p>
+          
+          {current > 0 && (
+            <button onClick={prev} className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 p-3 rounded-full border border-white/10 bg-white/5 text-slate-300 hover:text-primary transition-all backdrop-blur-md">
+              <ArrowLeft className="h-5 w-5" />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

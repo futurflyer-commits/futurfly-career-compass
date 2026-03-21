@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { Footer } from "@/components/Footer";
 import {
   User,
@@ -19,16 +20,30 @@ const tabs = [
 ];
 
 const Settings = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("account");
   const [careerVisible, setCareerVisible] = useState(true);
 
+  const defaultName = user?.user_metadata?.full_name || (user?.email ? user.email.split('@')[0].charAt(0).toUpperCase() + user.email.split('@')[0].slice(1) : "Alex Rivers");
+  const initialString = defaultName.substring(0, 2).toUpperCase();
+
   const [form, setForm] = useState({
-    fullName: "Alex Rivers",
-    title: "The AI Product Architect",
-    email: "alex.rivers@futurfly.ai",
+    fullName: defaultName,
+    title: "Software Engineer",
+    email: user?.email || "alex.rivers@futurfly.ai",
     timezone: "Pacific Time (PT)",
   });
+
+  useEffect(() => {
+    if (user) {
+      setForm(prev => ({
+        ...prev,
+        fullName: user.user_metadata?.full_name || prev.fullName,
+        email: user.email || prev.email,
+      }));
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,7 +54,7 @@ const Settings = () => {
           <aside className="glass-card p-6 flex flex-col items-center gap-4 h-fit">
             <div className="relative">
               <div className="w-28 h-28 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-4xl font-bold text-primary-foreground">
-                AR
+                {initialString}
               </div>
               <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-primary border-2 border-background" />
             </div>
@@ -103,9 +118,10 @@ const Settings = () => {
                   <div>
                     <label className="text-sm text-slate-300 mb-1.5 block">Email Address</label>
                     <input
-                      className="w-full rounded-lg bg-input border border-white/10 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 transition-colors"
+                      className="w-full rounded-lg bg-input/50 border border-white/5 px-4 py-2.5 text-sm text-muted-foreground outline-none cursor-not-allowed"
                       value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      readOnly
+                      title="Email cannot be changed"
                     />
                   </div>
                   <div>

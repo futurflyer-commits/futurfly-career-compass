@@ -3,6 +3,9 @@ import { motion } from "framer-motion";
 import { ArrowRight, Share2, Download, Sparkles } from "lucide-react";
 import { AssessmentResult } from "@/lib/scoring";
 import { useAuth } from "@/contexts/AuthContext";
+import { jsPDF } from "jspdf";
+import { useState } from "react";
+import html2canvas from "html2canvas";
 
 const traits = [
   { label: "Strategic Vision", value: 94, color: "from-primary to-secondary" },
@@ -44,10 +47,16 @@ const PERSONA_CONTENT: Record<string, { desc: string; image: string; title: stri
   },
 }
 
-const Persona = () => {
+interface PersonaProps {
+  hideRoadmapLink?: boolean;
+  hideSharing?: boolean;
+}
+
+const Persona = ({ hideRoadmapLink = false, hideSharing = false }: PersonaProps = {}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   
   const result: AssessmentResult | null = location.state?.result || 
     (localStorage.getItem('discovery_assessment_result') 
@@ -85,10 +94,57 @@ const Persona = () => {
     { label: "Adaptability", value: 85, color: "from-primary to-mint" }, // Static filler for aesthetics
   ];
 
-  return (
-    <div className="min-h-screen bg-background">
+  const handleDownload = async () => {
+    setIsGeneratingPDF(true);
+    
+    // Wait for the DOM to update to strictly hide buttons and show watermarks
+    await new Promise(r => setTimeout(r, 150));
 
-      <div className="flex flex-col justify-center min-h-[calc(100vh-80px)] px-4 py-12 md:py-24 max-w-[1400px] mx-auto w-full relative">
+    const element = document.getElementById("pdf-content");
+    if (!element) {
+       setIsGeneratingPDF(false);
+       return;
+    }
+
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2, // High resolution
+        backgroundColor: '#050505',
+        useCORS: true,
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const doc = new jsPDF({
+        orientation: "p",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const pdfWidth = doc.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      doc.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      doc.save(`${result.persona.replace(/\s+/g, "_")}_Portfolio.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF", error);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <div id="pdf-content" className="w-full bg-background relative flex flex-col pt-4 pb-12">
+        {isGeneratingPDF && (
+          <div className="w-full flex flex-col items-center justify-center pt-8 pb-4">
+             <div className="flex items-center justify-center mb-4">
+               <img src="/logo.png" alt="FuturFly Logo" className="h-24 md:h-28 object-contain drop-shadow-[0_0_15px_rgba(45,212,191,0.2)]" />
+             </div>
+             <p className="text-slate-400 text-xs font-bold uppercase tracking-[0.2em] mt-2 mb-4">Career Neural Profile</p>
+          </div>
+        )}
+
+      <div className="flex flex-col justify-center min-h-[calc(100vh-80px)] px-4 py-8 md:py-16 max-w-[1400px] mx-auto w-full relative">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center w-full">
           
           {/* LEFT COLUMN: Title and Avatar */}
@@ -112,7 +168,7 @@ const Persona = () => {
               className="relative w-full max-w-[320px] md:max-w-[440px] lg:max-w-[540px] xl:max-w-[640px] aspect-square mx-auto group cursor-default"
             >
               <div className="absolute inset-0 rounded-[2.5rem] lg:rounded-[4rem] bg-primary/20 blur-3xl animate-pulse-glow transition-all duration-700 group-hover:bg-primary/30" />
-              <div className="relative w-full h-full rounded-[2.5rem] lg:rounded-[4rem] bg-card border-2 border-border/30 flex items-center justify-center overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-[1.02]">
+              <div className="relative w-full h-full rounded-[2.5rem] lg:rounded-[4rem] bg-white/5 backdrop-blur-xl border-2 border-white/20 flex items-center justify-center overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.05)] transition-transform duration-500 group-hover:scale-[1.02]">
                 <img 
                   src={`${content.image}.png`}
                   alt={result.persona}
@@ -133,7 +189,7 @@ const Persona = () => {
             transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
             className="flex flex-col items-center text-center w-full"
           >
-            <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground leading-relaxed md:leading-loose mb-12 max-w-xl font-medium">
+            <p className="text-xl md:text-2xl lg:text-3xl text-slate-300 leading-relaxed md:leading-loose mb-12 max-w-xl font-medium">
               {content.desc}
             </p>
 
@@ -144,12 +200,12 @@ const Persona = () => {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 + i * 0.1, duration: 0.5, ease: "easeOut" }}
-                  className="bg-card/40 border border-border/40 p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-colors text-left relative overflow-hidden group"
+                  className="bg-white/5 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:border-white/30 p-6 md:p-8 rounded-2xl transition-all shadow-lg text-left relative overflow-hidden group"
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-3xl translate-x-10 -translate-y-10 rounded-full transition-all duration-700 group-hover:bg-primary/10 pointer-events-none" />
                   <div className="relative z-10">
                     <div className="flex justify-between items-center mb-5">
-                      <span className="text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground">{t.label}</span>
+                      <span className="text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-slate-300">{t.label}</span>
                       <span className="text-lg md:text-xl lg:text-2xl font-display font-black text-foreground drop-shadow-sm">{t.value}%</span>
                     </div>
                     <div className="h-1.5 md:h-[6px] bg-[#11131a] border border-white/5 rounded-full overflow-hidden shadow-inner w-full">
@@ -165,30 +221,48 @@ const Persona = () => {
               ))}
             </div>
 
-            <Link
-              to="/register"
-              className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-primary to-neon px-12 py-6 lg:py-8 text-lg md:text-xl lg:text-2xl font-bold tracking-wide text-[#0a1017] glow-aqua hover:scale-[1.03] transform shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_50px_rgba(45,212,191,0.5)] transition-all duration-300 w-full sm:w-auto mb-12"
-            >
-              Unlock My Curated Roadmap <ArrowRight className="h-6 w-6 md:h-7 md:w-7 animate-pulse text-foreground/80" />
-            </Link>
+            {!isGeneratingPDF && !hideRoadmapLink && (
+              <Link
+                to="/register"
+                className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-primary to-neon px-12 py-6 lg:py-8 text-lg md:text-xl lg:text-2xl font-bold tracking-wide text-[#0a1017] glow-aqua hover:scale-[1.03] transform shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_50px_rgba(45,212,191,0.5)] transition-all duration-300 w-full sm:w-auto mb-12"
+              >
+                Unlock My Curated Roadmap <ArrowRight className="h-6 w-6 md:h-7 md:w-7 animate-pulse text-foreground/80" />
+              </Link>
+            )}
 
-            <div className="flex items-center justify-center gap-8 text-muted-foreground/70">
-              <button className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">
-                <Share2 className="h-4 w-4" /> Share Result
-              </button>
-              <button className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">
-                <Download className="h-4 w-4" /> Download Portfolio
-              </button>
-            </div>
+            {!isGeneratingPDF && !hideSharing && (
+              <div className="flex items-center justify-center gap-8 text-slate-300/70">
+                <button className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors">
+                  <Share2 className="h-4 w-4" /> Share Result
+                </button>
+                <button 
+                  onClick={handleDownload}
+                  className="flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest hover:text-primary transition-colors cursor-pointer"
+                >
+                  <Download className="h-4 w-4" /> Download Portfolio
+                </button>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
 
-      <footer className="py-6 text-center">
-        <p className="text-xs text-muted-foreground uppercase tracking-wider">
-          © 2026 FuturFly. Built for the next gen of Indian tech.
-        </p>
-      </footer>
+       {isGeneratingPDF && (
+          <div className="w-full text-center pb-8 pt-4">
+             <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">
+               © {new Date().getFullYear()} FuturFly. Built for the next gen of Indian tech.
+             </p>
+          </div>
+       )}
+      </div>
+
+      {!isGeneratingPDF && (
+        <footer className="py-6 text-center">
+          <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider">
+            © {new Date().getFullYear()} FuturFly. Built for the next gen of Indian tech.
+          </p>
+        </footer>
+      )}
     </div>
   );
 };

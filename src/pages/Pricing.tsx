@@ -32,7 +32,7 @@ const Pricing = () => {
           <h1 className="text-3xl md:text-5xl font-display font-bold mb-3">
             Choose Your <span className="text-gradient">Co-Pilot</span> Plan
           </h1>
-          <p className="text-muted-foreground max-w-md mx-auto">Invest in your future. Cancel anytime.</p>
+          <p className="text-slate-300 max-w-md mx-auto">Invest in your future. Cancel anytime.</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
@@ -42,22 +42,22 @@ const Pricing = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.15 }}
-              className={`rounded-2xl p-8 ${
+              className={`rounded-2xl p-8 backdrop-blur-md ${
                 plan.highlighted
-                  ? "bg-gradient-to-b from-primary/10 to-transparent border border-primary/40 glow-aqua-sm"
-                  : "glass-card"
+                  ? "bg-gradient-to-b from-primary/20 to-primary/5 border border-primary/40 glow-aqua-sm"
+                  : "bg-white/10 backdrop-blur-xl hover:bg-white/20 border border-white/20 shadow-lg"
               }`}
             >
               <h3 className="font-display text-xl font-bold mb-1">{plan.name}</h3>
               <div className="flex items-baseline gap-1 mb-6">
                 <span className="text-3xl font-display font-bold">{plan.price}</span>
-                <span className="text-sm text-muted-foreground">{plan.period}</span>
+                <span className="text-sm text-slate-300">{plan.period}</span>
               </div>
               <ul className="flex flex-col gap-3 mb-8">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-center gap-2 text-sm">
                     <Check className="h-4 w-4 text-primary shrink-0" />
-                    <span className="text-muted-foreground">{f}</span>
+                    <span className="text-slate-300">{f}</span>
                   </li>
                 ))}
               </ul>
@@ -66,7 +66,7 @@ const Pricing = () => {
                 className={`block text-center rounded-full py-3 text-sm font-semibold transition-all ${
                   plan.highlighted
                     ? "bg-gradient-to-r from-primary to-secondary text-primary-foreground glow-aqua-sm hover:opacity-90"
-                    : "border border-border text-foreground hover:border-primary/50"
+                    : "border border-white/20 text-foreground hover:border-primary/50"
                 }`}
               >
                 {plan.cta}

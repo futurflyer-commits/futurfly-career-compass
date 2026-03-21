@@ -88,7 +88,7 @@ const CoPilot = () => {
     <div className="min-h-screen bg-background">
             <div className="flex h-[calc(100vh-4rem)]">
       {/* Sidebar */}
-      <aside className="hidden md:flex flex-col w-72 border-r border-border/30 bg-card/50">
+      <aside className="hidden md:flex flex-col w-72 border-r border-border/50 bg-card/50">
         <div className="p-4">
           <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-3">Chat History</p>
           <div className="space-y-1">
@@ -122,7 +122,7 @@ const CoPilot = () => {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Chat Header */}
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-border/30">
+        <div className="flex items-center gap-3 px-6 py-4 border-b border-border/50">
           <div className="w-10 h-10 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
             <Bot className="h-5 w-5 text-primary" />
           </div>
@@ -154,7 +154,7 @@ const CoPilot = () => {
                     className={`rounded-2xl px-5 py-4 text-sm leading-relaxed ${
                       msg.role === "user"
                         ? "bg-muted border border-border/50 text-foreground"
-                        : "bg-card border border-border/30 text-foreground"
+                        : "bg-card border border-border/50 text-foreground"
                     }`}
                     dangerouslySetInnerHTML={{ __html: renderMarkdown(msg.content) }}
                   />
@@ -175,7 +175,7 @@ const CoPilot = () => {
 
         {/* Input Bar */}
         <div className="px-4 md:px-16 pb-4">
-          <div className="flex items-center gap-3 bg-card border border-border/30 rounded-2xl px-4 py-3">
+          <div className="flex items-center gap-3 bg-card border border-border/50 rounded-2xl px-4 py-3">
             <Paperclip className="h-5 w-5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors flex-shrink-0" />
             <input
               value={input}

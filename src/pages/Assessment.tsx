@@ -165,7 +165,7 @@ const Assessment = () => {
           <h2 className="text-4xl md:text-5xl lg:text-7xl font-display font-bold mb-6 text-foreground tracking-tight leading-tight">
             Synthesizing your <span className="text-gradient drop-shadow-md">Career DNA</span>
           </h2>
-          <p className="text-lg md:text-xl font-medium text-muted-foreground uppercase tracking-[0.2em] leading-relaxed">
+          <p className="text-lg md:text-xl font-medium text-slate-300 uppercase tracking-[0.2em] leading-relaxed">
             Mapping neural profile against 10,000+ industry trajectories
           </p>
         </motion.div>
@@ -182,22 +182,16 @@ const Assessment = () => {
       </div>
 
       {/* Header */}
-      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl relative z-10">
+      <header className="border-b border-white/10 bg-background/80 backdrop-blur-xl relative z-10">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <Rocket className="h-5 w-5 text-primary" />
-            <span className="font-display text-base font-bold">FuturFly</span>
+          <div className="flex items-center cursor-pointer" onClick={() => navigate("/")}>
+            <img src="/logo.png" alt="FuturFly Logo" className="h-10 md:h-12 object-contain" />
           </div>
-          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            <span>Assessments</span>
-            <span>Roadmaps</span>
-            <span>Mentors</span>
-          </nav>
         </div>
       </header>
 
       {/* Progress */}
-      <div className="w-full h-1 bg-muted">
+      <div className="w-full h-1 bg-white/10">
         <motion.div
           className="h-full bg-gradient-to-r from-primary to-secondary"
           animate={{ width: `${progress}%` }}
@@ -221,7 +215,7 @@ const Assessment = () => {
                 <span className="absolute inset-0 w-full h-full bg-primary/20 blur-md animate-pulse pointer-events-none" />
                 <span className="relative z-10">{q.label}</span>
               </span>
-              <p className="text-xs md:text-sm text-muted-foreground font-medium mb-4 flex items-center justify-center gap-3">
+              <p className="text-xs md:text-sm text-slate-300 font-medium mb-4 flex items-center justify-center gap-3">
                 <span className="w-8 md:w-16 h-px bg-border/50" />
                 <span className="uppercase tracking-[0.2em]">Step {current + 1} of {questions.length} — Discovering your strengths</span>
                 <span className="w-8 md:w-16 h-px bg-border/50" />
@@ -230,10 +224,10 @@ const Assessment = () => {
                 {q.question.split(" ").slice(0, -2).join(" ")}{" "}
                 <span className="text-gradient drop-shadow-sm">{q.question.split(" ").slice(-2).join(" ")}</span>
               </h2>
-              <p className="text-sm md:text-base text-muted-foreground/80 font-medium tracking-wide">This helps us tailor your career path with precision.</p>
+              <p className="text-sm md:text-base text-slate-300/80 font-medium tracking-wide">This helps us tailor your career path with precision.</p>
             </div>
 
-            <div className={`grid gap-6 md:gap-8 ${q.options.length <= 3 ? 'grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto' : 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto'}`}>
+            <div className={`grid gap-4 md:gap-5 px-2 ${q.options.length <= 3 ? 'grid-cols-1 md:grid-cols-3 max-w-5xl mx-auto' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 max-w-[90rem] mx-auto w-full'}`}>
               {q.options.map((opt, i) => (
                 <motion.button
                   key={i}
@@ -243,27 +237,25 @@ const Assessment = () => {
                   whileHover={{ scale: answers[q.id] === undefined ? 1.02 : 1, y: answers[q.id] === undefined ? -5 : 0 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => selectOption(i)}
-                  className={`text-left p-8 md:p-10 rounded-[20px] backdrop-blur-md border transition-all duration-300 relative overflow-hidden group ${
+                  className={`text-center p-5 md:p-6 rounded-[20px] backdrop-blur-xl border transition-all duration-300 relative overflow-hidden group min-h-[180px] flex flex-col justify-center items-center ${
                     answers[q.id] === i
-                      ? "border-transparent bg-primary/10 shadow-[0_0_40px_rgba(45,212,191,0.3)] scale-[1.03] ring-2 ring-primary bg-gradient-to-br from-[#2EF2F2]/10 to-[#29F2B9]/5 z-10"
+                      ? "border-transparent bg-primary/20 shadow-[0_0_40px_rgba(45,212,191,0.5)] scale-[1.03] ring-2 ring-primary bg-gradient-to-br from-[#2EF2F2]/20 to-[#29F2B9]/10 z-10"
                       : answers[q.id] !== undefined
-                      ? "border-border/20 bg-background/40 opacity-50 scale-[0.98]"
-                      : "border-border/40 bg-background/80 hover:border-primary/40 hover:bg-muted/40 hover:shadow-2xl"
+                      ? "border-white/10 bg-black/40 opacity-50 scale-[0.98]"
+                      : "border-white/20 bg-white/5 hover:border-primary/50 hover:bg-white/10 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
                   }`}
                 >
-                  <div className={`absolute top-0 right-0 w-40 h-40 blur-3xl rounded-full transition-opacity duration-700 pointer-events-none ${answers[q.id] === i ? "bg-primary/30 opacity-100" : "bg-primary/0 group-hover:bg-primary/20 opacity-0 group-hover:opacity-100"}`} />
+                  <div className={`absolute top-0 right-0 w-full h-full blur-3xl rounded-full transition-opacity duration-700 pointer-events-none ${answers[q.id] === i ? "bg-primary/20 opacity-100" : "bg-primary/0 group-hover:bg-primary/10 opacity-0 group-hover:opacity-100"}`} />
                   
                   {/* Inner Content Block */}
-                  <div className="relative z-10 flex justify-between items-start gap-4">
-                    <div>
-                      <h4 className={`font-display font-bold text-lg md:text-2xl mb-3 md:mb-4 transition-colors ${answers[q.id] === i ? "text-primary drop-shadow-sm" : "text-foreground group-hover:text-primary/90"}`}>{opt.title}</h4>
-                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed md:leading-loose font-medium">{opt.desc}</p>
-                    </div>
+                  <div className="relative z-10 flex flex-col items-center justify-center w-full gap-2 mt-2">
                     {answers[q.id] === i && (
-                      <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", bounce: 0.5 }} className="flex-shrink-0 mt-1">
-                        <CheckCircle2 className="w-6 h-6 md:w-8 md:h-8 text-primary drop-shadow-[0_0_8px_rgba(45,212,191,0.6)]" />
+                      <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", bounce: 0.5 }} className="absolute -top-8 right-2 sm:-right-2">
+                        <CheckCircle2 className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(45,212,191,0.6)] bg-black/40 rounded-full" />
                       </motion.div>
                     )}
+                    <h4 className={`font-display font-bold text-base md:text-lg mb-1 transition-colors ${answers[q.id] === i ? "text-primary drop-shadow-sm" : "text-foreground group-hover:text-primary/90"}`}>{opt.title}</h4>
+                    <p className="text-xs md:text-sm text-slate-300 leading-snug font-medium px-1">{opt.desc}</p>
                   </div>
                 </motion.button>
               ))}
@@ -279,22 +271,22 @@ const Assessment = () => {
                   transition={{ duration: 0.5, ease: "easeOut" }}
                   className="w-full max-w-4xl mx-auto mt-12 overflow-hidden"
                 >
-                  <div className="bg-background/40 backdrop-blur-md border border-primary/20 rounded-2xl p-6 md:p-8 relative">
+                  <div className="bg-white/5 backdrop-blur-xl border border-primary/30 rounded-2xl p-6 md:p-8 relative shadow-[0_0_30px_rgba(45,212,191,0.1)]">
                     <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-secondary rounded-l-2xl" />
                     
                     <p className="text-base md:text-lg text-foreground/90 font-medium leading-relaxed">
                       {(q.options as any)[answers[q.id]]?.insight}
                     </p>
 
-                    <div className="mt-8 pt-6 border-t border-border/30">
+                    <div className="mt-8 pt-6 border-t border-white/10">
                       <h4 className="text-sm font-bold text-foreground mb-4 opacity-80 flex items-center gap-2">
                         <Shield className="w-4 h-4 text-primary" /> Your profile is shaping up...
                       </h4>
                       <div className="space-y-4">
                         {traitProgress.map((t) => (
                           <div key={t.trait} className="flex items-center gap-4 text-sm font-mono">
-                            <span className="w-32 md:w-40 text-muted-foreground truncate">{t.trait}</span>
-                            <div className="flex-1 h-2 bg-muted/50 rounded-full overflow-hidden flex relative">
+                            <span className="w-32 md:w-40 text-slate-300 truncate">{t.trait}</span>
+                            <div className="flex-1 h-2 bg-white/10 border border-white/5 rounded-full overflow-hidden flex relative">
                               <motion.div 
                                 initial={{ width: 0 }} 
                                 animate={{ width: `${t.percentage}%` }} 
@@ -320,7 +312,7 @@ const Assessment = () => {
           <button
             onClick={prev}
             disabled={current === 0}
-            className="inline-flex items-center gap-3 rounded-full border border-border px-8 py-4 text-sm font-bold tracking-wide text-foreground disabled:opacity-0 hover:border-primary/50 hover:bg-muted/30 transition-all opacity-100"
+            className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-bold tracking-wide text-foreground disabled:opacity-0 hover:border-primary/50 hover:bg-white/10 transition-all opacity-100"
           >
             <ArrowLeft className="h-4 w-4 md:h-5 md:w-5" /> 
             <span className="hidden sm:inline">Go Back</span>
@@ -334,7 +326,7 @@ const Assessment = () => {
             >
               Reveal Next Insight <ArrowRight className="h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 group-disabled:translate-x-0 transition-transform" />
             </button>
-            <p className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold uppercase tracking-widest text-muted-foreground mt-4">
+            <p className="flex items-center gap-1.5 text-[10px] md:text-xs font-bold uppercase tracking-widest text-slate-300 mt-4">
               <Shield className="h-3 w-3 text-primary" /> Auto-saving to Neural Profile
             </p>
           </div>

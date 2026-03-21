@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { Footer } from "@/components/Footer";
 import {
   User,
@@ -19,16 +20,30 @@ const tabs = [
 ];
 
 const Settings = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("account");
   const [careerVisible, setCareerVisible] = useState(true);
 
+  const defaultName = user?.user_metadata?.full_name || (user?.email ? user.email.split('@')[0].charAt(0).toUpperCase() + user.email.split('@')[0].slice(1) : "Alex Rivers");
+  const initialString = defaultName.substring(0, 2).toUpperCase();
+
   const [form, setForm] = useState({
-    fullName: "Alex Rivers",
-    title: "The AI Product Architect",
-    email: "alex.rivers@futurfly.ai",
+    fullName: defaultName,
+    title: "Software Engineer",
+    email: user?.email || "alex.rivers@futurfly.ai",
     timezone: "Pacific Time (PT)",
   });
+
+  useEffect(() => {
+    if (user) {
+      setForm(prev => ({
+        ...prev,
+        fullName: user.user_metadata?.full_name || prev.fullName,
+        email: user.email || prev.email,
+      }));
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,7 +54,7 @@ const Settings = () => {
           <aside className="glass-card p-6 flex flex-col items-center gap-4 h-fit">
             <div className="relative">
               <div className="w-28 h-28 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-4xl font-bold text-primary-foreground">
-                AR
+                {initialString}
               </div>
               <span className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-primary border-2 border-background" />
             </div>
@@ -59,7 +74,7 @@ const Settings = () => {
                   className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors w-full text-left ${
                     activeTab === tab.id
                       ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      : "text-slate-300 hover:text-foreground hover:bg-white/5"
                   }`}
                 >
                   <tab.icon className="h-4 w-4" />
@@ -73,7 +88,7 @@ const Settings = () => {
           <div className="space-y-6">
             <div>
               <h1 className="text-2xl md:text-3xl font-display font-bold">User Profile & Account Settings</h1>
-              <p className="text-muted-foreground mt-1">Manage your AI career co-pilot preferences and professional identity.</p>
+              <p className="text-slate-300 mt-1">Manage your AI career co-pilot preferences and professional identity.</p>
             </div>
 
             {/* Account Information */}
@@ -85,33 +100,34 @@ const Settings = () => {
                 </h2>
                 <div className="grid md:grid-cols-2 gap-5">
                   <div>
-                    <label className="text-sm text-muted-foreground mb-1.5 block">Full Name</label>
+                    <label className="text-sm text-slate-300 mb-1.5 block">Full Name</label>
                     <input
-                      className="w-full rounded-lg bg-input border border-border/50 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 transition-colors"
+                      className="w-full rounded-lg bg-input border border-white/10 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 transition-colors"
                       value={form.fullName}
                       onChange={(e) => setForm({ ...form, fullName: e.target.value })}
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-muted-foreground mb-1.5 block">Professional Title</label>
+                    <label className="text-sm text-slate-300 mb-1.5 block">Professional Title</label>
                     <input
-                      className="w-full rounded-lg bg-input border border-border/50 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 transition-colors"
+                      className="w-full rounded-lg bg-input border border-white/10 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 transition-colors"
                       value={form.title}
                       onChange={(e) => setForm({ ...form, title: e.target.value })}
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-muted-foreground mb-1.5 block">Email Address</label>
+                    <label className="text-sm text-slate-300 mb-1.5 block">Email Address</label>
                     <input
-                      className="w-full rounded-lg bg-input border border-border/50 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 transition-colors"
+                      className="w-full rounded-lg bg-input/50 border border-white/5 px-4 py-2.5 text-sm text-muted-foreground outline-none cursor-not-allowed"
                       value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      readOnly
+                      title="Email cannot be changed"
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-muted-foreground mb-1.5 block">Timezone</label>
+                    <label className="text-sm text-slate-300 mb-1.5 block">Timezone</label>
                     <select
-                      className="w-full rounded-lg bg-input border border-border/50 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 transition-colors appearance-none"
+                      className="w-full rounded-lg bg-input border border-white/10 px-4 py-2.5 text-sm text-foreground outline-none focus:border-primary/50 transition-colors appearance-none"
                       value={form.timezone}
                       onChange={(e) => setForm({ ...form, timezone: e.target.value })}
                     >
@@ -137,7 +153,7 @@ const Settings = () => {
                   <SettingsIcon className="h-5 w-5 text-primary" />
                   Preferences
                 </h2>
-                <p className="text-sm text-muted-foreground">Notification and display preferences coming soon.</p>
+                <p className="text-sm text-slate-300">Notification and display preferences coming soon.</p>
               </div>
             )}
 
@@ -148,7 +164,7 @@ const Settings = () => {
                   <Shield className="h-5 w-5 text-primary" />
                   Security & Privacy
                 </h2>
-                <p className="text-sm text-muted-foreground">Password management and 2FA settings coming soon.</p>
+                <p className="text-sm text-slate-300">Password management and 2FA settings coming soon.</p>
               </div>
             )}
 
@@ -160,19 +176,19 @@ const Settings = () => {
                   Linked Accounts
                 </h2>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-4 rounded-lg bg-input border border-border/50 p-4">
-                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-lg font-bold">G</div>
+                  <div className="flex items-center gap-4 rounded-lg bg-input border border-white/10 p-4">
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-lg font-bold">G</div>
                     <div className="flex-1">
                       <p className="text-sm font-medium">Google</p>
-                      <p className="text-xs text-muted-foreground">Connected as alex.r@gmail.com</p>
+                      <p className="text-xs text-slate-300">Connected as alex.r@gmail.com</p>
                     </div>
-                    <Trash2 className="h-4 w-4 text-muted-foreground hover:text-destructive cursor-pointer transition-colors" />
+                    <Trash2 className="h-4 w-4 text-slate-300 hover:text-destructive cursor-pointer transition-colors" />
                   </div>
-                  <div className="flex items-center gap-4 rounded-lg bg-input border border-border/50 p-4">
-                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-lg font-bold">in</div>
+                  <div className="flex items-center gap-4 rounded-lg bg-input border border-white/10 p-4">
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-lg font-bold">in</div>
                     <div className="flex-1">
                       <p className="text-sm font-medium">LinkedIn</p>
-                      <p className="text-xs text-muted-foreground">Not connected</p>
+                      <p className="text-xs text-slate-300">Not connected</p>
                     </div>
                     <button className="text-sm font-semibold text-primary hover:underline">Connect</button>
                   </div>
@@ -186,12 +202,12 @@ const Settings = () => {
                 <Eye className="h-5 w-5 text-primary" />
                 <div>
                   <h3 className="font-display font-semibold">Career Visibility</h3>
-                  <p className="text-sm text-muted-foreground">Allow FuturFly to suggest your profile to top AI recruiters and potential mentors.</p>
+                  <p className="text-sm text-slate-300">Allow FuturFly to suggest your profile to top AI recruiters and potential mentors.</p>
                 </div>
               </div>
               <button
                 onClick={() => setCareerVisible(!careerVisible)}
-                className={`relative w-12 h-7 rounded-full transition-colors ${careerVisible ? "bg-primary" : "bg-muted"}`}
+                className={`relative w-12 h-7 rounded-full transition-colors ${careerVisible ? "bg-primary" : "bg-white/10"}`}
               >
                 <span
                   className={`absolute top-0.5 w-6 h-6 rounded-full bg-background transition-transform ${
@@ -205,7 +221,7 @@ const Settings = () => {
             <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 md:p-8 flex items-center justify-between">
               <div>
                 <h3 className="font-display font-semibold text-destructive">Danger Zone</h3>
-                <p className="text-sm text-muted-foreground">Permanently delete your FuturFly account and all associated AI career data.</p>
+                <p className="text-sm text-slate-300">Permanently delete your FuturFly account and all associated AI career data.</p>
               </div>
               <button className="rounded-lg border border-destructive/50 px-5 py-2 text-sm font-semibold text-destructive hover:bg-destructive/10 transition-colors whitespace-nowrap">
                 Delete Account

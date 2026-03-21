@@ -1,5 +1,5 @@
-import { Target, TrendingUp, Briefcase, Eye, ShieldCheck, Database, LayoutTemplate, Cpu, Cloud, LineChart, Code, CheckCircle, AlertTriangle, Sparkles, BarChart3, ArrowRight, Star } from "lucide-react";
-import { motion } from "framer-motion";
+import { Target, TrendingUp, Briefcase, Eye, ShieldCheck, Database, LayoutTemplate, Cpu, Cloud, LineChart, Code, CheckCircle, AlertTriangle, Sparkles, BarChart3, ArrowRight, Star, ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -61,6 +61,7 @@ const ROLE_MATCHES = [
 
 export const RoleDiscoveryStep = ({ onSelect, selectedRoleId, onNext }: RoleDiscoveryStepProps) => {
   const [viewRole, setViewRole] = useState<any | null>(null);
+  const [showRemaining, setShowRemaining] = useState(false);
 
   const handleSelectRoleInDialog = () => {
     if (viewRole) {
@@ -77,7 +78,7 @@ export const RoleDiscoveryStep = ({ onSelect, selectedRoleId, onNext }: RoleDisc
       </div>
 
       <div className="space-y-4 flex-1 overflow-y-auto custom-scrollbar pr-3 pb-6 -mr-3">
-        {ROLE_MATCHES.map((role, idx) => {
+        {ROLE_MATCHES.slice(0, 3).map((role, idx) => {
           const isSelected = selectedRoleId === role.id;
           const isRecommended = idx === 0;
           return (
@@ -87,7 +88,7 @@ export const RoleDiscoveryStep = ({ onSelect, selectedRoleId, onNext }: RoleDisc
               className={`p-5 rounded-xl border transition-all cursor-pointer group relative mt-4 ${
                 isSelected 
                   ? "bg-primary/10 border-primary shadow-[0_0_20px_rgba(45,212,191,0.2)] scale-[1.01]" 
-                  : "bg-muted/50 border-border/50 hover:border-primary/50 hover:bg-muted"
+                  : "bg-background/50 border-border/50 hover:border-primary/50 hover:bg-background/80"
               }`}
             >
               {isRecommended && (
@@ -134,9 +135,84 @@ export const RoleDiscoveryStep = ({ onSelect, selectedRoleId, onNext }: RoleDisc
             </div>
           );
         })}
+
+        <div className="w-full mt-6 pb-2">
+          <button 
+            onClick={() => setShowRemaining(!showRemaining)}
+            className="w-full py-3 flex items-center justify-center gap-2 text-sm font-bold text-muted-foreground hover:text-foreground transition-all duration-300 border border-border/50 rounded-xl bg-muted/20 hover:bg-muted/40"
+          >
+            {showRemaining ? "Hide Additional Roles" : `Explore ${ROLE_MATCHES.length - 3} Additional Roles`} 
+            <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${showRemaining ? "rotate-180" : ""}`} />
+          </button>
+          
+          <AnimatePresence>
+            {showRemaining && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-2 space-y-4">
+                  {ROLE_MATCHES.slice(3).map((role) => {
+                    const isSelected = selectedRoleId === role.id;
+                    return (
+                      <div 
+                        key={role.id}
+                        onClick={() => onSelect(role.id)}
+                        className={`p-5 rounded-xl border transition-all cursor-pointer group relative mt-4 ${
+                          isSelected 
+                            ? "bg-primary/10 border-primary shadow-[0_0_20px_rgba(45,212,191,0.2)] scale-[1.01]" 
+                            : "bg-background/50 border-border/50 hover:border-primary/50 hover:bg-background/80"
+                        }`}
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-2 rounded-lg ${isSelected ? "bg-primary text-background" : "bg-background text-primary group-hover:bg-primary/20"}`}>
+                              <role.icon className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <h3 className="font-bold text-lg">{role.title}</h3>
+                              <p className="text-xs text-muted-foreground">{role.tier} • {role.salary}</p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            <div className={`px-3 py-1 rounded-full border text-xs font-bold ${isSelected ? "bg-primary text-background border-primary" : "bg-neon/10 text-neon border-neon/30"}`}>
+                              {role.match}% Match
+                            </div>
+                            <button 
+                              onClick={(e) => { e.stopPropagation(); setViewRole(role); }} 
+                              className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-bold text-muted-foreground hover:text-primary transition-colors bg-background/50 px-2.5 py-1 rounded border border-border/50 hover:border-primary/30"
+                            >
+                              <Eye className="w-3 h-3" /> View Role
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className="w-full h-1.5 bg-slate-800/50 rounded-full overflow-hidden mb-3">
+                          <motion.div 
+                            className="h-full bg-gradient-to-r from-primary to-neon rounded-full"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${role.match}%` }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-between text-xs text-muted-foreground pt-3 border-t border-border/50">
+                          <span className="flex items-center gap-1.5"><TrendingUp className={`w-3.5 h-3.5 ${isSelected ? 'text-primary' : ''}`} /> {role.trend}</span>
+                          <span className="font-medium bg-background px-2 py-0.5 rounded border border-border">{role.demand}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
-      <div className="pt-4 mt-auto border-t border-border/30 flex flex-col items-end shrink-0 sticky bottom-0 bg-background/95 backdrop-blur-md pb-2 z-20 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)]">
+      <div className="pt-4 mt-auto border-t border-border/50 flex flex-col items-end shrink-0 sticky bottom-0 bg-background/95 backdrop-blur-md pb-2 z-20 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)]">
         <button 
           onClick={onNext}
           disabled={!selectedRoleId}

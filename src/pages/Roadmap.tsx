@@ -105,7 +105,7 @@ const Roadmap = () => {
         </motion.div>
       </div>
 
-      <footer className="py-8 border-t border-border/30 mt-8">
+      <footer className="py-8 border-t border-border/50 mt-8">
         <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
           <Link to="/" className="flex items-center gap-2">
             <span className="font-display text-sm font-bold">FuturFly</span>

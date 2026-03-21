@@ -19,6 +19,8 @@ import RoleHub from "./pages/RoleHub";
 import RoleDetail from "./pages/RoleDetail";
 import DetailedAssessment from "./pages/DetailedAssessment";
 import NotFound from "./pages/NotFound";
+import Waitlist from "./pages/Waitlist";
+import SetupScreen from "./pages/SetupScreen";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { DashboardLayout } from "./layouts/DashboardLayout";
@@ -41,6 +43,7 @@ const App = () => (
             {/* Protected Routes */}
             <Route element={<DashboardLayout />}>
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/setup" element={<ProtectedRoute><SetupScreen /></ProtectedRoute>} />
               <Route path="/simulation" element={<ProtectedRoute><Simulation /></ProtectedRoute>} />
               <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
               <Route path="/market" element={<ProtectedRoute><Market /></ProtectedRoute>} />
@@ -55,6 +58,7 @@ const App = () => (
             
             {/* Public Routes */}
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/waitlist" element={<Waitlist />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -85,7 +85,7 @@ export const PersonaPanel = ({ personaData, compact = false }: PersonaPanelProps
 
       {/* Persona Scores Grid */}
       <div className="grid grid-cols-2 gap-3 mb-6">
-        <div className="p-3 rounded-xl bg-background border border-border/40 shadow-inner">
+        <div className="p-3 rounded-xl bg-background border border-border/50 shadow-inner">
           <div className="flex justify-between items-center mb-2">
             <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest truncate">Expr (EB)</span>
             <span className="text-[11px] font-bold text-[#2DD4BF]">{personaData?.scores?.eb || 30}%</span>
@@ -95,7 +95,7 @@ export const PersonaPanel = ({ personaData, compact = false }: PersonaPanelProps
           </div>
         </div>
         
-        <div className="p-3 rounded-xl bg-background border border-border/40 shadow-inner">
+        <div className="p-3 rounded-xl bg-background border border-border/50 shadow-inner">
           <div className="flex justify-between items-center mb-2">
             <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest truncate">Strategy (SC)</span>
             <span className="text-[11px] font-bold text-[#4ADE80]">{personaData?.scores?.sc || 92}%</span>
@@ -105,7 +105,7 @@ export const PersonaPanel = ({ personaData, compact = false }: PersonaPanelProps
           </div>
         </div>
 
-        <div className="p-3 rounded-xl bg-background border border-border/40 shadow-inner">
+        <div className="p-3 rounded-xl bg-background border border-border/50 shadow-inner">
           <div className="flex justify-between items-center mb-2">
             <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest truncate">Impact (PA)</span>
             <span className="text-[11px] font-bold text-[#4ADE80]">{personaData?.scores?.pa || 30}%</span>
@@ -115,7 +115,7 @@ export const PersonaPanel = ({ personaData, compact = false }: PersonaPanelProps
           </div>
         </div>
 
-        <div className="p-3 rounded-xl bg-background border border-border/40 shadow-inner">
+        <div className="p-3 rounded-xl bg-background border border-border/50 shadow-inner">
           <div className="flex justify-between items-center mb-2">
             <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest truncate">Adaptability</span>
             <span className="text-[11px] font-bold text-[#2DD4BF]">{personaData?.scores?.adaptability || 85}%</span>

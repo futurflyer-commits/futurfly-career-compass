@@ -141,7 +141,7 @@ const Simulation = () => {
         </div>
       </div>
 
-      <footer className="py-8 border-t border-border/30">
+      <footer className="py-8 border-t border-border/50">
         <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">FuturFly AI Systems © 2026</p>
           <div className="flex gap-6 text-xs text-muted-foreground">

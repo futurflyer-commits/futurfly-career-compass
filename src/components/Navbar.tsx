@@ -4,7 +4,9 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
-  { label: "Assessments", href: "/assessment" },
+  { label: "Platform", href: "/#hero" },
+  { label: "Pathways", href: "/#pathways" },
+  { label: "Success Stories", href: "/#success-stories" },
   { label: "Pricing", href: "/pricing" },
 ];
 
@@ -13,29 +15,38 @@ export const Navbar = () => {
   const location = useLocation();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/30 bg-background/80 backdrop-blur-xl">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-background/80 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <Rocket className="h-6 w-6 text-primary" />
-          <span className="font-display text-lg font-bold text-foreground">FuturFly</span>
+        <Link to="/" className="flex items-center">
+          <img src="/logo.png" alt="FuturFly Logo" className="h-10 md:h-12 object-contain" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                location.pathname === link.href ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              {link.label}
-            </Link>
+            link.href.startsWith("/#") ? (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium text-slate-300 hover:text-primary transition-colors"
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                to={link.href}
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  location.pathname === link.href ? "text-primary" : "text-slate-300"
+                }`}
+              >
+                {link.label}
+              </Link>
+            )
           ))}
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Link to="/register" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/register" className="text-sm font-medium text-slate-300 hover:text-foreground transition-colors">
             Sign In
           </Link>
           <Link
@@ -57,20 +68,31 @@ export const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-border/30 bg-background/95 backdrop-blur-xl"
+            className="md:hidden border-t border-white/10 bg-background/95 backdrop-blur-xl"
           >
             <div className="container py-4 flex flex-col gap-3">
               {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  onClick={() => setOpen(false)}
-                  className="text-sm font-medium text-muted-foreground hover:text-primary py-2"
-                >
-                  {link.label}
-                </Link>
+                link.href.startsWith("/#") ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="text-sm font-medium text-slate-300 hover:text-primary py-2"
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    onClick={() => setOpen(false)}
+                    className="text-sm font-medium text-slate-300 hover:text-primary py-2"
+                  >
+                    {link.label}
+                  </Link>
+                )
               ))}
-              <Link to="/register" onClick={() => setOpen(false)} className="text-sm font-medium text-muted-foreground py-2">
+              <Link to="/register" onClick={() => setOpen(false)} className="text-sm font-medium text-slate-300 py-2">
                 Sign In
               </Link>
               <Link

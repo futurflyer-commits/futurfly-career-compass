@@ -41,11 +41,10 @@ export const DashboardNav = () => {
 
   return (
     <>
-      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-border/50 bg-background/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="container flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <Rocket className="h-5 w-5 text-primary" />
-            <span className="font-display text-base font-bold">FuturFly</span>
+          <Link to="/" className="flex items-center mr-4">
+            <img src="/logo.png" alt="FuturFly Logo" className="h-10 md:h-12 object-contain" />
           </Link>
           <div className="hidden md:flex items-center gap-2 bg-input rounded-full px-4 py-2 border border-border/50 w-64">
             <Search className="h-4 w-4 text-muted-foreground" />
@@ -99,7 +98,7 @@ export const DashboardNav = () => {
       </header>
 
       {/* Mobile Bottom Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-t border-border/30 z-50">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-t border-border/50 z-50">
         <div className="flex justify-around py-3">
           {mobileLinks.map((item) => (
             <Link

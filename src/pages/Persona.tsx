@@ -50,15 +50,16 @@ const PERSONA_CONTENT: Record<string, { desc: string; image: string; title: stri
 interface PersonaProps {
   hideRoadmapLink?: boolean;
   hideSharing?: boolean;
+  forceResult?: any;
 }
 
-const Persona = ({ hideRoadmapLink = false, hideSharing = false }: PersonaProps = {}) => {
+const Persona = ({ hideRoadmapLink = false, hideSharing = false, forceResult }: PersonaProps = {}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   
-  const result: AssessmentResult | null = location.state?.result || 
+  const result: AssessmentResult | null = forceResult || location.state?.result || 
     (localStorage.getItem('discovery_assessment_result') 
       ? JSON.parse(localStorage.getItem('discovery_assessment_result')!) 
       : null);
@@ -88,9 +89,9 @@ const Persona = ({ hideRoadmapLink = false, hideSharing = false }: PersonaProps 
 
   // We map the traits directly to the scores for dynamic progress bars
   const dynamicTraits = [
-    { label: "Experimentation (EB)", value: Math.round((result.persona_score.EB / 10) * 100), color: "from-primary to-secondary" },
-    { label: "Strategy (SC)", value: Math.round((result.persona_score.SC / 12) * 100), color: "from-secondary to-accent" },
-    { label: "Impact (PA)", value: Math.round((result.persona_score.PA / 10) * 100), color: "from-accent to-neon" },
+    { label: "Experimentation (EB)", value: Math.round(((result.persona_score?.EB ?? 8) / 10) * 100), color: "from-primary to-secondary" },
+    { label: "Strategy (SC)", value: Math.round(((result.persona_score?.SC ?? 8) / 12) * 100), color: "from-secondary to-accent" },
+    { label: "Impact (PA)", value: Math.round(((result.persona_score?.PA ?? 8) / 10) * 100), color: "from-accent to-neon" },
     { label: "Adaptability", value: 85, color: "from-primary to-mint" }, // Static filler for aesthetics
   ];
 
@@ -159,7 +160,7 @@ const Persona = ({ hideRoadmapLink = false, hideSharing = false }: PersonaProps 
             </span>
 
             <h1 className="text-4xl md:text-6xl xl:text-[5rem] font-display font-black mb-1 leading-none tracking-tight text-foreground">{content.title[0]}</h1>
-            <h1 className="text-4xl md:text-6xl xl:text-[5rem] font-display font-black text-gradient mb-12 leading-none tracking-tight drop-shadow-md">{content.title[1]}</h1>
+            <h1 className={`text-4xl md:text-6xl xl:text-[5rem] font-display font-black mb-12 leading-none tracking-tight drop-shadow-md ${isGeneratingPDF ? 'text-[#2dd4bf]' : 'text-gradient'}`}>{content.title[1]}</h1>
 
             <motion.div
               initial={{ opacity: 0, scale: 0.85 }}
@@ -171,7 +172,7 @@ const Persona = ({ hideRoadmapLink = false, hideSharing = false }: PersonaProps 
               <div className="relative w-full h-full rounded-[2.5rem] lg:rounded-[4rem] bg-white/5 backdrop-blur-xl border-2 border-white/20 flex items-center justify-center overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.05)] transition-transform duration-500 group-hover:scale-[1.02]">
                 <img 
                   src={`${content.image}.png`}
-                  alt={result.persona}
+                  alt={result.persona || "Persona"}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   onError={(e) => {
                      e.currentTarget.style.display = 'none';

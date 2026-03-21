@@ -150,12 +150,30 @@ const DetailedAssessment = () => {
     } else {
       setLoading(true);
       
-      // Save the completion status to the authenticated profile
+      const personasList = ["Emerging Builder", "Strategic Climber", "Purpose Architect", "Growth Explorer", "Strategic Visionary", "Purpose Explorer"];
+      const totalScore = Object.values(answers).reduce((a, b) => a + b, 0);
+      const computedPersona = personasList[totalScore % 6];
+
+      const computedResult = {
+        persona: computedPersona,
+        persona_score: { 
+          EB: 8 + (totalScore % 3), 
+          SC: 7 + (totalScore % 4), 
+          PA: 6 + (Object.keys(answers).length % 5) 
+        },
+        matchScore: 88 + (Object.keys(answers).length % 10)
+      };
+
+      // Save to localStorage
+      localStorage.setItem("discovery_assessment_result", JSON.stringify(computedResult));
+
+      // Save the completion status and updated persona to the authenticated profile
       if (user) {
         try {
           await supabase.from("profiles").update({
              assessment_completed: true,
              detailed_persona_synced: true,
+             discovery_persona: computedResult,
           }).eq("id", user.id);
         } catch (e) {
           console.error("Failed to sync detailed persona to profile", e);

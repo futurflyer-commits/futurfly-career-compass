@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
-import { PlayCircle, Award, Target, Settings2, Clock, CheckCircle } from "lucide-react";
+import { PlayCircle, Award, Target, Settings2, Clock, CheckCircle, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { PersonaPanel } from "./PersonaPanel";
 import { RoadmapState } from "./state";
+import { useState } from "react";
+import { CareerBlueprintModal } from "./CareerBlueprintModal";
 
 interface ReturningDashboardProps {
   roadmapState: RoadmapState;
@@ -12,6 +14,7 @@ interface ReturningDashboardProps {
 
 export const ReturningDashboard = ({ roadmapState, onReconfigure }: ReturningDashboardProps) => {
   const { user } = useAuth();
+  const [showBlueprint, setShowBlueprint] = useState(false);
   
   // Try to use a stored full_name, fallback to capitalizing the email prefix, fallback to Architect.
   const displayIdentifier = user?.user_metadata?.full_name 
@@ -57,12 +60,20 @@ export const ReturningDashboard = ({ roadmapState, onReconfigure }: ReturningDas
               <p className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground mb-1">Active Set Path</p>
               <h3 className="text-lg font-display font-bold text-foreground mb-4 leading-tight">AI Solutions Architect</h3>
               
-              <button 
-                onClick={onReconfigure}
-                className="w-full py-2.5 rounded-lg border border-border bg-background/50 text-sm font-semibold hover:bg-muted/50 hover:border-primary/50 transition-colors flex items-center justify-center gap-2"
-              >
-                <Settings2 className="w-4 h-4" /> Reconfigure Path
-              </button>
+              <div className="flex flex-col gap-2">
+                 <button 
+                   onClick={() => setShowBlueprint(true)}
+                   className="w-full py-2.5 rounded-lg border border-primary/20 bg-primary/10 text-primary text-sm font-bold hover:bg-primary/20 transition-colors flex items-center justify-center gap-2"
+                 >
+                   <FileText className="w-4 h-4" /> Download Report
+                 </button>
+                 <button 
+                   onClick={onReconfigure}
+                   className="w-full py-2.5 rounded-lg border border-border bg-background/50 text-sm font-semibold hover:bg-muted/50 hover:border-primary/50 transition-colors flex items-center justify-center gap-2"
+                 >
+                   <Settings2 className="w-4 h-4" /> Reconfigure Path
+                 </button>
+              </div>
            </div>
 
            {/* Mini Tracker */}
@@ -128,6 +139,12 @@ export const ReturningDashboard = ({ roadmapState, onReconfigure }: ReturningDas
           </div>
         </div>
       </div>
+      
+      <CareerBlueprintModal 
+        isOpen={showBlueprint} 
+        onClose={() => setShowBlueprint(false)} 
+        roleId={roadmapState.activeRoleId} 
+      />
     </motion.div>
   );
 };

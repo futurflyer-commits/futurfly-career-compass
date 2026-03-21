@@ -9,6 +9,7 @@ import { Sparkles } from "lucide-react";
 
 interface DiscoveryWizardProps {
   onComplete: (roleId: string) => void;
+  autoStart?: boolean;
 }
 
 const STEPS = [
@@ -18,8 +19,8 @@ const STEPS = [
   { id: 4, label: "Roadmap", helper: "Generate learning path", icon: Map },
 ];
 
-export const DiscoveryWizard = ({ onComplete }: DiscoveryWizardProps) => {
-  const [isStarted, setIsStarted] = useState(false);
+export const DiscoveryWizard = ({ onComplete, autoStart = false }: DiscoveryWizardProps) => {
+  const [isStarted, setIsStarted] = useState(autoStart);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedRoleId, setSelectedRoleId] = useState<string | null>(null);
 

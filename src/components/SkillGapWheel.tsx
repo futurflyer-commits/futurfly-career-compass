@@ -40,25 +40,25 @@ export const SkillGapWheel = ({ data, showRoleOverlay, onClusterClick }: SkillGa
     if (active && payload && payload.length) {
       const data: ClusterData = payload[0].payload;
       return (
-        <div className="bg-background/95 border border-border/50 backdrop-blur-xl p-3 rounded-xl max-w-[220px] shadow-2xl">
+        <div className="bg-background/95 border border-white/10 backdrop-blur-xl p-3 rounded-xl max-w-[220px] shadow-2xl">
           <p className="font-display font-bold text-sm text-foreground mb-1">{data.name}</p>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-xl font-bold text-aqua">{data.score.toFixed(1)}</span>
-            <span className="text-[10px] uppercase text-muted-foreground tracking-widest">/ 10</span>
+            <span className="text-[10px] uppercase text-slate-300 tracking-widest">/ 10</span>
           </div>
           {showRoleOverlay && data.gap > 0 && (
             <p className="text-[10px] text-primary mb-2 font-medium">Gap: -{data.gap.toFixed(1)} points</p>
           )}
           <div className="mt-3">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5 font-bold">Top Skills</p>
+            <p className="text-[10px] uppercase tracking-wider text-slate-300 mb-1.5 font-bold">Top Skills</p>
             <div className="flex flex-wrap gap-1">
               {(data.skills || []).slice(0, 3).map((s, i) => (
-                <span key={i} className="text-[10px] bg-muted/50 text-foreground px-1.5 py-0.5 rounded">
+                <span key={i} className="text-[10px] bg-white/5 text-foreground px-1.5 py-0.5 rounded">
                   {s.name}
                 </span>
               ))}
               {data.skills && data.skills.length > 3 && (
-                <span className="text-[10px] text-muted-foreground px-1 py-0.5">+{data.skills.length - 3}</span>
+                <span className="text-[10px] text-slate-300 px-1 py-0.5">+{data.skills.length - 3}</span>
               )}
             </div>
           </div>
@@ -70,7 +70,7 @@ export const SkillGapWheel = ({ data, showRoleOverlay, onClusterClick }: SkillGa
 
   if (!data || data.length === 0) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
+      <div className="w-full h-full flex flex-col items-center justify-center text-slate-300">
         <div className="w-16 h-16 border-4 border-aqua/20 border-t-aqua rounded-full animate-spin mb-4" />
         <p className="font-display tracking-widest uppercase text-sm">Loading telemetry...</p>
       </div>

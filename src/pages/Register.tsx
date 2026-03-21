@@ -87,13 +87,12 @@ const AIProcessingScreen = () => {
       </div>
 
       {/* Header */}
-      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl relative z-10">
+      <header className="border-b border-white/10 bg-background/80 backdrop-blur-xl relative z-10">
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Rocket className="h-5 w-5 text-primary" />
-            <span className="font-display text-base font-bold">FuturFly</span>
+          <div className="flex items-center">
+            <img src="/logo.png" alt="FuturFly Logo" className="h-10 md:h-12 object-contain" />
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 text-sm text-slate-300">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             Session Active
             <Cog className="h-4 w-4 ml-1" />
@@ -148,7 +147,7 @@ const AIProcessingScreen = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="text-sm italic text-muted-foreground mb-8"
+          className="text-sm italic text-slate-300 mb-8"
         >
           {analysisTexts[analysisIndex]}
         </motion.p>
@@ -171,7 +170,7 @@ const AIProcessingScreen = () => {
                     <Icon className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <p className="text-[9px] uppercase tracking-widest text-muted-foreground font-semibold">{card.label}</p>
+                    <p className="text-[9px] uppercase tracking-widest text-slate-300 font-semibold">{card.label}</p>
                     <p className="text-xs font-semibold">{card.text}</p>
                   </div>
                 </motion.div>
@@ -183,10 +182,10 @@ const AIProcessingScreen = () => {
           <div className="flex-1 flex flex-col items-center justify-center">
             <div className="w-full max-w-xs">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">Processing Stream</span>
+                <span className="text-[10px] uppercase tracking-widest font-semibold text-slate-300">Processing Stream</span>
                 <span className="text-sm font-mono font-bold text-primary">{progress.toFixed(1)}%</span>
               </div>
-              <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
+              <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
                   style={{ width: `${progress}%` }}
@@ -207,7 +206,7 @@ const AIProcessingScreen = () => {
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-[10px] uppercase tracking-widest font-semibold">Live Engine Feed</span>
             </div>
-            <div className="font-mono text-[11px] space-y-1.5 text-muted-foreground">
+            <div className="font-mono text-[11px] space-y-1.5 text-slate-300">
               {processingSteps.slice(0, visibleLogs).map((log, i) => (
                 <motion.p
                   key={i}
@@ -227,7 +226,7 @@ const AIProcessingScreen = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="text-xs text-muted-foreground flex items-center gap-1.5 mt-4"
+          className="text-xs text-slate-300 flex items-center gap-1.5 mt-4"
         >
           <Sparkles className="h-3 w-3" /> Quantum Intelligence Engine v4.0.2
         </motion.p>
@@ -400,14 +399,13 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b border-border/30 bg-background/80 backdrop-blur-xl">
+      <header className="border-b border-white/10 bg-background/80 backdrop-blur-xl">
         <div className="container flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <Rocket className="h-5 w-5 text-primary" />
-            <span className="font-display text-base font-bold">FuturFly</span>
+          <Link to="/" className="flex items-center">
+            <img src="/logo.png" alt="FuturFly Logo" className="h-10 md:h-12 object-contain" />
           </Link>
           <div className="flex items-center gap-4">
-            <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">Log in</Link>
+            <Link to="/" className="text-sm text-slate-300 hover:text-foreground">Log in</Link>
             <Link to="/register" className="rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-1.5 text-sm font-semibold text-primary-foreground">
               Sign Up
             </Link>
@@ -425,22 +423,22 @@ const Register = () => {
               <h1 className="text-4xl md:text-5xl font-display font-bold leading-tight mb-4">
                 Join the <span className="text-gradient">Future of Work</span>
               </h1>
-              <p className="text-muted-foreground leading-relaxed mb-8">
+              <p className="text-slate-300 leading-relaxed mb-8">
                 FuturFly uses advanced neural networks to map your potential and connect you with opportunities that match your specific DNA.
               </p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="glass-card p-4">
                   <Sparkles className="h-5 w-5 text-primary mb-2" />
                   <h4 className="text-sm font-semibold mb-1">AI Optimization</h4>
-                  <p className="text-xs text-muted-foreground">Smart resume & profile builder</p>
+                  <p className="text-xs text-slate-300">Smart resume & profile builder</p>
                 </div>
                 <div className="glass-card p-4">
                   <Mail className="h-5 w-5 text-primary mb-2" />
                   <h4 className="text-sm font-semibold mb-1">Skill Mapping</h4>
-                  <p className="text-xs text-muted-foreground">Identify gaps in your career path</p>
+                  <p className="text-xs text-slate-300">Identify gaps in your career path</p>
                 </div>
               </div>
-              <p className="flex items-center gap-2 text-sm text-muted-foreground mt-6">
+              <p className="flex items-center gap-2 text-sm text-slate-300 mt-6">
                 Join <strong className="text-foreground">12,000+</strong> career pioneers
               </p>
             </motion.div>
@@ -450,7 +448,7 @@ const Register = () => {
                 {showLogin ? (
                   <>
                     <h2 className="text-xl font-display font-bold mb-1">Welcome Back</h2>
-                    <p className="text-sm text-muted-foreground mb-6">Log in to your FuturFly account.</p>
+                    <p className="text-sm text-slate-300 mb-6">Log in to your FuturFly account.</p>
                     <form onSubmit={handleLoginSubmit} className="flex flex-col gap-4">
                       {authError && (
                         <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-lg">
@@ -459,22 +457,22 @@ const Register = () => {
                       )}
                       <div>
                         <label className="text-sm font-medium mb-1.5 block">Email Address</label>
-                        <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
-                          <Mail className="h-4 w-4 text-muted-foreground" />
+                        <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-white/10 focus-within:border-primary/50 transition-colors">
+                          <Mail className="h-4 w-4 text-slate-300" />
                           <input 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             type="email"
                             required
-                            className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" 
+                            className="bg-transparent text-sm flex-1 outline-none placeholder:text-slate-300" 
                             placeholder="name@company.com" 
                           />
                         </div>
                       </div>
                       <div>
                         <label className="text-sm font-medium mb-1.5 block">Password</label>
-                        <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
-                          <Lock className="h-4 w-4 text-muted-foreground" />
+                        <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-white/10 focus-within:border-primary/50 transition-colors">
+                          <Lock className="h-4 w-4 text-slate-300" />
                           <input 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -495,25 +493,25 @@ const Register = () => {
                     </form>
                     <div className="flex items-center gap-3 my-5">
                       <div className="flex-1 h-px bg-border" />
-                      <span className="text-xs text-muted-foreground uppercase">Or continue with</span>
+                      <span className="text-xs text-slate-300 uppercase">Or continue with</span>
                       <div className="flex-1 h-px bg-border" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
-                      <button className="flex items-center justify-center gap-2 rounded-lg border border-border py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
+                      <button className="flex items-center justify-center gap-2 rounded-lg border border-white/20 py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
                         Google
                       </button>
-                      <button className="flex items-center justify-center gap-2 rounded-lg border border-border py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
+                      <button className="flex items-center justify-center gap-2 rounded-lg border border-white/20 py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
                         LinkedIn
                       </button>
                     </div>
-                    <p className="text-center text-sm text-muted-foreground mt-4">
+                    <p className="text-center text-sm text-slate-300 mt-4">
                       Don't have an account? <button onClick={() => setShowLogin(false)} className="text-primary hover:underline">Sign up</button>
                     </p>
                   </>
                 ) : (
                   <>
                 <h2 className="text-xl font-display font-bold mb-1">Create Account</h2>
-                <p className="text-sm text-muted-foreground mb-6">Start your AI-native career journey today.</p>
+                <p className="text-sm text-slate-300 mb-6">Start your AI-native career journey today.</p>
                 <form onSubmit={handleRegisterSubmit} className="flex flex-col gap-4">
                   {authError && (
                     <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-lg">
@@ -522,35 +520,35 @@ const Register = () => {
                   )}
                   <div>
                     <label className="text-sm font-medium mb-1.5 block">Full Name</label>
-                    <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
-                      <User className="h-4 w-4 text-muted-foreground" />
+                    <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-white/10 focus-within:border-primary/50 transition-colors">
+                      <User className="h-4 w-4 text-slate-300" />
                       <input 
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                        className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" 
+                        className="bg-transparent text-sm flex-1 outline-none placeholder:text-slate-300" 
                         placeholder="John Doe" 
                       />
                     </div>
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-1.5 block">Email Address</label>
-                    <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
+                    <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-white/10 focus-within:border-primary/50 transition-colors">
+                      <Mail className="h-4 w-4 text-slate-300" />
                       <input 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         type="email"
                         required
-                        className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" 
+                        className="bg-transparent text-sm flex-1 outline-none placeholder:text-slate-300" 
                         placeholder="name@company.com" 
                       />
                     </div>
                   </div>
                   <div>
                     <label className="text-sm font-medium mb-1.5 block">Password</label>
-                    <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-border/50 focus-within:border-primary/50 transition-colors">
-                      <Lock className="h-4 w-4 text-muted-foreground" />
+                    <div className="flex items-center gap-2 bg-input rounded-lg px-3 py-2.5 border border-white/10 focus-within:border-primary/50 transition-colors">
+                      <Lock className="h-4 w-4 text-slate-300" />
                       <input 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -569,18 +567,18 @@ const Register = () => {
                 </form>
                 <div className="flex items-center gap-3 my-5">
                   <div className="flex-1 h-px bg-border" />
-                  <span className="text-xs text-muted-foreground uppercase">Or continue with</span>
+                  <span className="text-xs text-slate-300 uppercase">Or continue with</span>
                   <div className="flex-1 h-px bg-border" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <button className="flex items-center justify-center gap-2 rounded-lg border border-border py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
+                  <button className="flex items-center justify-center gap-2 rounded-lg border border-white/20 py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
                     Google
                   </button>
-                  <button className="flex items-center justify-center gap-2 rounded-lg border border-border py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
+                  <button className="flex items-center justify-center gap-2 rounded-lg border border-white/20 py-2.5 text-sm font-medium hover:border-primary/40 transition-colors">
                     LinkedIn
                   </button>
                 </div>
-                <p className="text-center text-sm text-muted-foreground mt-4">
+                <p className="text-center text-sm text-slate-300 mt-4">
                   Already have an account? <button onClick={() => setShowLogin(true)} className="text-primary hover:underline">Log in</button>
                 </p>
                   </>
@@ -593,7 +591,7 @@ const Register = () => {
             <h1 className="text-3xl md:text-4xl font-display font-bold mb-2">
               Tell us your <span className="text-gradient">story</span>
             </h1>
-            <p className="text-muted-foreground mb-10">
+            <p className="text-slate-300 mb-10">
               Upload your CV or Portfolio to let our AI map your career DNA and unlock your future potential.
             </p>
             <input 
@@ -609,15 +607,15 @@ const Register = () => {
             >
               <Upload className="h-10 w-10 text-primary mx-auto mb-4" />
               <h3 className="font-semibold mb-1">Drop your CV or Portfolio here</h3>
-              <p className="text-sm text-muted-foreground mb-4">PDF, DOCX, or JPG supported (Max 10MB)</p>
+              <p className="text-sm text-slate-300 mb-4">PDF, DOCX, or JPG supported (Max 10MB)</p>
               <span className="inline-block rounded-full border border-primary px-5 py-2 text-sm font-semibold text-primary">
                 Browse Files
               </span>
             </div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">Or</p>
+            <p className="text-xs text-slate-300 uppercase tracking-wider mb-4">Or</p>
             <button
               onClick={handleUpload}
-              className="inline-flex items-center gap-2 bg-muted rounded-full px-8 py-3 text-sm font-semibold hover:bg-muted/80 transition-colors"
+              className="inline-flex items-center gap-2 bg-white/10 rounded-full px-8 py-3 text-sm font-semibold hover:bg-white/10/80 transition-colors"
             >
               Connect LinkedIn
             </button>
@@ -627,16 +625,16 @@ const Register = () => {
             <h1 className="text-3xl md:text-5xl font-display font-bold mb-3">
               What fuels your <span className="text-gradient">curiosity?</span>
             </h1>
-            <p className="text-muted-foreground mb-10 max-w-lg mx-auto">
+            <p className="text-slate-300 mb-10 max-w-lg mx-auto">
               Select the domains that define your ambition. We'll tailor your AI career co-pilot to match your unique interests.
             </p>
 
-            <div className="flex items-center gap-3 bg-card border border-border/50 rounded-xl px-4 py-3 max-w-lg mx-auto mb-10 focus-within:border-primary/50 transition-colors">
-              <Search className="h-5 w-5 text-muted-foreground" />
+            <div className="flex items-center gap-3 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl px-4 py-3 max-w-lg mx-auto mb-10 focus-within:border-primary/50 transition-colors">
+              <Search className="h-5 w-5 text-slate-300" />
               <input
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground"
+                className="bg-transparent text-sm flex-1 outline-none placeholder:text-slate-300"
                 placeholder="Search interests (e.g. AI Ethics, Fintech, Space Tech...)"
               />
             </div>
@@ -657,10 +655,10 @@ const Register = () => {
                     className={`flex flex-col items-center gap-3 p-6 rounded-xl border transition-all duration-200 ${
                       isSelected
                         ? "border-primary bg-primary/15 glow-aqua-sm"
-                        : "border-border/50 bg-card hover:border-primary/30"
+                        : "border-white/10 bg-white/5 backdrop-blur-xl hover:border-primary/30"
                     }`}
                   >
-                    <Icon className={`h-7 w-7 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
+                    <Icon className={`h-7 w-7 ${isSelected ? "text-primary" : "text-slate-300"}`} />
                     <span className={`text-sm font-medium ${isSelected ? "text-primary" : "text-foreground"}`}>
                       {item.label}
                     </span>
@@ -680,10 +678,10 @@ const Register = () => {
         )}
       </div>
 
-      <footer className="py-6 border-t border-border/30">
+      <footer className="py-6 border-t border-white/10">
         <div className="container flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-muted-foreground">© 2026 FuturFly AI Career Systems. All rights reserved.</p>
-          <div className="flex gap-4 text-xs text-muted-foreground">
+          <p className="text-xs text-slate-300">© 2026 FuturFly AI Career Systems. All rights reserved.</p>
+          <div className="flex gap-4 text-xs text-slate-300">
             <span>Privacy Policy</span>
             <span>Terms of Service</span>
             <span>Security</span>

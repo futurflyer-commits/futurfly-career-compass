@@ -88,7 +88,7 @@ const SkillLab = () => {
     <div className="min-h-screen bg-background">
             <div className="flex h-screen overflow-hidden">
         {/* Left icon sidebar */}
-        <div className="hidden md:flex flex-col items-center w-16 border-r border-border/30 py-6 gap-4 shrink-0 bg-background/50 backdrop-blur-md">
+        <div className="hidden md:flex flex-col items-center w-16 border-r border-border/50 py-6 gap-4 shrink-0 bg-background/50 backdrop-blur-md">
           {[Grid3X3, Layers, Brain, BarChart3].map((Icon, i) => (
             <button key={i} className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${i === 1 ? "bg-aqua/10 text-aqua border border-aqua/20" : "text-muted-foreground hover:text-foreground hover:bg-muted/30"}`}>
               <Icon className="h-5 w-5" />
@@ -140,7 +140,7 @@ const SkillLab = () => {
             {/* Left Panel */}
             <div className="flex flex-col gap-6 lg:col-span-1">
               {/* Skill Breakdown Card */}
-              <div className="glass-card rounded-2xl p-5 border border-border/40 shadow-xl bg-background/40 backdrop-blur-xl flex flex-col h-[55%]">
+              <div className="glass-card rounded-2xl p-5 border border-border/50 shadow-xl bg-background/40 backdrop-blur-xl flex flex-col h-[55%]">
                 <h3 className="flex items-center gap-2 text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-6">
                   <BarChart3 className="w-4 h-4 text-aqua" />
                   Skill Breakdown
@@ -174,7 +174,7 @@ const SkillLab = () => {
               </div>
 
               {/* Next Milestone Card */}
-              <div className="glass-card rounded-2xl p-5 border border-border/40 shadow-xl bg-gradient-to-br from-background/80 to-muted/20 backdrop-blur-xl flex-1 flex flex-col justify-between">
+              <div className="glass-card rounded-2xl p-5 border border-border/50 shadow-xl bg-gradient-to-br from-background/80 to-muted/20 backdrop-blur-xl flex-1 flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                     <Zap className="w-5 h-5 text-primary" />
@@ -193,7 +193,7 @@ const SkillLab = () => {
             </div>
 
             {/* Center Panel (SkillGapWheel) */}
-            <div className="relative flex items-center justify-center lg:col-span-2 glass-card rounded-2xl border border-border/30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-aqua/5 via-background to-background">
+            <div className="relative flex items-center justify-center lg:col-span-2 glass-card rounded-2xl border border-border/50 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-aqua/5 via-background to-background">
               {/* Decorative background rings */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
                 <div className="w-[300px] h-[300px] rounded-full border border-dashed border-aqua/50 animate-[spin_60s_linear_infinite]" />
@@ -251,7 +251,7 @@ const SkillLab = () => {
               </AnimatePresence>
 
               {/* Target Alignment Text */}
-              <div className="glass-card rounded-2xl p-5 border border-border/40 shadow-xl flex-1">
+              <div className="glass-card rounded-2xl p-5 border border-border/50 shadow-xl flex-1">
                 <h3 className="text-[11px] font-bold text-mint uppercase tracking-widest mb-4">Target Alignment</h3>
                 <p className="text-sm text-foreground/80 leading-relaxed">
                   Your profile is currently <strong className="text-primary font-bold">12% misaligned</strong> with "Lead Architect" requirements. Critical gap identified in <span className="text-aqua font-semibold">Kubernetes Management</span>.
@@ -262,7 +262,7 @@ const SkillLab = () => {
               <div className="flex flex-col gap-3">
                 <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1 px-1">Top Recommendations</h3>
                 
-                <div className="glass-card rounded-xl p-4 border border-border/30 hover:border-aqua/40 transition-colors flex items-center gap-4 cursor-pointer group">
+                <div className="glass-card rounded-xl p-4 border border-border/50 hover:border-aqua/40 transition-colors flex items-center gap-4 cursor-pointer group">
                   <div className="w-10 h-10 rounded-lg bg-aqua/10 flex items-center justify-center shrink-0">
                     <GraduationCap className="w-5 h-5 text-aqua" />
                   </div>
@@ -273,7 +273,7 @@ const SkillLab = () => {
                   <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-aqua transition-colors" />
                 </div>
                 
-                <div className="glass-card rounded-xl p-4 border border-border/30 hover:border-primary/40 transition-colors flex items-center gap-4 cursor-pointer group">
+                <div className="glass-card rounded-xl p-4 border border-border/50 hover:border-primary/40 transition-colors flex items-center gap-4 cursor-pointer group">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <MessageSquare className="w-5 h-5 text-primary" />
                   </div>

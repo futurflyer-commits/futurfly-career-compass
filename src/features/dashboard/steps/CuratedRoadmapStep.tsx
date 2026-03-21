@@ -79,7 +79,7 @@ export const CuratedRoadmapStep = ({ onCommit, onBack, selectedRoleId }: Curated
         </div>
       </div>
 
-      <div className="pt-6 mt-6 border-t border-border/30 flex justify-between items-center shrink-0">
+      <div className="pt-6 mt-6 border-t border-border/50 flex justify-between items-center shrink-0">
         <button onClick={onBack} disabled={committing} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors disabled:opacity-50">
           <ArrowLeft className="w-4 h-4" /> Skill Gap Matrix
         </button>

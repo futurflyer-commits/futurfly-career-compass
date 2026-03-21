@@ -323,7 +323,7 @@ const Market = () => {
               <span className="w-2 h-2 rounded-full bg-aqua/40" />
               <span className="w-2 h-2 rounded-full bg-aqua/20" />
             </div>
-            <div className="grid grid-cols-3 gap-4 border-t border-border/30 pt-4">
+            <div className="grid grid-cols-3 gap-4 border-t border-border/50 pt-4">
               {riskCategories.map((c) => (
                 <div key={c.label} className="text-center">
                   <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">{c.label}</p>

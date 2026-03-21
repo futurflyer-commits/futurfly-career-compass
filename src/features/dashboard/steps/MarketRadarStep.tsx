@@ -50,12 +50,12 @@ export const MarketRadarStep = ({ onNext, onBack, selectedRoleId }: MarketRadarS
 
         {/* Core Metrics */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="glass-card p-4 rounded-xl border border-border/50">
+          <div className="bg-background/50 p-4 rounded-xl border border-border/50">
             {isDeclining ? <TrendingDown className="w-5 h-5 text-destructive mb-2" /> : <TrendingUp className="w-5 h-5 text-secondary mb-2" />}
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Growth Trend</p>
             <p className={`text-lg font-bold ${isDeclining ? "text-destructive" : ""}`}>{data.growth}</p>
           </div>
-          <div className="glass-card p-4 rounded-xl border border-border/50">
+          <div className="bg-background/50 p-4 rounded-xl border border-border/50">
             <ShieldCheck className={`w-5 h-5 mb-2 ${data.riskLevel === 'high' ? 'text-destructive' : data.riskLevel === 'medium' ? 'text-amber-500' : 'text-primary'}`} />
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Automation Risk</p>
             <p className={`text-lg font-bold ${data.riskLevel === 'high' ? 'text-destructive' : data.riskLevel === 'medium' ? 'text-amber-500' : 'text-primary'}`}>
@@ -65,7 +65,7 @@ export const MarketRadarStep = ({ onNext, onBack, selectedRoleId }: MarketRadarS
         </div>
 
         {/* Bar Chart Representation */}
-        <div className="glass-card p-5 rounded-xl border border-border/50">
+        <div className="bg-background/50 p-5 rounded-xl border border-border/50">
            <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-sm flex items-center gap-2"><BarChart3 className="w-4 h-4 text-neon" /> 5-Year Hiring Volume Projection</h3>
            </div>
@@ -111,7 +111,7 @@ export const MarketRadarStep = ({ onNext, onBack, selectedRoleId }: MarketRadarS
         </div>
       </div>
 
-      <div className="pt-6 mt-4 border-t border-border/30 flex justify-between items-center shrink-0">
+      <div className="pt-6 mt-4 border-t border-border/50 flex justify-between items-center shrink-0">
         <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-2 transition-colors font-medium">
           <ArrowLeft className="w-4 h-4" /> Reselect Role
         </button>

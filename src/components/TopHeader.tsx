@@ -24,28 +24,28 @@ export const TopHeader = ({ onMenuClick }: TopHeaderProps) => {
   };
 
   return (
-    <header className="sticky top-0 z-30 h-16 w-full bg-background/80 backdrop-blur-xl border-b border-border/30 flex items-center justify-between px-4 md:px-8">
+    <header className="sticky top-0 z-30 h-16 w-full bg-background/80 backdrop-blur-xl border-b border-white/10 flex items-center justify-between px-4 md:px-8">
       <div className="flex items-center gap-4">
         {/* Mobile Hamburger Menu */}
         <button 
           onClick={onMenuClick}
-          className="md:hidden p-2 -ml-2 rounded-md text-muted-foreground hover:bg-muted/50 transition-colors"
+          className="md:hidden p-2 -ml-2 rounded-md text-slate-300 hover:bg-white/5 transition-colors"
         >
           <Menu className="h-6 w-6" />
         </button>
 
         {/* Search Bar - hidden on very small screens */}
-        <div className="hidden sm:flex items-center gap-2 bg-input rounded-full px-4 py-2 border border-border/50 w-64 md:w-80 group focus-within:border-aqua/50 focus-within:shadow-[0_0_10px_rgba(45,212,191,0.1)] transition-all">
-          <Search className="h-4 w-4 text-muted-foreground group-focus-within:text-aqua transition-colors" />
+        <div className="hidden sm:flex items-center gap-2 bg-input rounded-full px-4 py-2 border border-white/10 w-64 md:w-80 group focus-within:border-aqua/50 focus-within:shadow-[0_0_10px_rgba(45,212,191,0.1)] transition-all">
+          <Search className="h-4 w-4 text-slate-300 group-focus-within:text-aqua transition-colors" />
           <input 
-            className="bg-transparent text-sm flex-1 outline-none placeholder:text-muted-foreground" 
+            className="bg-transparent text-sm flex-1 outline-none placeholder:text-slate-300" 
             placeholder="Search roles, skills, or insights..." 
           />
         </div>
       </div>
 
       <div className="flex items-center gap-4">
-        <button className="relative p-2 rounded-full text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors group">
+        <button className="relative p-2 rounded-full text-slate-300 hover:bg-white/5 hover:text-foreground transition-colors group">
           <Bell className="h-5 w-5" />
           <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary ring-2 ring-background shadow-[0_0_5px_rgba(239,68,68,0.8)]" />
         </button>
@@ -56,10 +56,10 @@ export const TopHeader = ({ onMenuClick }: TopHeaderProps) => {
               <User className="h-4 w-4" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-background/95 backdrop-blur-xl border border-border/50">
+          <DropdownMenuContent align="end" className="w-56 bg-background/95 backdrop-blur-xl border border-white/10">
             <DropdownMenuLabel className="font-display tracking-wider">My Account</DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-border/30" />
-            <div className="px-2 py-1.5 text-xs text-muted-foreground truncate">
+            <div className="px-2 py-1.5 text-xs text-slate-300 truncate">
               {user?.email || "user@futurfly.ai"}
             </div>
             <DropdownMenuSeparator className="bg-border/30" />

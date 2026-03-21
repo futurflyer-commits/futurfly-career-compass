@@ -167,7 +167,7 @@ const DetailedAssessment = () => {
             ))}
           </div>
           <h2 className="text-2xl font-display font-bold mb-2 text-gradient">Deep-analyzing your career DNA…</h2>
-          <p className="text-muted-foreground text-sm">Building your detailed persona from 28 data points across 6 dimensions</p>
+          <p className="text-slate-300 text-sm">Building your detailed persona from 28 data points across 6 dimensions</p>
         </motion.div>
       </div>
     );
@@ -177,7 +177,7 @@ const DetailedAssessment = () => {
     <div className="min-h-screen bg-background flex flex-col">
       
       {/* Section tracker */}
-      <div className="border-b border-border/30 bg-card/50 backdrop-blur-sm">
+      <div className="border-b border-white/10 bg-white/5 backdrop-blur-xl/50 backdrop-blur-sm">
         <div className="container py-3">
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {sectionNames.map((name, i) => {
@@ -193,7 +193,7 @@ const DetailedAssessment = () => {
                     ? "border-primary bg-primary/10 text-primary font-semibold"
                     : sectionAnswered
                     ? "border-secondary/50 bg-secondary/10 text-secondary"
-                    : "border-border text-muted-foreground"
+                    : "border-white/20 text-slate-300"
                 }`}>
                   {sectionNum}. {name}
                 </span>
@@ -204,7 +204,7 @@ const DetailedAssessment = () => {
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-1 bg-muted">
+      <div className="w-full h-1 bg-white/10">
         <motion.div className="h-full bg-gradient-to-r from-primary to-secondary" animate={{ width: `${progress}%` }} transition={{ duration: 0.4 }} />
       </div>
 
@@ -216,7 +216,7 @@ const DetailedAssessment = () => {
               <span className="inline-block border border-primary/40 rounded-full px-4 py-1 text-xs font-semibold tracking-widest uppercase text-primary mb-3">
                 Section {q.sectionNum} — {q.section}
               </span>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">
+              <p className="text-xs text-slate-300 uppercase tracking-wider mb-4">
                 Question {String(q.id).padStart(2, "0")} of 28 • {pathFound}% Complete
               </p>
               <h2 className="text-3xl md:text-5xl font-display font-bold leading-tight">
@@ -236,7 +236,7 @@ const DetailedAssessment = () => {
                     className={`text-left p-5 rounded-xl border transition-all duration-200 ${
                       answers[q.id] === i
                         ? "border-primary bg-primary/10 glow-aqua-sm"
-                        : "border-border/50 bg-card hover:border-primary/30"
+                        : "border-white/10 bg-white/5 backdrop-blur-xl hover:border-primary/30"
                     }`}>
                     <h4 className="font-display font-semibold text-sm">{opt.title}</h4>
                   </motion.button>
@@ -248,9 +248,9 @@ const DetailedAssessment = () => {
             {q.type === "slider" && (
               <div className="max-w-md mx-auto">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm text-muted-foreground">{q.sliderMin}</span>
+                  <span className="text-sm text-slate-300">{q.sliderMin}</span>
                   <span className="text-3xl font-display font-bold text-primary">{sliderValues[q.id] ?? 5}</span>
-                  <span className="text-sm text-muted-foreground">{q.sliderMax}</span>
+                  <span className="text-sm text-slate-300">{q.sliderMax}</span>
                 </div>
                 <input
                   type="range"
@@ -258,9 +258,9 @@ const DetailedAssessment = () => {
                   max={q.sliderMax}
                   value={sliderValues[q.id] ?? 5}
                   onChange={(e) => setSliderValues((prev) => ({ ...prev, [q.id]: Number(e.target.value) }))}
-                  className="w-full accent-[hsl(var(--primary))] h-2 rounded-full appearance-none bg-muted cursor-pointer"
+                  className="w-full accent-[hsl(var(--primary))] h-2 rounded-full appearance-none bg-white/10 cursor-pointer"
                 />
-                <div className="flex justify-between text-[10px] text-muted-foreground mt-2">
+                <div className="flex justify-between text-[10px] text-slate-300 mt-2">
                   <span>Not ready</span>
                   <span>Fully ready</span>
                 </div>
@@ -272,7 +272,7 @@ const DetailedAssessment = () => {
         {/* Navigation */}
         <div className="flex items-center gap-4 mt-12">
           <button onClick={prev} disabled={current === 0}
-            className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold text-foreground disabled:opacity-30 hover:border-primary/50 transition-colors">
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-foreground disabled:opacity-30 hover:border-primary/50 transition-colors">
             <ArrowLeft className="h-4 w-4" /> Previous
           </button>
           <button onClick={next} disabled={!isAnswered}
@@ -281,7 +281,7 @@ const DetailedAssessment = () => {
           </button>
         </div>
 
-        <p className="flex items-center gap-1.5 text-xs text-muted-foreground mt-6">
+        <p className="flex items-center gap-1.5 text-xs text-slate-300 mt-6">
           <Shield className="h-3.5 w-3.5" /> Progress is autosaved to your neural profile
         </p>
       </div>

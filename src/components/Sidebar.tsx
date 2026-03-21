@@ -41,11 +41,8 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
   const navContent = (
     <>
       <div className="flex items-center justify-between h-16 px-6 shrink-0">
-        <Link to="/" className="flex items-center gap-2 transition-transform hover:scale-105">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-aqua/20 to-primary/20 flex items-center justify-center border border-aqua/30">
-            <Rocket className="h-4 w-4 text-aqua" />
-          </div>
-          <span className="font-display text-lg font-bold tracking-wide">Futur<span className="text-aqua">Fly</span></span>
+        <Link to="/" className="flex items-center transition-transform hover:scale-105 py-2">
+          <img src="/logo.png" alt="FuturFly Logo" className="h-10 md:h-12 object-contain drop-shadow-md" />
         </Link>
         <button 
           onClick={onClose} 
@@ -113,7 +110,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
       {/* Sidebar Container */}
       <aside 
-        className={`fixed inset-y-0 left-0 z-50 w-[260px] bg-background/95 backdrop-blur-xl border-r border-border/40 flex flex-col transition-transform duration-300 ease-in-out md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-[260px] bg-background/95 backdrop-blur-xl border-r border-border/50 flex flex-col transition-transform duration-300 ease-in-out md:translate-x-0 ${
           isOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full"
         }`}
       >

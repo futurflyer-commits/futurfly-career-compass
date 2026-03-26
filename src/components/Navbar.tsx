@@ -46,14 +46,11 @@ export const Navbar = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Link to="/register" className="text-sm font-medium text-slate-300 hover:text-foreground transition-colors">
-            Sign In
-          </Link>
           <Link
-            to="/assessment"
+            to="/waitlist"
             className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-5 py-2 text-sm font-semibold text-primary-foreground transition-all hover:opacity-90 glow-aqua-sm"
           >
-            Get Started
+            Join Waitlist
           </Link>
         </div>
 
@@ -92,15 +89,12 @@ export const Navbar = () => {
                   </Link>
                 )
               ))}
-              <Link to="/register" onClick={() => setOpen(false)} className="text-sm font-medium text-slate-300 py-2">
-                Sign In
-              </Link>
               <Link
-                to="/assessment"
+                to="/waitlist"
                 onClick={() => setOpen(false)}
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
               >
-                Get Started
+                Join Waitlist
               </Link>
             </div>
           </motion.div>

@@ -32,7 +32,7 @@ const Waitlist = () => {
         if (error.code === '23505') { // PostgreSQL unique violation code
           toast.error("This email is already on the waitlist!");
         } else {
-          toast.error("Something went wrong. Please try again.");
+          toast.error(`Error: ${error.message || 'Please try again.'}`);
           console.error("Supabase insert error:", error);
         }
         setIsSubmitting(false);
@@ -50,8 +50,8 @@ const Waitlist = () => {
         console.error("Failed to trigger welcome email:", err);
       });
       
-    } catch (err) {
-      toast.error("An unexpected error occurred.");
+    } catch (err: any) {
+      toast.error(`An unexpected error occurred: ${err.message || 'Please try again.'}`);
       console.error(err);
       setIsSubmitting(false);
     }

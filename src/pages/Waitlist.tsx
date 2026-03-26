@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Send } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 
 const Waitlist = () => {
   const [formData, setFormData] = useState({
@@ -18,12 +19,42 @@ const Waitlist = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const { error } = await supabase.from('waitlist').insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          comments: formData.comments,
+        }
+      ]);
+
+      if (error) {
+        if (error.code === '23505') { // PostgreSQL unique violation code
+          toast.error("This email is already on the waitlist!");
+        } else {
+          toast.error("Something went wrong. Please try again.");
+          console.error("Supabase insert error:", error);
+        }
+        setIsSubmitting(false);
+        return;
+      }
+
       setIsSubmitting(false);
       setIsSuccess(true);
       toast.success("Successfully joined the waitlist!");
-    }, 1000);
+
+      // Fire off the email API asynchronously without awaiting to not block the UI
+      supabase.functions.invoke('send-waitlist-email', {
+        body: { name: formData.name, email: formData.email }
+      }).catch(err => {
+        console.error("Failed to trigger welcome email:", err);
+      });
+      
+    } catch (err) {
+      toast.error("An unexpected error occurred.");
+      console.error(err);
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

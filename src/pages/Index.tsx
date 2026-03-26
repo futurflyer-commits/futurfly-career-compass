@@ -111,13 +111,13 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
             <Link
               to="/assessment"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-primary/40 text-foreground hover:border-primary/80 px-8 py-3.5 text-sm font-semibold transition-all w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 text-sm font-semibold transition-all glow-aqua-sm w-full sm:w-auto"
             >
               Ready to fly? <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/waitlist"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 text-sm font-semibold transition-all glow-aqua-sm w-full sm:w-auto"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-primary/40 text-foreground hover:border-primary/80 px-8 py-3.5 text-sm font-semibold transition-all w-full sm:w-auto"
             >
               Join Waitlist
             </Link>

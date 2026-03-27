@@ -223,12 +223,17 @@ const Persona = ({ hideRoadmapLink = false, hideSharing = false, forceResult }: 
             </div>
 
             {!isGeneratingPDF && !hideRoadmapLink && (
-              <Link
-                to="/waitlist"
-                className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-primary to-neon px-12 py-6 lg:py-8 text-lg md:text-xl lg:text-2xl font-bold tracking-wide text-[#0a1017] glow-aqua hover:scale-[1.03] transform shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_50px_rgba(45,212,191,0.5)] transition-all duration-300 w-full sm:w-auto mb-12"
-              >
-                Join Waitlist <ArrowRight className="h-6 w-6 md:h-7 md:w-7 animate-pulse text-foreground/80" />
-              </Link>
+              <div className="flex flex-col items-center w-full mt-4 mb-12">
+                <p className="text-sm md:text-base lg:text-lg text-slate-300/90 max-w-md text-center mb-6 leading-relaxed font-medium">
+                  You’ve discovered who you are — now see where your career is really heading before everyone else, with early access to your full career blueprint.
+                </p>
+                <Link
+                  to="/waitlist"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-primary to-neon px-12 py-6 lg:py-8 text-lg md:text-xl lg:text-2xl font-bold tracking-wide text-[#0a1017] glow-aqua hover:scale-[1.03] transform shadow-[0_0_30px_rgba(45,212,191,0.3)] hover:shadow-[0_0_50px_rgba(45,212,191,0.5)] transition-all duration-300 w-full sm:w-auto"
+                >
+                  Join Waitlist <ArrowRight className="h-6 w-6 md:h-7 md:w-7 animate-pulse text-foreground/80" />
+                </Link>
+              </div>
             )}
 
             {!isGeneratingPDF && !hideSharing && (

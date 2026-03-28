@@ -56,14 +56,12 @@ const calculateTrajectory = (params: SimulationParams, targetRoleTitle: string) 
     });
 
     let role = "Software Engineer";
-    if (year === 5) {
-      role = targetRoleTitle;
-    } else if (year > 0) {
-      if (currentSalary >= 80) role = "Principal / Core Contributor";
-      else if (currentSalary >= 50) role = "Staff Engineer / Architect";
-      else if (currentSalary >= 30) role = "Sr. Software Engineer";
-      else if (currentSalary >= 18) role = "SDE II";
-      else if (currentSalary >= 12) role = "SDE I";
+    if (year > 0) {
+      if (currentSalary >= 100) role = "CTO / Founder";
+      else if (currentSalary >= 50) role = "Enterprise Architect / Staff MVP";
+      else if (currentSalary >= 17.5) role = targetRoleTitle;
+      else if (currentSalary >= 14) role = `Senior ${targetRoleTitle.split(" ")[0]} Specialist`;
+      else if (currentSalary >= 10) role = "SDE II";
     }
 
     milestones.push({ year, salary: currentSalary, role });

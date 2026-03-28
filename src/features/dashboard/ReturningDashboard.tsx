@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { PlayCircle, Award, Target, Settings2, Clock, CheckCircle, FileText } from "lucide-react";
+import { PlayCircle, Award, Target, Settings2, Clock, CheckCircle, FileText, Zap, BookOpen, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { PersonaPanel } from "./PersonaPanel";
@@ -54,13 +54,15 @@ export const ReturningDashboard = ({ roadmapState, onReconfigure }: ReturningDas
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-4">
-        {/* Active Path & Velocity (Takes 1 col) */}
+        {/* Active Path (Takes 1 col) */}
         <div className="flex flex-col gap-4">
-           <div className="glass-card p-5 rounded-xl border border-secondary/20 bg-secondary/5">
-              <p className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground mb-1">Active Set Path</p>
-              <h3 className="text-lg font-display font-bold text-foreground mb-4 leading-tight">AI Solutions Architect</h3>
+           <div className="glass-card p-5 rounded-xl border border-secondary/20 bg-secondary/5 h-full flex flex-col justify-between">
+              <div>
+                <p className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground mb-1">Active Set Path</p>
+                <h3 className="text-lg font-display font-bold text-foreground mb-4 leading-tight">AI Solutions Architect</h3>
+              </div>
               
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 mt-4">
                  <button 
                    onClick={() => setShowBlueprint(true)}
                    className="w-full py-2.5 rounded-lg border border-primary/20 bg-primary/10 text-primary text-sm font-bold hover:bg-primary/20 transition-colors flex items-center justify-center gap-2"
@@ -75,67 +77,39 @@ export const ReturningDashboard = ({ roadmapState, onReconfigure }: ReturningDas
                  </button>
               </div>
            </div>
-
-           {/* Mini Tracker */}
-           <div className="glass-card p-5 rounded-xl border border-border/50 flex-1">
-              <h4 className="text-xs font-bold uppercase tracking-widest mb-3 text-muted-foreground flex items-center gap-2">
-                <Clock className="w-3.5 h-3.5" /> 16-Week Velocity
-              </h4>
-              <div className="space-y-4 mt-4">
-                <div className="flex items-center gap-2 opacity-50 relative">
-                  <span className="absolute left-1.5 top-[18px] w-px h-6 bg-border/50"></span>
-                  <CheckCircle className="w-3.5 h-3.5 text-secondary z-10 bg-background" />
-                  <span className="text-[13px] line-through">Phase 1: Foundation</span>
-                </div>
-                <div className="flex items-center gap-2 text-primary font-bold relative">
-                  <span className="absolute left-1.5 top-[18px] w-px h-6 bg-border/50"></span>
-                  <Target className="w-3.5 h-3.5 animate-pulse z-10 bg-background" />
-                  <span className="text-[13px]">Phase 2: Mechanics</span>
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground relative">
-                  <span className="absolute left-1.5 top-[18px] w-px h-6 bg-border/50"></span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-border ml-1 z-10" />
-                  <span className="text-[13px] ml-0.5">Phase 3: Deep Dive</span>
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground relative">
-                  <span className="w-1.5 h-1.5 rounded-full bg-border ml-1 z-10" />
-                  <span className="text-[13px] ml-0.5">Phase 4: Synthesis</span>
-                </div>
-              </div>
-           </div>
         </div>
 
-        {/* Sub-tasks & Gaps (Takes 2 cols) */}
+        {/* Roadmap Snapshot (Takes 2 cols) */}
         <div className="flex flex-col gap-4 lg:col-span-2">
-          {/* Next Milestone */}
-          <div className="glass-card p-5 rounded-xl border border-border/50">
-            <h4 className="font-bold text-sm flex items-center gap-2 mb-3"><Award className="w-4 h-4 text-neon" /> Next Technical Milestone</h4>
-            <div className="bg-muted/30 rounded-lg p-4 border border-border/50">
-              <h5 className="font-bold mb-1 text-sm text-foreground">Implement a naive RAG retriever</h5>
-              <p className="text-xs text-muted-foreground mb-4 leading-relaxed">You have already mastered Vector DB ingest. Now build the context injector using LangChain or LlamaIndex.</p>
-              <button className="text-[10px] font-bold text-primary hover:text-neon transition-colors uppercase tracking-wider flex items-center gap-1.5 bg-primary/10 px-3 py-1.5 rounded-full hover:bg-primary/20">
-                Start Objective →
-              </button>
-            </div>
-          </div>
-
-          {/* Pending Gaps */}
-          <div className="glass-card p-5 rounded-xl border border-border/50 flex-1 flex flex-col">
-            <h4 className="font-bold text-sm flex items-center gap-2 mb-3"><Target className="w-4 h-4 text-accent" /> Pending Skill Gaps</h4>
-            <div className="flex-1 space-y-2">
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-background border border-border/50 hover:border-accent/30 transition-colors">
-                <span className="text-xs font-semibold">LLM Fine-tuning (PeFT)</span>
-                <span className="text-[9px] font-bold uppercase tracking-widest bg-accent/10 text-accent px-2.5 py-1 rounded border border-accent/20">Critical</span>
+          {/* Next Best Action Snapshot */}
+          <div className="glass-card p-6 rounded-xl border-primary/30 relative overflow-hidden group flex-1 flex flex-col justify-center bg-gradient-to-br from-background via-background to-primary/5">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -mr-10 -mt-10 rounded-full transition-transform group-hover:scale-150" />
+            
+            <div className="flex justify-between items-start mb-4 relative z-10">
+              <div className="flex items-center gap-2">
+                <Zap className="w-5 h-5 text-primary animate-pulse" />
+                <h3 className="text-sm font-bold text-primary uppercase tracking-widest">Roadmap: Next Action</h3>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-background border border-border/50">
-                <span className="text-xs font-semibold">Azure AI Search</span>
-                <span className="text-[9px] font-bold uppercase tracking-widest bg-muted text-muted-foreground px-2.5 py-1 rounded border border-border">Pending</span>
-              </div>
+              <span className="bg-background/80 text-[10px] uppercase font-bold text-muted-foreground px-2 py-1 rounded border border-border">Priority • 2 Hrs</span>
             </div>
             
-            <Link to="/skill-lab" className="text-[11px] uppercase tracking-widest font-bold text-muted-foreground hover:text-foreground transition-colors mt-auto pt-4 flex items-center justify-center border-t border-border/50 w-full hover:underline">
-              View Detailed Matrix
-            </Link>
+            <div className="relative z-10 flex flex-col justify-between flex-1">
+              <div>
+                <h2 className="text-2xl font-display font-bold mb-2">Complete Python Data Structures Module</h2>
+                <p className="text-sm text-foreground/80 max-w-xl leading-relaxed mb-6">
+                  You're 80% through this module. Finishing it now unlocks the ML Algorithms phase. Jump back in exactly where you left off.
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-4 mt-auto">
+                <Link to="/roadmap" className="inline-flex items-center justify-center rounded-lg h-10 px-6 font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(var(--primary),0.3)] gap-2 transition-all">
+                  <PlayCircle className="w-4 h-4" /> Resume Module
+                </Link>
+                <Link to="/roadmap" className="text-xs font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors flex items-center gap-1">
+                  View Full Path <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
